@@ -22,7 +22,7 @@
     "@prisma/client": "^5.21.1",
     "bech32": "^2.0.0",
     "jest-fixed-jsdom": "^0.0.6",
-    "next": "14.2.15",
+    "next": "15.0.1",
     "next-auth": "^4.24.8",
     "react": "^18",
     "react-dom": "^18",
