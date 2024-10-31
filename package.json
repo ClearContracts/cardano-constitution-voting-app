@@ -19,7 +19,7 @@
     "@mui/icons-material": "^6.1.4",
     "@mui/material": "^6.1.4",
     "@prisma/client": "^5.21.1",
-    "@sentry/nextjs": "^8.35.0",
+    "@sentry/nextjs": "^8.36.0",
     "bech32": "^2.0.0",
     "next": "14.2.15",
     "next-auth": "^4.24.8",
