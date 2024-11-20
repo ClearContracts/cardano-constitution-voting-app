@@ -2,7 +2,6 @@ import { prisma } from '@/db';
 
 import { convertBigIntsToStrings } from '@/lib/convertBigIntsToStrings';
 
-
 /**
  * Gets and formats the results of all polls - Used for coordinators
  * @param pollId - The ID of the poll to get results for
@@ -36,6 +35,8 @@ export async function pollActiveResultsDto(pollId: string): Promise<{
       },
     },
   });
+
+  // this data is only for coordinators, the FE handles only showing active voter votes. here, get all votes
 
   const convertedVotes = convertBigIntsToStrings(votes);
 

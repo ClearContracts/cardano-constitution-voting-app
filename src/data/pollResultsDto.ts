@@ -1,4 +1,5 @@
 import { prisma } from '@/db';
+import { ac } from 'vitest/dist/chunks/reporters.anwo7Y6a.js';
 
 import { convertBigIntsToStrings } from '@/lib/convertBigIntsToStrings';
 
@@ -31,15 +32,28 @@ export async function pollResultsDto(pollId: string): Promise<{
     select: {
       user_id: true,
       vote: true,
+      poll_transaction_id: true,
       user: {
         select: {
           name: true,
+          workshop_user_workshop_idToworkshop: {
+            select: {
+              active_voter_id: true,
+            },
+          },
         },
       },
     },
   });
 
-  const convertedVotes = convertBigIntsToStrings(votes);
+  // Only consider votes where the user is an active voter
+  const activeVotes = votes.filter(
+    (vote) =>
+      Number(vote.user.workshop_user_workshop_idToworkshop.active_voter_id) ===
+      Number(vote.user_id),
+  );
+
+  const convertedVotes = convertBigIntsToStrings(activeVotes);
 
   const formattedVotes = convertedVotes.reduce(
     (
