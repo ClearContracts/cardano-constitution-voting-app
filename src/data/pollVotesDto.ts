@@ -28,7 +28,7 @@ export async function pollVotesDto(pollId: string): Promise<
     poll_transaction_id: string | null;
   }[]
 > {
-  const pollVotes = await prisma.poll_vote.findMany({
+  let pollVotes = await prisma.poll_vote.findMany({
     where: {
       poll_id: BigInt(pollId),
       poll: {
@@ -52,6 +52,11 @@ export async function pollVotesDto(pollId: string): Promise<
       },
     },
   });
+
+  // filter out votes that don't have a transaction id (only filter for mainnet)
+  if (process.env.NEXT_PUBLIC_NETWORK === 'mainnet') {
+    pollVotes = pollVotes.filter((vote) => Number(vote.poll_transaction_id));
+  }
 
   const convertedPollVotes = convertBigIntsToStrings(pollVotes);
 
