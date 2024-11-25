@@ -4,6 +4,8 @@ import { Toaster } from 'react-hot-toast';
 
 import { Navbar } from '@/components/layout/navbar';
 
+import { Footer } from './footer';
+
 interface Props {
   children: React.ReactNode;
 }
@@ -61,6 +63,7 @@ export function Layout(props: Props): JSX.Element {
       >
         {children}
       </Box>
+      <Footer />
     </>
   );
 }

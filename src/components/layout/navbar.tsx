@@ -12,7 +12,7 @@ export function Navbar(): JSX.Element {
   return (
     <Box
       sx={{
-        position: 'absolute',
+        position: 'sticky',
         top: 0,
         left: 0,
         width: '100%',
