@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { useRouter } from 'next/router';
-import { DeleteRounded } from '@mui/icons-material';
 import Button from '@mui/material/Button';
 import { useSession } from 'next-auth/react';
 import toast from 'react-hot-toast';
@@ -45,12 +44,12 @@ export function DeletePollButton(props: Props): JSX.Element {
     return (
       <Button
         onClick={handleDeleteVote}
-        variant="text"
+        variant="contained"
         disabled={isSubmitting}
         data-testid="delete-poll-button"
         color="error"
       >
-        <DeleteRounded />
+        Yes, Delete
       </Button>
     );
   } else {
