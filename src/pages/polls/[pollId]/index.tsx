@@ -185,15 +185,27 @@ export default function ViewPoll(props: Props): JSX.Element {
           <PollVoteCount pollId={poll?.id || ''} />
           <Grid container data-testid="poll-transactions">
             {poll ? (
-              <Grid size={{ xs: 12, lg: 6 }}>
-                <Button
-                  variant="outlined"
-                  href={poll.link}
-                  target="_blank"
-                  startIcon={<LaunchRounded />}
-                >
-                  <Typography>View Constitution Text</Typography>
-                </Button>
+              <Grid
+                size={{ xs: 12, lg: 6 }}
+                display="flex"
+                flexDirection="column"
+                gap={3}
+              >
+                <Box>
+                  <Button
+                    variant="outlined"
+                    href={poll.link}
+                    target="_blank"
+                    startIcon={<LaunchRounded />}
+                  >
+                    <Typography>View Constitution Text</Typography>
+                  </Button>
+                </Box>
+
+                <Typography>
+                  The linked text document has the Blake2b-256 hash of:{' '}
+                  {poll.hashedText}
+                </Typography>
                 {poll.summary_tx_id && !isTxUploading && (
                   <Box marginTop={3} marginBottom={3}>
                     <ViewTxButton txId={poll.summary_tx_id} />
