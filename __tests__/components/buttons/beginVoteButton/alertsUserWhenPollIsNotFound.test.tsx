@@ -13,12 +13,7 @@ test('alerts user when poll is not found', async () => {
   render(
     <>
       <Toaster />
-      <BeginVoteButton
-        pollId="1"
-        isSubmitting={false}
-        setIsSubmitting={() => {}}
-      />
-      ,
+      <BeginVoteButton pollId="1" />,
     </>,
   );
 

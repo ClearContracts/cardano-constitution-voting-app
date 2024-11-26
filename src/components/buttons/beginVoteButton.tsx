@@ -10,6 +10,7 @@ interface Props {
 
 /**
  * A button for workshop coordinators to open voting for a poll
+ * @param pollId - The pollId of the poll to open voting for
  * @returns Begin Voting Button
  */
 export function BeginVoteButton(props: Props): JSX.Element {

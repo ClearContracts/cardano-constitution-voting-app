@@ -13,12 +13,7 @@ test('alerts user when poll voting has already finished', async () => {
   render(
     <>
       <Toaster />
-      <BeginVoteButton
-        pollId="1"
-        isSubmitting={false}
-        setIsSubmitting={() => {}}
-      />
-      ,
+      <BeginVoteButton pollId="1" />,
     </>,
   );
 
