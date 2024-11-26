@@ -343,7 +343,7 @@ export default function ViewPoll(props: Props): JSX.Element {
                 lg: 'translate(-50%, 0%)',
               },
               width: { xs: '80%', lg: '30%' },
-              maxHeight: { xs: '20%', sm: '20vh' },
+              maxHeight: { xs: '40%', sm: '20vh' },
               overflowY: 'auto',
               border: 'none',
               boxShadow: 24,
@@ -389,7 +389,7 @@ export default function ViewPoll(props: Props): JSX.Element {
                 lg: 'translate(-50%, 0%)',
               },
               width: { xs: '80%', lg: '30%' },
-              maxHeight: { xs: '20%', sm: '20vh' },
+              maxHeight: { xs: '40%', sm: '20vh' },
               overflowY: 'auto',
               border: 'none',
               boxShadow: 24,
@@ -403,7 +403,11 @@ export default function ViewPoll(props: Props): JSX.Element {
             <Typography variant="h4" fontWeight="bold">
               Are you sure you want to delete this Poll?
             </Typography>
-            <Box display="flex" flexDirection="row" gap={4}>
+            <Box
+              display="flex"
+              flexDirection={{ xs: 'column', sm: 'row' }}
+              gap={{ xs: 1, sm: 4 }}
+            >
               <Button variant="outlined" onClick={handleCloseDeleteModal}>
                 Cancel
               </Button>
