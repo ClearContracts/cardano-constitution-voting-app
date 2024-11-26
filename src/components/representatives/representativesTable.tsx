@@ -30,9 +30,17 @@ export function RepresentativesTable(props: Props): JSX.Element {
       headerName: 'Name',
       minWidth: 125,
       flex: 1,
+      renderHeader: (): JSX.Element => {
+        return (
+          <Typography variant="h5" fontWeight="600">
+            Workshop
+          </Typography>
+        );
+      },
       renderCell: (params): JSX.Element => {
         return <Typography fontWeight="500">{params.row.name}</Typography>;
       },
+      disableColumnMenu: true,
     },
     {
       field: 'Delegate',
@@ -41,6 +49,14 @@ export function RepresentativesTable(props: Props): JSX.Element {
       flex: 1,
       sortable: false,
       filterable: false,
+      disableColumnMenu: true,
+      renderHeader: (): JSX.Element => {
+        return (
+          <Typography variant="h5" fontWeight="600">
+            Delegate
+          </Typography>
+        );
+      },
       renderCell: (params): JSX.Element => {
         const delegateId = params.row.delegate_id;
         const delegate = representatives.find((rep) => rep.id === delegateId);
@@ -90,6 +106,14 @@ export function RepresentativesTable(props: Props): JSX.Element {
       flex: 1,
       sortable: false,
       filterable: false,
+      disableColumnMenu: true,
+      renderHeader: (): JSX.Element => {
+        return (
+          <Typography variant="h5" fontWeight="600">
+            Alternate
+          </Typography>
+        );
+      },
       renderCell: (params): JSX.Element => {
         const alternateId = params.row.alternate_id;
         const alternate = representatives.find((rep) => rep.id === alternateId);
@@ -141,6 +165,14 @@ export function RepresentativesTable(props: Props): JSX.Element {
       flex: 1,
       sortable: false,
       filterable: false,
+      disableColumnMenu: true,
+      renderHeader: (): JSX.Element => {
+        return (
+          <Typography variant="h5" fontWeight="600">
+            Active Voter
+          </Typography>
+        );
+      },
       renderCell: (params): JSX.Element => {
         const activeVoterId = params.row.active_voter_id;
         const activeVoter = representatives.find(
@@ -222,7 +254,6 @@ export function RepresentativesTable(props: Props): JSX.Element {
                 display: 'none',
               },
               '.MuiDataGrid-columnHeader': {
-                backgroundColor: 'rgba(0, 0, 0, 0.1)',
                 fontFamily: 'Montserrat',
                 fontSize: '1.2rem',
               },
@@ -231,6 +262,8 @@ export function RepresentativesTable(props: Props): JSX.Element {
                 flexDirection: 'column',
                 justifyContent: 'center',
               },
+              border: 'none',
+              borderRadius: `${theme.shape.borderRadius}px`,
             }}
           />
         </Box>

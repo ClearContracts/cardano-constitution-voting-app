@@ -93,7 +93,7 @@ export function PollCarrousel(props: Props): JSX.Element {
         width="100%"
         alignItems="center"
       >
-        <Typography textAlign="center" variant="h6" fontWeight="600">
+        <Typography variant="h5" fontWeight="600" textAlign="center">
           Browse other polls
         </Typography>
         {pollCards}
