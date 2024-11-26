@@ -23,7 +23,7 @@ export async function updateUser(
         userId: userId,
         name: name,
         email: email,
-        wallet_address: wallet_address.trim(),
+        wallet_address: wallet_address,
       },
       {
         headers: {

@@ -121,15 +121,3 @@ export const updateUserNotOrganizerHandler = [
     );
   }),
 ];
-
-export const updateUserAddressWhitespaceHandler = [
-  http.post('/api/updateUser', async () => {
-    return HttpResponse.json(
-      {
-        userId: BigInt(-1).toString(),
-        message: 'Wallet address must not have leading or trailing whitespace.',
-      },
-      { status: 401 },
-    );
-  }),
-];
