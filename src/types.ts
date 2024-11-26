@@ -33,6 +33,7 @@ export interface PollVote {
   vote: string;
   signature: string;
   hashed_message: string;
+  public_key: string;
   poll_transaction_id: string | null;
 }
 
