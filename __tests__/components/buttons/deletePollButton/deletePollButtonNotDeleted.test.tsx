@@ -13,11 +13,7 @@ test('alerts user when poll is not deleted', async () => {
 
   render(
     <>
-      <DeletePollButton
-        pollId="1"
-        isSubmitting={false}
-        setIsSubmitting={() => {}}
-      />
+      <DeletePollButton pollId="1" />
       <Toaster />
     </>,
   );

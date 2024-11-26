@@ -10,11 +10,7 @@ test('successfully deletes poll', async () => {
 
   render(
     <>
-      <DeletePollButton
-        pollId="1"
-        isSubmitting={false}
-        setIsSubmitting={() => {}}
-      />
+      <DeletePollButton pollId="1" />
       <Toaster />
     </>,
   );

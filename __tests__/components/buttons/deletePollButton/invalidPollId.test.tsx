@@ -13,11 +13,7 @@ test('alerts user when poll ID is not valid', async () => {
 
   render(
     <>
-      <DeletePollButton
-        pollId="1"
-        isSubmitting={false}
-        setIsSubmitting={() => {}}
-      />
+      <DeletePollButton pollId="1" />
       <Toaster />
     </>,
   );
