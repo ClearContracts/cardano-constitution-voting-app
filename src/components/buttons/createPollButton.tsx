@@ -18,6 +18,13 @@ interface Props {
 
 /**
  * A button for workshop coordinators to create a new poll
+ * @param name - The name of the poll
+ * @param hashedText - The hashed text of the poll
+ * @param link - The link to the poll
+ * @param setName - The function to set the name of the poll
+ * @param setConstitutionText - The function to set the text of the poll
+ * @param setLink - The function to set the link of the poll
+ * @param disabled - Whether the button is disabled
  * @returns Create Poll Button
  */
 export function CreatePollButton(props: Props): JSX.Element {
