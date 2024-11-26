@@ -78,7 +78,9 @@ export default function Home(props: Props): JSX.Element {
                 Connect a wallet to cast your vote:
               </Typography>
             </Box>
-            <ConnectWalletButton isHomepage={true} />
+            {session.status === 'unauthenticated' && (
+              <ConnectWalletButton isHomepage={true} />
+            )}
           </Box>
           <PollList polls={polls} />
           <RepresentativesTable
