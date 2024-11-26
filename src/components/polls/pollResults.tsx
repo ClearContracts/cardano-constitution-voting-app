@@ -9,7 +9,6 @@ import {
   LinearProgress,
   linearProgressClasses,
   styled,
-  Tooltip,
   useTheme,
 } from '@mui/material';
 import Box from '@mui/material/Box';
@@ -78,6 +77,7 @@ const AbstainLinearProgress = styled(LinearProgress)(({ theme }) => ({
 
 /**
  * Shows the results of a poll
+ * @param pollId - The ID of the poll
  * @param votes - The resulting votes of a poll
  * @returns Poll Results
  */
