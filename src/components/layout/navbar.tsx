@@ -21,8 +21,9 @@ export function Navbar(): JSX.Element {
         justifyContent: 'space-between',
         alignItems: 'center',
         p: 2,
-        backgroundColor: 'rgba(0, 0, 0, 0.1)',
+        backgroundColor: 'rgb(8, 13, 23)',
         height: '75px',
+        zIndex: 100,
       }}
     >
       <Link
