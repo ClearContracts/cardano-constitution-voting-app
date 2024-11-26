@@ -11,6 +11,11 @@ interface Props {
   polls: Poll[];
 }
 
+/**
+ * Page to create a new poll
+ * @param polls - Array of polls
+ * @returns Page to create a new poll
+ */
 export default function NewPoll(props: Props): JSX.Element {
   const { polls } = props;
   useCheckAddressChange();
