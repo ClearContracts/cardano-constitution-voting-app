@@ -132,7 +132,9 @@ export function VoteOnPollButtons(props: Props): JSX.Element {
                   variant="outlined"
                   color="success"
                   sx={{
-                    width: '150px',
+                    width: '170px',
+                    py: 2,
+                    borderRadius: '60px !important',
                   }}
                   endIcon={<ThumbUpRounded />}
                   size="large"
@@ -140,13 +142,16 @@ export function VoteOnPollButtons(props: Props): JSX.Element {
                   disabled={disabled || !isActiveVoter}
                   data-testid="vote-yes-button"
                 >
-                  Yes
+                  Vote Yes
                 </Button>
                 <Button
                   variant="outlined"
                   color="warning"
                   sx={{
-                    width: '150px',
+                    width: '170px',
+                    py: 2,
+                    borderRadius: '60px !important',
+                    borderColor: theme.palette.warning.main,
                   }}
                   endIcon={<ThumbDownRounded />}
                   size="large"
@@ -154,12 +159,14 @@ export function VoteOnPollButtons(props: Props): JSX.Element {
                   disabled={disabled || !isActiveVoter}
                   data-testid="vote-no-button"
                 >
-                  No
+                  Vote No
                 </Button>
                 <Button
                   variant="outlined"
                   sx={{
-                    width: '150px',
+                    width: '170px',
+                    py: 2,
+                    borderRadius: '60px !important',
                   }}
                   endIcon={<DoDisturbRounded />}
                   size="large"

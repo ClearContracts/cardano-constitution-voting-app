@@ -313,7 +313,11 @@ export default function ViewPoll(props: Props): JSX.Element {
           </Grid>
           <Box display="flex" flexDirection="column" gap={3} mt={10}>
             {/* Browse Other Polls Carrousel */}
-            <PollCarrousel currentPollId={pollId} polls={polls} />
+            <PollCarrousel
+              currentPollId={pollId}
+              polls={polls}
+              isPollPage={true}
+            />
             <RepresentativesTable
               representatives={representatives}
               workshops={workshops}
