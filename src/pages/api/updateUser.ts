@@ -107,7 +107,7 @@ export default async function updateUser(
       data: {
         name: name,
         email: email,
-        wallet_address: wallet_address,
+        wallet_address: wallet_address.trim(),
       },
     });
     return res.status(200).json({
