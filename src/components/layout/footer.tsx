@@ -1,9 +1,8 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import clarity from '@/img/Clarity.png';
 import { GitHub } from '@mui/icons-material';
 import { Box, Button } from '@mui/material';
-
-import clarity from '../../img/Clarity.png';
 
 /**
  * Footer with Clarity logo & link to repo

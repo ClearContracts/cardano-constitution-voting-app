@@ -2,9 +2,8 @@ import { useTheme } from '@mui/material';
 import Box from '@mui/material/Box';
 import { Toaster } from 'react-hot-toast';
 
+import { Footer } from '@/components/layout/footer';
 import { Navbar } from '@/components/layout/navbar';
-
-import { Footer } from './footer';
 
 interface Props {
   children: React.ReactNode;
