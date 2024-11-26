@@ -29,18 +29,36 @@ export function VotingHistoryTable(props: Props): JSX.Element {
   const theme = useTheme();
 
   const columns: GridColDef[] = [
-    { field: 'id', headerName: '#' },
+    {
+      field: 'id',
+      headerName: '#',
+      disableColumnMenu: true,
+      renderHeader: (): JSX.Element => {
+        return (
+          <Typography variant="h5" fontWeight="600">
+            Poll #
+          </Typography>
+        );
+      },
+      renderCell: (params): JSX.Element => {
+        return <Typography>{params.row.id}</Typography>;
+      },
+    },
     {
       field: 'name',
       headerName: 'Name',
       minWidth: 150,
       flex: 1,
+      disableColumnMenu: true,
       renderHeader: (): JSX.Element => {
         return (
           <Typography variant="h5" fontWeight="600">
-            Name
+            Poll Name
           </Typography>
         );
+      },
+      renderCell: (params): JSX.Element => {
+        return <Typography>{params.row.name}</Typography>;
       },
     },
     {
@@ -48,6 +66,7 @@ export function VotingHistoryTable(props: Props): JSX.Element {
       headerName: 'User Vote',
       minWidth: 150,
       flex: 1,
+      disableColumnMenu: true,
       renderHeader: (): JSX.Element => {
         return (
           <Typography variant="h5" fontWeight="600">
@@ -118,11 +137,15 @@ export function VotingHistoryTable(props: Props): JSX.Element {
               '.MuiDataGrid-columnHeader': {
                 fontFamily: 'Montserrat',
                 fontSize: '1.2rem',
+                backgroundColor: 'rbga(0,0,0,0)',
               },
               '.MuiDataGrid-cell': {
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'center',
+              },
+              '.MuiDataGrid-filler': {
+                backgroundColor: 'rbga(0,0,0,0)',
               },
               borderRadius: `${theme.shape.borderRadius}px`,
             }}
