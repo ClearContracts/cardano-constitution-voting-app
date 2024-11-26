@@ -123,6 +123,7 @@ export function CoordinatorViewVotes(props: Props): JSX.Element {
         <DataGrid
           autoHeight={true} // deprecated but prevents size jumping
           rows={rows}
+          hideFooter
           columns={columns}
           getRowId={(row) => row.id}
           sx={{

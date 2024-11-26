@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import LaunchRounded from '@mui/icons-material/LaunchRounded';
 import { Box, useTheme } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
@@ -77,7 +76,6 @@ export function RepresentativesTable(props: Props): JSX.Element {
               <Typography color={delegateId === activeVoterId ? 'success' : ''}>
                 {delegate?.name}
               </Typography>
-              <LaunchRounded fontSize="small" />
             </Box>
           </Link>
         );
@@ -128,7 +126,6 @@ export function RepresentativesTable(props: Props): JSX.Element {
               >
                 {alternate?.name}
               </Typography>
-              <LaunchRounded fontSize="small" />
             </Box>
           </Link>
         );
@@ -176,7 +173,6 @@ export function RepresentativesTable(props: Props): JSX.Element {
               }}
             >
               <Typography noWrap>{activeVoter?.name}</Typography>
-              <LaunchRounded fontSize="small" />
             </Box>
           </Link>
         );
@@ -200,14 +196,7 @@ export function RepresentativesTable(props: Props): JSX.Element {
               (workshop) => workshop.name !== 'Convention Organizer',
             )}
             columns={columns}
-            initialState={{
-              pagination: {
-                paginationModel: {
-                  pageSize: 100,
-                },
-              },
-            }}
-            pageSizeOptions={[25, 50, 100]}
+            hideFooter
             columnVisibilityModel={{
               id: false,
             }}

@@ -307,6 +307,7 @@ export function ManageActivePowerTable(props: Props): JSX.Element {
           onRowModesModelChange={handleRowModesModelChange}
           onRowEditStop={handleRowEditStop}
           processRowUpdate={processRowUpdate}
+          hideFooter
           slots={{ toolbar: GridToolbar }}
           slotProps={{
             toolbar: {

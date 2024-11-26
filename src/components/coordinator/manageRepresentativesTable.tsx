@@ -200,6 +200,7 @@ export function ManageRepresentativesTable(props: Props): JSX.Element {
           rows={representatives}
           columns={columns}
           editMode="row"
+          hideFooter
           rowModesModel={rowModesModel}
           onRowModesModelChange={handleRowModesModelChange}
           onRowEditStop={handleRowEditStop}

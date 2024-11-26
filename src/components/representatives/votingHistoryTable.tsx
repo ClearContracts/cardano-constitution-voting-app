@@ -102,6 +102,7 @@ export function VotingHistoryTable(props: Props): JSX.Element {
           <DataGrid
             rows={polls}
             columns={columns}
+            hideFooter
             sx={{
               '.MuiDataGrid-columnSeparator': {
                 display: 'none',
