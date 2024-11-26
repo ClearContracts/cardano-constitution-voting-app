@@ -40,7 +40,7 @@ export default function Home(props: Props): JSX.Element {
         />
       </Head>
       <main>
-        <Box display="flex" flexDirection="column" gap={4} alignItems="center">
+        <Box display="flex" flexDirection="column" gap={12} alignItems="center">
           <Box
             display="flex"
             flexDirection="column"
@@ -62,23 +62,23 @@ export default function Home(props: Props): JSX.Element {
                 </Link>
               </Box>
             )}
-            <Typography variant="h3" fontWeight="bold" textAlign="center">
+            <Typography variant="h2" fontWeight="bold" textAlign="center">
               Welcome to the Constitutional Convention Voting Tool
             </Typography>
             <Box
               display={session.status == 'authenticated' ? 'none' : 'flex'}
               flexDirection="column"
-              gap={1}
+              gap={0}
               alignItems="center"
             >
               <Typography variant="h5" fontWeight="500" textAlign="center">
                 Are you a delegate?
               </Typography>
-              <Typography variant="h6" textAlign="center">
+              <Typography textAlign="center">
                 Connect a wallet to cast your vote:
               </Typography>
-              <ConnectWalletButton isHomepage={true} />
             </Box>
+            <ConnectWalletButton isHomepage={true} />
           </Box>
           <PollList polls={polls} />
           <RepresentativesTable

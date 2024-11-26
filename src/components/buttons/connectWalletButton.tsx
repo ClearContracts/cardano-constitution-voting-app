@@ -203,7 +203,12 @@ export function ConnectWalletButton(props: Props): JSX.Element {
               : 'warning'
         }
         sx={{
-          px: isHomepage ? 16 : 2,
+          px: isHomepage
+            ? {
+                xs: 12,
+                sm: 16,
+              }
+            : 2,
           py: isHomepage ? 2 : 1,
           borderRadius: '40px',
         }}

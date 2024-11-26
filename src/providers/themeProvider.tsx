@@ -75,7 +75,7 @@ export function ColorModeProvider({
         styleOverrides: {
           root: {
             textTransform: 'unset',
-            fontFamily: 'Inter',
+            fontFamily: 'Chivo',
             borderRadius: '24px',
             padding: '10px 30px',
             fontWeight: 600,
@@ -197,9 +197,8 @@ export function ColorModeProvider({
       },
     },
     typography: {
-      fontFamily: 'Montserrat',
+      fontFamily: 'Chivo',
       button: {
-        fontFamily: 'Inter',
         fontWeight: 400,
         lineHeight: 1.5,
       },
@@ -228,11 +227,11 @@ export function ColorModeProvider({
         color: '#FFFFFF',
       },
       body1: {
-        fontFamily: 'Inter',
+        fontFamily: 'Chivo',
         color: '#FFFFFF',
       },
       body2: {
-        fontFamily: 'Inter',
+        fontFamily: 'Chivo',
         color: '#FFFFFF',
       },
     },
