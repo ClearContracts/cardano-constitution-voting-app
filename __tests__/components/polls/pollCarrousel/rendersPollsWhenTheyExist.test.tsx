@@ -21,7 +21,21 @@ test('renders polls when they exist', async () => {
       }}
     >
       <Toaster />
-      <PollCarrousel currentPollId="1" />
+      <PollCarrousel
+        currentPollId="1"
+        polls={[
+          {
+            id: '1',
+            name: 'test',
+            hashedText:
+              '1dda86a28da3715e618a1605f81c7a3121ce767cdc9bd0d46beec0bef40e8125',
+            link: 'https://www.intersectmbo.org/constitution/constitution.html',
+            status: 'voting',
+            summary_tx_id: null,
+            is_archived: false,
+          },
+        ]}
+      />
     </SessionProvider>,
   );
 
