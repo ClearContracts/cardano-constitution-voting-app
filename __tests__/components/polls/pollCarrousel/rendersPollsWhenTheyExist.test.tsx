@@ -14,6 +14,9 @@ test('renders polls when they exist', async () => {
           id: '1',
           stakeAddress: 'stakeAddress',
           walletName: 'walletName',
+          isCoordinator: false,
+          isDelegate: true,
+          isAlternate: false,
         },
       }}
     >

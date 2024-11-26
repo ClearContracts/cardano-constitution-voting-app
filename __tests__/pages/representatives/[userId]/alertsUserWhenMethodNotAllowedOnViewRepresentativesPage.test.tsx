@@ -17,6 +17,9 @@ test.skip('Alerts user when method not allowed on view representative page', asy
           id: '1',
           stakeAddress: 'stakeAddress',
           walletName: 'walletName',
+          isCoordinator: false,
+          isDelegate: true,
+          isAlternate: false,
         },
       }}
     >

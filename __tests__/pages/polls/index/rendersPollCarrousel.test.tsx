@@ -21,6 +21,9 @@ test('renders poll carrousel', async () => {
           id: '1',
           stakeAddress: 'stakeAddress',
           walletName: 'walletName',
+          isCoordinator: false,
+          isDelegate: true,
+          isAlternate: false,
         },
       }}
     >

@@ -17,6 +17,9 @@ test('Alerts user when User not found on view representative page', async () => 
           id: '1',
           stakeAddress: 'stakeAddress',
           walletName: 'walletName',
+          isCoordinator: false,
+          isDelegate: true,
+          isAlternate: false,
         },
       }}
     >

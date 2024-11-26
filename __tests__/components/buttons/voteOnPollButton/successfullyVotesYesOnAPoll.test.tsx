@@ -16,6 +16,9 @@ test.skip('successfully votes yes on a poll', async () => {
           id: '1',
           stakeAddress: 'stakeAddress',
           walletName: 'walletName',
+          isCoordinator: false,
+          isDelegate: true,
+          isAlternate: false,
         },
       }}
     >

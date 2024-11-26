@@ -19,6 +19,9 @@ test.skip('alerts user when poll ID is not provided', async () => {
           id: '1',
           stakeAddress: 'stakeAddress',
           walletName: 'walletName',
+          isCoordinator: false,
+          isDelegate: true,
+          isAlternate: false,
         },
       }}
     >
