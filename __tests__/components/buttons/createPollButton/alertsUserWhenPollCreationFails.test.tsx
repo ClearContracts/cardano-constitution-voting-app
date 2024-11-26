@@ -15,9 +15,12 @@ test('alerts user when poll creation fails', async () => {
       <Toaster />
       <CreatePollButton
         name="test poll"
-        description="this is a test poll"
+        hashedText="1dda86a28da3715e618a1605f81c7a3121ce767cdc9bd0d46beec0bef40e8125"
+        link="https://2024constitutionalconsultation.docs.intersectmbo.org/cardanos-constitution/draft-cardano-constitution"
         setName={() => {}}
-        setDescription={() => {}}
+        setConstitutionText={() => {}}
+        setLink={() => {}}
+        disabled={false}
       />
     </>,
   );
