@@ -77,7 +77,7 @@ export default function Home(props: Props): JSX.Element {
               <Typography variant="h6" textAlign="center">
                 Connect a wallet to cast your vote:
               </Typography>
-              <ConnectWalletButton />
+              <ConnectWalletButton isHomepage={true} />
             </Box>
           </Box>
           <PollList polls={polls} />

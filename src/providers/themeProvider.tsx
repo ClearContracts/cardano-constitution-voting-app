@@ -89,7 +89,7 @@ export function ColorModeProvider({
             backgroundColor: 'rgba(77,166,77, 0.1)',
           },
           outlinedWarning: {
-            border: '1px solid rgb(245, 148, 77)',
+            border: '1px solid rgba(255,255,255, .10)',
             backgroundColor: 'rgba(245, 148, 77, 0.1)',
           },
           outlinedPrimary: {
