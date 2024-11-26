@@ -4,6 +4,7 @@ import type { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { pollPhases } from '@/constants/pollPhases';
+import { DeleteRounded } from '@mui/icons-material';
 import LaunchRounded from '@mui/icons-material/LaunchRounded';
 import { Button, CircularProgress, Modal, useTheme } from '@mui/material';
 import Box from '@mui/material/Box';
