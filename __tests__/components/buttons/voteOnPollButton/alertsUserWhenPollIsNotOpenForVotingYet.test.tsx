@@ -19,6 +19,9 @@ test.skip('alerts user when poll is not open for voting yet', async () => {
           id: '1',
           stakeAddress: 'stakeAddress',
           walletName: 'walletName',
+          isCoordinator: false,
+          isDelegate: true,
+          isAlternate: false,
         },
       }}
     >
@@ -26,7 +29,6 @@ test.skip('alerts user when poll is not open for voting yet', async () => {
       <VoteOnPollButtons
         pollName="Test Poll"
         pollId="1"
-        isActiveVoter={true}
         hashedText="1dda86a28da3715e618a1605f81c7a3121ce767cdc9bd0d46beec0bef40e8125"
         link="https://www.intersectmbo.org/constitution/constitution.html"
       />

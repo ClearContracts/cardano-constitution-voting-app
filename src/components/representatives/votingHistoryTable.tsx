@@ -1,3 +1,4 @@
+import { pollPhases } from '@/constants/pollPhases';
 import DoDisturbRounded from '@mui/icons-material/DoDisturbRounded';
 import ThumbDownRounded from '@mui/icons-material/ThumbDownRounded';
 import ThumbUpRounded from '@mui/icons-material/ThumbUpRounded';
@@ -42,6 +43,7 @@ export function VotingHistoryTable(props: Props): JSX.Element {
         const userVoteData = votes.find(
           (vote) => vote.poll_id === params.row.id,
         );
+        const poll = polls.find((poll) => poll.id === params.row.id);
         const userVote = userVoteData?.vote;
         return (
           <Box
@@ -66,7 +68,13 @@ export function VotingHistoryTable(props: Props): JSX.Element {
             {userVote === 'abstain' && (
               <DoDisturbRounded data-testid={`abstain-${params.row.id}`} />
             )}
-            {!userVote && (
+            {poll?.status === pollPhases.pending ||
+              (poll?.status === pollPhases.voting && (
+                <Typography data-testid={`none-${params.row.id}`}>
+                  In Progress
+                </Typography>
+              ))}
+            {poll?.status === pollPhases.concluded && !userVote && (
               <Typography data-testid={`none-${params.row.id}`}>
                 None
               </Typography>

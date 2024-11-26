@@ -27,11 +27,19 @@ import { getRepresentatives } from '@/lib/helpers/getRepresentatives';
 import { getWorkshops } from '@/lib/helpers/getWorkshops';
 import { updateActiveVoter } from '@/lib/helpers/updateActiveVoter';
 
+interface Props {
+  refresh: boolean;
+  toggleRefresh: () => void;
+}
+
 /**
  * Allows a workshop coordinator to manage if delegates or alternates have active power from each workhsop
+ * @param refresh - boolean to refresh the table
+ * @param toggleRefresh - function to toggle the refresh boolean
  * @returns Admin Manage Active Power Table
  */
-export function ManageActivePowerTable(): JSX.Element {
+export function ManageActivePowerTable(props: Props): JSX.Element {
+  const { refresh, toggleRefresh } = props;
   const [representatives, setRepresentatives] = useState<User[]>([]);
   const [workshops, setWorkshops] = useState<Workshop[]>([]);
   const [rowModesModel, setRowModesModel] = useState<GridRowModesModel>({});
@@ -47,7 +55,7 @@ export function ManageActivePowerTable(): JSX.Element {
       setRepresentatives(reps);
     }
     fetchData();
-  }, [reload]);
+  }, [reload, refresh]);
 
   function handleRowEditStop(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -69,6 +77,7 @@ export function ManageActivePowerTable(): JSX.Element {
       toast.error(data.message);
     }
     setReload(!reload);
+    toggleRefresh();
     return newRow;
   }
 
@@ -271,7 +280,14 @@ export function ManageActivePowerTable(): JSX.Element {
         },
       },
     ];
-  }, [representatives, rowModesModel, theme.palette.text.primary, reload]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    representatives,
+    rowModesModel,
+    theme.palette.text.primary,
+    reload,
+    refresh, // TS is not recognizing refresh as a dependency but it is required to properly refresh the table when info in representatives table changes
+  ]);
 
   return (
     <Box display="flex" flexDirection="column" gap={1}>

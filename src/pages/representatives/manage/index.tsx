@@ -1,3 +1,4 @@
+import { useCallback, useState } from 'react';
 import type { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
 import { authOptions } from '@/pages/api/auth/[...nextauth]';
@@ -12,6 +13,11 @@ import { ManageRepresentativesTable } from '@/components/coordinator/manageRepre
 
 export default function ManageRepresentatives(): JSX.Element {
   useCheckAddressChange();
+  const [refresh, setRefresh] = useState(false);
+
+  const toggleRefresh = useCallback((): void => {
+    setRefresh((prev) => !prev);
+  }, []);
 
   return (
     <>
@@ -29,10 +35,11 @@ export default function ManageRepresentatives(): JSX.Element {
           <Typography variant="h3" fontWeight="bold">
             Coordinator Dashboard
           </Typography>
-
-          <ManageRepresentativesTable />
-
-          <ManageActivePowerTable />
+          <ManageRepresentativesTable toggleRefresh={toggleRefresh} />
+          <ManageActivePowerTable
+            refresh={refresh}
+            toggleRefresh={toggleRefresh}
+          />
         </Box>
       </main>
     </>

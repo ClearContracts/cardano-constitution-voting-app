@@ -244,6 +244,7 @@ export function ColorModeProvider({
     <>
       <Box
         sx={{
+          background: 'rgb(13,26,61)',
           backgroundImage: `url(${gradient.src})`,
           backgroundRepeat: 'no-repeat',
           backgroundSize: 'cover',

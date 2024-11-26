@@ -9,12 +9,12 @@ import { useSession } from 'next-auth/react';
 import toast from 'react-hot-toast';
 
 import { castVote } from '@/lib/helpers/castVote';
+import { getActiveVoterFromUserId } from '@/lib/helpers/getActiveVoterFromUserId';
 import { getPollVote } from '@/lib/helpers/getPollVote';
 
 interface Props {
   pollName: string;
   pollId: string;
-  isActiveVoter: boolean;
   hashedText: string;
   link: string;
 }
@@ -23,16 +23,32 @@ interface Props {
  * Yes, No, Abstain buttons to vote on a poll
  * @param pollName - The name of the poll
  * @param pollId - The ID of the poll
- * @param isActiveVoter - Whether the user is the active voter
+ * @param hashedText - The hashed text of the poll
+ * @param link - The link to the poll
  * @returns Vote on Poll Buttons
  */
 export function VoteOnPollButtons(props: Props): JSX.Element {
-  const { pollName, pollId, isActiveVoter, hashedText, link } = props;
-  const [vote, setVote] = useState('');
-  const [disabled, setDisabled] = useState(false);
+  const { pollName, pollId, hashedText, link } = props;
 
   const session = useSession();
   const theme = useTheme();
+
+  const [vote, setVote] = useState('');
+  const [disabled, setDisabled] = useState(false);
+  const [isActiveVoter, setIsActiveVoter] = useState(false);
+  const [fetching, setIsFetching] = useState(
+    session.status === 'authenticated' ? false : true,
+  );
+
+  useEffect(() => {
+    if (session.data?.user.id) {
+      setIsFetching(true);
+      getActiveVoterFromUserId(session.data.user.id).then((result) => {
+        setIsActiveVoter(result.activeVoterId === session.data.user.id);
+        setIsFetching(false);
+      });
+    }
+  }, [session.data?.user.id]);
 
   async function handleVote(vote: string): Promise<void> {
     setDisabled(true);
@@ -91,7 +107,7 @@ export function VoteOnPollButtons(props: Props): JSX.Element {
               </Typography>
             </Box>
           )}
-          {!isActiveVoter && !session.data?.user.isCoordinator && (
+          {!isActiveVoter && !session.data?.user.isCoordinator && !fetching && (
             <Typography variant="h6" fontWeight="bold">
               You are not the active voter for your workshop. Only the active
               voter can vote.
