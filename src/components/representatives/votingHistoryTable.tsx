@@ -89,8 +89,8 @@ export function VotingHistoryTable(props: Props): JSX.Element {
     return (
       <Box display="flex" flexDirection="column" gap={1}>
         <Box display="flex" alignItems="center" justifyContent="space-between">
-          <Typography variant="h5" fontWeight="600">
-            Voting History
+          <Typography variant="h3" fontWeight="600">
+            History
           </Typography>
           <DownloadUserVotesButton userId={userId} />
         </Box>

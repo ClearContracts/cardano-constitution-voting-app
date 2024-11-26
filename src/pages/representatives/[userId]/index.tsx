@@ -128,20 +128,12 @@ export default function Representative(props: Props): JSX.Element {
                     color={theme.palette.text.primary}
                   >
                     <HowToVoteRounded />
-                    <Typography
-                      variant="h5"
-                      fontWeight="500"
-                      data-testid="user-vote-count"
-                    >
+                    <Typography data-testid="user-vote-count">
                       {userVotes.length} vote
-                      {userVotes.length === 1 ? '' : 's'}
+                      {userVotes.length === 1 ? '' : 's'} cast
                     </Typography>
                   </Box>
-                  <Typography
-                    variant="h5"
-                    fontWeight="500"
-                    data-testid="workshop-name"
-                  >
+                  <Typography variant="h6" data-testid="workshop-name">
                     {workshopName || 'Failed to retrieve workshop'}
                   </Typography>
                 </Box>
@@ -162,6 +154,12 @@ export default function Representative(props: Props): JSX.Element {
               size={{
                 xs: 12,
                 md: 6,
+              }}
+              sx={{
+                mt: {
+                  xs: 6,
+                  md: 0,
+                },
               }}
             >
               <VotingHistoryTable
