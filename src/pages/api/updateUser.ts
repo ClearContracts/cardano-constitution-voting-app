@@ -99,6 +99,12 @@ export default async function updateUser(
         message: 'Wallet address must be less than 100 characters.',
       });
     }
+    if (wallet_address !== wallet_address.trim()) {
+      return res.status(400).json({
+        userId: BigInt(-1).toString(),
+        message: 'Wallet address must not have leading or trailing whitespace.',
+      });
+    }
 
     const updatedUser = await prisma.user.update({
       where: {
