@@ -14,7 +14,7 @@ export function ViewTxButton(props: Props): JSX.Element {
   return (
     <a
       href={
-        process.env.NEXT_PUBLIC_NETWORK
+        process.env.NEXT_PUBLIC_NETWORK === 'mainnet'
           ? `https://cardanoscan.io/transaction/${txId}?tab=metadata`
           : `https://preview.cardanoscan.io/transaction/${txId}?tab=metadata`
       }
