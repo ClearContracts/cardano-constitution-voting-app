@@ -1,11 +1,9 @@
-import { organizerWallets } from '@constants/staticWallets';
+import { faker } from '@faker-js/faker';
 import { test as base } from '@fixtures/walletExtension';
 import {
-  createNewPageWithWallet,
   newDelegate2Page,
   newDelegate3Page,
   newDelegate1Page,
-  newOrganizerPage,
   newOrganizer1Page,
 } from '@helpers/page';
 import HomePage from '@pages/homePage';
@@ -37,6 +35,7 @@ export const test = base.extend<TestOptions & { pollId: number }>({
     const homePage = new HomePage(organizerPage);
     await homePage.goto();
     const organizerPollPage = new PollPage(organizerPage);
+    const randomName = faker.commerce.productName();
 
     let pollId: number | undefined;
 
@@ -50,7 +49,7 @@ export const test = base.extend<TestOptions & { pollId: number }>({
         ].includes(pollType)
       ) {
         pollId = await homePage.createPoll(
-          'Testing Poll',
+          randomName,
           '1111111111111111111111111111111111111111111111111111111111111112'
         );
       } else {

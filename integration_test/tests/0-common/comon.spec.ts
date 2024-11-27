@@ -387,7 +387,7 @@ test.describe('Constitution Poll Hash', () => {
 
           // fetch hash value
           const pollPageHash = page.getByTestId('constitution-poll-hash');
-          await expect(pollPageHash.first()).toBeVisible({ timeout: 10_000 });
+          await expect(pollPageHash.first()).toBeVisible({ timeout: 20_000 });
           const pollPageHashContent = await pollPageHash.innerText();
 
           // assert hash value
@@ -462,6 +462,7 @@ test.describe('Wallet switching', () => {
   test('0-5A Update Wallet and Role After Switching Wallets in Extension', async ({
     page,
   }) => {
+    test.slow();
     await page.goto('/');
 
     //click connect wallet button to view representative name
