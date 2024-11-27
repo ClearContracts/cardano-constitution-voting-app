@@ -17,7 +17,7 @@ export function ColorModeProvider({
 }): JSX.Element {
   const theme = createTheme({
     shape: {
-      borderRadius: 4,
+      borderRadius: 8,
     },
     palette: {
       // palette values for light mode
@@ -75,7 +75,7 @@ export function ColorModeProvider({
         styleOverrides: {
           root: {
             textTransform: 'unset',
-            fontFamily: 'Inter',
+            fontFamily: 'Chivo',
             borderRadius: '24px',
             padding: '10px 30px',
             fontWeight: 600,
@@ -89,7 +89,7 @@ export function ColorModeProvider({
             backgroundColor: 'rgba(77,166,77, 0.1)',
           },
           outlinedWarning: {
-            border: '1px solid rgb(245, 148, 77)',
+            border: '1px solid rgba(255,255,255, .10)',
             backgroundColor: 'rgba(245, 148, 77, 0.1)',
           },
           outlinedPrimary: {
@@ -197,9 +197,8 @@ export function ColorModeProvider({
       },
     },
     typography: {
-      fontFamily: 'Montserrat',
+      fontFamily: 'Chivo',
       button: {
-        fontFamily: 'Inter',
         fontWeight: 400,
         lineHeight: 1.5,
       },
@@ -228,11 +227,11 @@ export function ColorModeProvider({
         color: '#FFFFFF',
       },
       body1: {
-        fontFamily: 'Inter',
+        fontFamily: 'Chivo',
         color: '#FFFFFF',
       },
       body2: {
-        fontFamily: 'Inter',
+        fontFamily: 'Chivo',
         color: '#FFFFFF',
       },
     },

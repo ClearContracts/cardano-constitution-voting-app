@@ -1,11 +1,11 @@
 import Link from 'next/link';
-import LaunchRounded from '@mui/icons-material/LaunchRounded';
 import { Box, useTheme } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 
 import type { User, Workshop } from '@/types';
 import { paths } from '@/paths';
+import { abbreviateName } from '@/lib/helpers/abbreviateName';
 
 interface Props {
   representatives: User[];
@@ -30,9 +30,17 @@ export function RepresentativesTable(props: Props): JSX.Element {
       headerName: 'Name',
       minWidth: 125,
       flex: 1,
+      renderHeader: (): JSX.Element => {
+        return (
+          <Typography variant="h5" fontWeight="600">
+            Workshop
+          </Typography>
+        );
+      },
       renderCell: (params): JSX.Element => {
         return <Typography fontWeight="500">{params.row.name}</Typography>;
       },
+      disableColumnMenu: true,
     },
     {
       field: 'Delegate',
@@ -41,10 +49,19 @@ export function RepresentativesTable(props: Props): JSX.Element {
       flex: 1,
       sortable: false,
       filterable: false,
+      disableColumnMenu: true,
+      renderHeader: (): JSX.Element => {
+        return (
+          <Typography variant="h5" fontWeight="600">
+            Delegate
+          </Typography>
+        );
+      },
       renderCell: (params): JSX.Element => {
         const delegateId = params.row.delegate_id;
         const delegate = representatives.find((rep) => rep.id === delegateId);
         const activeVoterId = params.row.active_voter_id;
+        const name = abbreviateName(delegate?.name || '');
         return (
           <Link
             href={paths.representatives.representative + delegateId}
@@ -75,9 +92,8 @@ export function RepresentativesTable(props: Props): JSX.Element {
               }}
             >
               <Typography color={delegateId === activeVoterId ? 'success' : ''}>
-                {delegate?.name}
+                {name}
               </Typography>
-              <LaunchRounded fontSize="small" />
             </Box>
           </Link>
         );
@@ -90,10 +106,19 @@ export function RepresentativesTable(props: Props): JSX.Element {
       flex: 1,
       sortable: false,
       filterable: false,
+      disableColumnMenu: true,
+      renderHeader: (): JSX.Element => {
+        return (
+          <Typography variant="h5" fontWeight="600">
+            Alternate
+          </Typography>
+        );
+      },
       renderCell: (params): JSX.Element => {
         const alternateId = params.row.alternate_id;
         const alternate = representatives.find((rep) => rep.id === alternateId);
         const activeVoterId = params.row.active_voter_id;
+        const name = abbreviateName(alternate?.name || '');
         return (
           <Link
             href={paths.representatives.representative + alternateId}
@@ -126,9 +151,8 @@ export function RepresentativesTable(props: Props): JSX.Element {
               <Typography
                 color={alternateId === activeVoterId ? 'success' : ''}
               >
-                {alternate?.name}
+                {name}
               </Typography>
-              <LaunchRounded fontSize="small" />
             </Box>
           </Link>
         );
@@ -141,11 +165,20 @@ export function RepresentativesTable(props: Props): JSX.Element {
       flex: 1,
       sortable: false,
       filterable: false,
+      disableColumnMenu: true,
+      renderHeader: (): JSX.Element => {
+        return (
+          <Typography variant="h5" fontWeight="600">
+            Active Voter
+          </Typography>
+        );
+      },
       renderCell: (params): JSX.Element => {
         const activeVoterId = params.row.active_voter_id;
         const activeVoter = representatives.find(
           (rep) => rep.id === activeVoterId,
         );
+        const name = abbreviateName(activeVoter?.name || '');
         return (
           <Link
             href={paths.representatives.representative + activeVoterId}
@@ -175,8 +208,7 @@ export function RepresentativesTable(props: Props): JSX.Element {
                 },
               }}
             >
-              <Typography noWrap>{activeVoter?.name}</Typography>
-              <LaunchRounded fontSize="small" />
+              <Typography noWrap>{name}</Typography>
             </Box>
           </Link>
         );
@@ -192,7 +224,7 @@ export function RepresentativesTable(props: Props): JSX.Element {
         </Typography>
         <Box
           sx={{
-            fontFamily: 'Inter',
+            fontFamily: 'Chivo',
           }}
         >
           <DataGrid
@@ -201,14 +233,7 @@ export function RepresentativesTable(props: Props): JSX.Element {
             )}
             data-testid="representatives-table"
             columns={columns}
-            initialState={{
-              pagination: {
-                paginationModel: {
-                  pageSize: 100,
-                },
-              },
-            }}
-            pageSizeOptions={[25, 50, 100]}
+            hideFooter
             columnVisibilityModel={{
               id: false,
             }}
@@ -223,8 +248,7 @@ export function RepresentativesTable(props: Props): JSX.Element {
                 display: 'none',
               },
               '.MuiDataGrid-columnHeader': {
-                backgroundColor: 'rgba(0, 0, 0, 0.1)',
-                fontFamily: 'Montserrat',
+                fontFamily: 'Chivo',
                 fontSize: '1.2rem',
               },
               '.MuiDataGrid-cell': {
@@ -232,6 +256,8 @@ export function RepresentativesTable(props: Props): JSX.Element {
                 flexDirection: 'column',
                 justifyContent: 'center',
               },
+              border: 'none',
+              borderRadius: `${theme.shape.borderRadius}px`,
             }}
           />
         </Box>

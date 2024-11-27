@@ -9,11 +9,7 @@ export default function Document(): JSX.Element {
         <Head>
           <link
             rel="stylesheet"
-            href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap"
-          />
-          <link
-            rel="stylesheet"
-            href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+            href="https://fonts.googleapis.com/css2?family=Chivo:wght@300;400;500;600;700;800;900&display=swap"
           />
         </Head>
         <body>

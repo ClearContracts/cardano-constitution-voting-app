@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { pollPhases } from '@/constants/pollPhases';
-import LaunchRounded from '@mui/icons-material/LaunchRounded';
+import { ArrowForwardRounded } from '@mui/icons-material';
 import { useTheme } from '@mui/material';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
@@ -54,7 +54,7 @@ export function PollCard(props: Props): JSX.Element {
             mt={2}
           >
             <Typography data-testid={'btn-poll-view-'+poll.id}>View</Typography>
-            <LaunchRounded fontSize="small" />
+            <ArrowForwardRounded fontSize="small" />
           </Box>
         </Box>
       </WidgetContainer>

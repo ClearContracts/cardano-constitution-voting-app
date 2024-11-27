@@ -9,7 +9,6 @@ import {
   LinearProgress,
   linearProgressClasses,
   styled,
-  Tooltip,
   useTheme,
 } from '@mui/material';
 import Box from '@mui/material/Box';
@@ -169,7 +168,12 @@ export function PollResults(props: Props): JSX.Element {
 
   return (
     <Box display="flex" flexDirection="column" gap={6} width="100%">
-      <Box display="flex" flexDirection="row" gap={3} alignItems="center">
+      <Box
+        display="flex"
+        flexDirection="row"
+        alignItems="center"
+        justifyContent={'space-between'}
+      >
         <Typography variant="h3" fontWeight="bold">
           Results
         </Typography>

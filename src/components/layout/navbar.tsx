@@ -1,4 +1,6 @@
+import Image from 'next/image';
 import Link from 'next/link';
+import ccLogo from '@/img/cc-logo.png';
 import { Box, Typography } from '@mui/material';
 
 import { paths } from '@/paths';
@@ -12,7 +14,7 @@ export function Navbar(): JSX.Element {
   return (
     <Box
       sx={{
-        position: 'absolute',
+        position: 'sticky',
         top: 0,
         left: 0,
         width: '100%',
@@ -20,20 +22,66 @@ export function Navbar(): JSX.Element {
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        p: 2,
-        backgroundColor: 'rgba(0, 0, 0, 0.1)',
+        backgroundColor: 'rgb(8, 13, 23)',
+        py: 2,
+        px: {
+          xs: 2,
+          sm: 4,
+          md: 10,
+          lg: 16,
+        },
         height: '75px',
+        zIndex: 100,
       }}
     >
-      <Link
-        href={paths.home}
-        style={{ textDecoration: 'none' }}
-        data-testid="home-link"
-      >
-        <Typography variant="h6" fontWeight="bold">
-          Voting Tool
-        </Typography>
-      </Link>
+      <Box display="flex" flexDirection="row" gap={4} alignItems="center">
+        <Link
+          href={paths.home}
+          style={{ textDecoration: 'none' }}
+          data-testid="home-logo"
+        >
+          <Box
+            display={{
+              xs: 'none',
+              sm: 'flex',
+            }}
+          >
+            <Image
+              src={ccLogo}
+              alt="Constitutional Convention Logo"
+              width={168}
+              height={25}
+            />
+          </Box>
+          <Box
+            display={{
+              xs: 'flex',
+              sm: 'none',
+            }}
+          >
+            <Image
+              src={ccLogo}
+              alt="Constitutional Convention Logo"
+              width={100.8}
+              height={15}
+            />
+          </Box>
+        </Link>
+        <Box display={{ xs: 'none', md: 'flex' }}>
+          <Link
+            href={paths.home}
+            style={{
+              textDecoration: 'none',
+            }}
+            data-testid="home-link"
+          >
+            <Typography variant="h6" fontWeight="bold">
+              Voting Tool
+            </Typography>
+          </Link>
+        </Box>
+      </Box>
+
       <ConnectWalletButton />
     </Box>
   );

@@ -4,6 +4,7 @@ import type { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { pollPhases } from '@/constants/pollPhases';
+import { DeleteRounded } from '@mui/icons-material';
 import LaunchRounded from '@mui/icons-material/LaunchRounded';
 import { Button, CircularProgress, Modal, useTheme } from '@mui/material';
 import Box from '@mui/material/Box';
@@ -64,6 +65,7 @@ export default function ViewPoll(props: Props): JSX.Element {
   const [pollResults, setPollResults] = useState(pollResultsSSR);
   const [isTxUploading, setIsTxUploading] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
 
   useCheckAddressChange();
   const session = useSession();
@@ -133,6 +135,14 @@ export default function ViewPoll(props: Props): JSX.Element {
     setModalOpen(true);
   }
 
+  function handleOpenDeleteModal(): void {
+    setDeleteModalOpen(true);
+  }
+
+  function handleCloseDeleteModal(): void {
+    setDeleteModalOpen(false);
+  }
+
   return (
     <>
       <Head>
@@ -142,10 +152,7 @@ export default function ViewPoll(props: Props): JSX.Element {
           content="Voting app to be used by delegates at the Cardano Constitutional Convention in Buenos Aires to ratify the initial constitution. This voting app was commissioned by Intersect."
         />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link
-          rel="icon"
-          href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🗳️</text></svg>"
-        />
+        <link rel="icon" type="img/png" href="/cardano.png" />
       </Head>
       <main>
         <Box display="flex" flexDirection="column" gap={3}>
@@ -281,7 +288,9 @@ export default function ViewPoll(props: Props): JSX.Element {
                                 setIsTxUploading={updateIsTxUploading}
                               />
                             )}
-                          <DeletePollButton pollId={pollId} />
+                          <Button color="error" onClick={handleOpenDeleteModal}>
+                            <DeleteRounded />
+                          </Button>
                         </Box>
                       </>
                     )}
@@ -323,7 +332,11 @@ export default function ViewPoll(props: Props): JSX.Element {
           </Grid>
           <Box display="flex" flexDirection="column" gap={3} mt={10}>
             {/* Browse Other Polls Carrousel */}
-            <PollCarrousel currentPollId={pollId} polls={polls} />
+            <PollCarrousel
+              currentPollId={pollId}
+              polls={polls}
+              isPollPage={true}
+            />
             <RepresentativesTable
               representatives={representatives}
               workshops={workshops}
@@ -346,7 +359,7 @@ export default function ViewPoll(props: Props): JSX.Element {
                 lg: 'translate(-50%, 0%)',
               },
               width: { xs: '80%', lg: '30%' },
-              maxHeight: { xs: '20%', sm: '20vh' },
+              maxHeight: { xs: '40%', sm: '20vh' },
               overflowY: 'auto',
               border: 'none',
               boxShadow: 24,
@@ -374,6 +387,48 @@ export default function ViewPoll(props: Props): JSX.Element {
                 updatePollResults={updatePollResults}
                 onClick={handleModalClose}
               />
+            </Box>
+          </Box>
+        </Modal>
+        <Modal open={deleteModalOpen} onClose={handleCloseDeleteModal}>
+          <Box
+            display="flex"
+            flexDirection="column"
+            gap={3}
+            alignItems="center"
+            sx={{
+              position: 'absolute',
+              top: '20vh',
+              left: { xs: '10%', lg: '50%' },
+              transform: {
+                xs: 'translate(0%, -25%)',
+                sm: 'translate(0%, 0%)',
+                lg: 'translate(-50%, 0%)',
+              },
+              width: { xs: '80%', lg: '30%' },
+              maxHeight: { xs: '40%', sm: '20vh' },
+              overflowY: 'auto',
+              border: 'none',
+              boxShadow: 24,
+              bgcolor: theme.palette.background.paper,
+              borderRadius: `${theme.shape.borderRadius}px`,
+              color: theme.palette.text.primary,
+              p: { xs: 2, md: 4 },
+              zIndex: 500,
+            }}
+          >
+            <Typography variant="h4" fontWeight="bold">
+              Are you sure you want to delete this Poll?
+            </Typography>
+            <Box
+              display="flex"
+              flexDirection={{ xs: 'column', sm: 'row' }}
+              gap={{ xs: 1, sm: 4 }}
+            >
+              <Button variant="outlined" onClick={handleCloseDeleteModal}>
+                Cancel
+              </Button>
+              <DeletePollButton pollId={pollId} />
             </Box>
           </Box>
         </Modal>

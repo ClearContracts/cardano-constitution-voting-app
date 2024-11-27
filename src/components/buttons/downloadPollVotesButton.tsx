@@ -33,11 +33,12 @@ export function DownloadPollVotesButton(props: Props): JSX.Element {
   return (
     <Button
       type="button"
-      variant="contained"
+      variant="outlined"
+      color="primary"
       onClick={handleClick}
       data-testid="download-poll-votes-btn"
     >
-      Download Votes
+      Download CSV
     </Button>
   );
 }
