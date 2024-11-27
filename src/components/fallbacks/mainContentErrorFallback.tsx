@@ -41,10 +41,20 @@ export function MainContentErrorFallback({
         minHeight="100vh"
         textAlign="center"
       >
-        <Typography sx={{ color: 'white' }} variant="h4">
+        <Typography
+          sx={{ fontSize: '1.5rem', color: '#FFFFFF', fontFamily: 'Chivo' }}
+          variant="h4"
+        >
           Failed to load content. Please return to the home page.
         </Typography>
-        <Button variant="contained" onClick={resetErrorBoundary}>
+        <Button
+          variant="contained"
+          sx={{
+            backgroundColor: 'rgba(192,221,255)',
+            color: 'rgb(0,33,112,1) !important',
+          }}
+          onClick={resetErrorBoundary}
+        >
           Return to home page
         </Button>
       </Box>
