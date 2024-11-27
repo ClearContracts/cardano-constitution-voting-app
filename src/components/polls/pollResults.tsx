@@ -173,17 +173,12 @@ export function PollResults(props: Props): JSX.Element {
           display="flex"
           flexDirection={{ xs: 'column', sm: 'row' }}
           gap={{ xs: 1, sm: 3 }}
-          alignItems={{ xs: 'flex-start', sm: 'flex-end' }}
+          alignItems={{ xs: 'flex-start', sm: 'center' }}
         >
           <Typography variant="h2" fontWeight="bold">
             {percentage}%
           </Typography>
-
-          <Typography
-            sx={{
-              mb: 0.5,
-            }}
-          >
+          <Typography>
             {yesCount} of {activeVoterCount - abstainCount} Non-Abstaining
             Active Voters voted Yes
           </Typography>
