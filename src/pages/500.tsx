@@ -1,7 +1,7 @@
 import { Box, Button } from '@mui/material';
 import Typography from '@mui/material/Typography';
 
-export function Custom500(): JSX.Element {
+export default function Custom500(): JSX.Element {
   return (
     <Box
       display="flex"
