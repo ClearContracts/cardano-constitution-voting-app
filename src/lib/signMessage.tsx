@@ -38,7 +38,9 @@ export async function signMessage(
 
   const challenge = await getChallenge();
 
-  const messageHex = Buffer.from(message).toString('hex');
+  const messageWithChallenge = `${message}, Challenge: ${challenge.challenge}`;
+
+  const messageHex = Buffer.from(messageWithChallenge).toString('hex');
   // @ts-expect-error signData is actually a proper function
   const signature = await wallet.signData(stakeAddressHex, messageHex);
   if (!signature.signature) {
@@ -48,7 +50,7 @@ export async function signMessage(
     return false;
   } else {
     return {
-      signature: { signedMessage: signature, payload: message },
+      signature: { signedMessage: signature, payload: messageWithChallenge },
       challenge: challenge,
     };
   }

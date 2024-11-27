@@ -27,7 +27,8 @@ export async function connectWallet(
     const wallet = await connectWalletClarity(walletName);
     updateWallet(wallet);
     const timestamp = new Date().toLocaleString();
-    const message = `Sign this message to verify wallet ownership.\nTimestamp: ${timestamp}`;
+    const challenge = await getChallenge();
+    const message = `Sign this message to verify wallet ownership.\nTimestamp: ${timestamp}\nChallenge: ${challenge.challenge}`;
     const messageHex = Buffer.from(message).toString('hex');
 
     // @ts-expect-error getNetworkId exists
@@ -45,7 +46,6 @@ export async function connectWallet(
 
     // @ts-expect-error getNetworkId is actually a proper function
     const signature = await wallet.signData(stakeAddressHex, messageHex);
-    const challenge = await getChallenge();
 
     // Sign in is defined here pages/api/auth/[...nextauth].ts
     const signInResponse = await signIn('credentials', {

@@ -61,6 +61,11 @@ export const verifyWallet = async (
     const isVerified = publicKey?.verify(receivedData, signature);
     let payloadAsExpected = utf8Payload == originalPayload;
 
+    // verify challenge is the same that was passed in, challenge is after :
+    const signatureWords = utf8Payload.split(' ');
+    const payloadChallenge = signatureWords[signatureWords.length - 1];
+    const challengeAsExpected = payloadChallenge == challenge;
+
     // Some wallets may hash the payload before signing it (e.g. eternl). Some wallets may not hash the payload before signing it (e.g. Lace).
     // The above check is for the case where the payload is not hashed before signing.
     // If the payload does not match, then we hash the payload and compare the hash.
@@ -85,7 +90,8 @@ export const verifyWallet = async (
       payloadAsExpected = originalPayloadHashHex == decodedPayloadHashHex;
     }
 
-    const isAuthSuccess = isVerified && payloadAsExpected;
+    const isAuthSuccess =
+      isVerified && payloadAsExpected && challengeAsExpected;
 
     return isAuthSuccess === true;
   } catch (err) {
