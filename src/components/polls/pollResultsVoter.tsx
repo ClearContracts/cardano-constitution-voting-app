@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { Box, Tooltip, Typography, useTheme } from '@mui/material';
 
 import { paths } from '@/paths';
+import { getInitials } from '@/lib/getInitials';
 
 interface Props {
   name: string;
@@ -11,6 +12,8 @@ interface Props {
 
 export function PollResultsVoter(props: Props): JSX.Element {
   const { name, id, vote } = props;
+
+  const { firstInitial, lastInitial } = getInitials(name);
 
   const theme = useTheme();
   return (
@@ -56,8 +59,8 @@ export function PollResultsVoter(props: Props): JSX.Element {
             color={vote === 'yes' ? 'success' : vote === 'no' ? 'warning' : ''}
             fontWeight="700"
           >
-            {name.split(' ')[0][0]}
-            {name.split(' ')[1][0]}
+            {firstInitial && firstInitial}
+            {lastInitial && lastInitial}
           </Typography>
         </Tooltip>
       </Link>

@@ -1,13 +1,9 @@
 import type { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
+import Link from 'next/link';
 import { HowToVoteRounded } from '@mui/icons-material';
-import {
-  Box,
-  Chip,
-  CircularProgress,
-  Typography,
-  useTheme,
-} from '@mui/material';
+import { Box, Chip, Typography, useTheme } from '@mui/material';
+import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid2';
 
 import type { Poll, PollVote, User, Workshop } from '@/types';
@@ -23,7 +19,7 @@ import { RepresentativesTable } from '@/components/representatives/representativ
 import { VotingHistoryTable } from '@/components/representatives/votingHistoryTable';
 
 interface Props {
-  user: User;
+  user: User | null;
   userVotes: PollVote[];
   representatives: User[];
   workshops: Workshop[];
@@ -46,6 +42,108 @@ export default function Representative(props: Props): JSX.Element {
   useCheckAddressChange();
   const theme = useTheme();
 
+  let mainContent = (
+    <Box mx="auto">
+      <Typography marginBottom={3} padding={0}>
+        Failed to retrieve user
+      </Typography>
+      <Link href="/">
+        <Button variant="contained">Return to home page</Button>
+      </Link>
+    </Box>
+  );
+  if (user) {
+    mainContent = (
+      <Grid container>
+        <Grid
+          size={{
+            xs: 12,
+            md: 6,
+          }}
+        >
+          <Box display="flex" flexDirection="column" gap={3}>
+            <Typography variant="h3" fontWeight="bold" data-testid="user-name">
+              {user.name}
+            </Typography>
+            <Typography
+              variant="h6"
+              fontWeight="bold"
+              data-testid="user-wallet-address"
+              sx={{
+                wordWrap: 'break-word', // Break long words
+                overflowWrap: 'break-word', // Ensures wrapping works on all browsers
+                whiteSpace: 'normal', // Allows text to wrap
+              }}
+            >
+              {user.wallet_address}
+            </Typography>
+            <Box display="flex" flexDirection="row" gap={1}>
+              <Box sx={{ color: theme.palette.text.disabled }}>
+                {isActiveVoter === true ? (
+                  <Chip
+                    variant="outlined"
+                    color="success"
+                    label="Active Voter"
+                  ></Chip>
+                ) : (
+                  <Chip variant="outlined" label="Not an active voter"></Chip>
+                )}
+              </Box>
+              {user.is_delegate && (
+                <Box>
+                  <Chip
+                    variant="outlined"
+                    color="primary"
+                    label="Delegate"
+                  ></Chip>
+                </Box>
+              )}
+              {user.is_alternate && (
+                <Box sx={{ color: theme.palette.text.disabled }}>
+                  <Chip variant="outlined" label="Alternate"></Chip>
+                </Box>
+              )}
+            </Box>
+            <Box
+              display="flex"
+              flexDirection="row"
+              gap={1}
+              alignItems="center"
+              color={theme.palette.text.primary}
+            >
+              <HowToVoteRounded />
+              <Typography data-testid="user-vote-count">
+                {userVotes.length} vote
+                {userVotes.length === 1 ? '' : 's'} cast
+              </Typography>
+            </Box>
+            <Typography variant="h6" data-testid="workshop-name">
+              {workshopName || 'Failed to retrieve workshop'}
+            </Typography>
+          </Box>
+        </Grid>
+        <Grid
+          size={{
+            xs: 12,
+            md: 6,
+          }}
+          sx={{
+            mt: {
+              xs: 6,
+              md: 0,
+            },
+          }}
+        >
+          <VotingHistoryTable
+            userId={user.id}
+            votes={userVotes}
+            polls={polls}
+          />
+        </Grid>
+      </Grid>
+    );
+  }
+
   return (
     <>
       <Head>
@@ -59,113 +157,7 @@ export default function Representative(props: Props): JSX.Element {
       </Head>
       <main>
         <Box display="flex" flexDirection="column" gap={9}>
-          <Grid container>
-            <Grid
-              size={{
-                xs: 12,
-                md: 6,
-              }}
-            >
-              {user ? (
-                <Box display="flex" flexDirection="column" gap={3}>
-                  <Typography
-                    variant="h3"
-                    fontWeight="bold"
-                    data-testid="user-name"
-                  >
-                    {user.name}
-                  </Typography>
-                  <Typography
-                    variant="h6"
-                    fontWeight="bold"
-                    data-testid="user-wallet-address"
-                    sx={{
-                      wordWrap: 'break-word', // Break long words
-                      overflowWrap: 'break-word', // Ensures wrapping works on all browsers
-                      whiteSpace: 'normal', // Allows text to wrap
-                    }}
-                  >
-                    {user.wallet_address}
-                  </Typography>
-                  <Box display="flex" flexDirection="row" gap={1}>
-                    <Box sx={{ color: theme.palette.text.disabled }}>
-                      {isActiveVoter === true ? (
-                        <Chip
-                          variant="outlined"
-                          color="success"
-                          label="Active Voter"
-                        ></Chip>
-                      ) : (
-                        <Chip
-                          variant="outlined"
-                          label="Not an active voter"
-                        ></Chip>
-                      )}
-                    </Box>
-                    {user.is_delegate && (
-                      <Box>
-                        <Chip
-                          variant="outlined"
-                          color="primary"
-                          label="Delegate"
-                        ></Chip>
-                      </Box>
-                    )}
-                    {user.is_alternate && (
-                      <Box sx={{ color: theme.palette.text.disabled }}>
-                        <Chip variant="outlined" label="Alternate"></Chip>
-                      </Box>
-                    )}
-                  </Box>
-                  <Box
-                    display="flex"
-                    flexDirection="row"
-                    gap={1}
-                    alignItems="center"
-                    color={theme.palette.text.primary}
-                  >
-                    <HowToVoteRounded />
-                    <Typography data-testid="user-vote-count">
-                      {userVotes.length} vote
-                      {userVotes.length === 1 ? '' : 's'} cast
-                    </Typography>
-                  </Box>
-                  <Typography variant="h6" data-testid="workshop-name">
-                    {workshopName || 'Failed to retrieve workshop'}
-                  </Typography>
-                </Box>
-              ) : (
-                <Box
-                  sx={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    width: '100%',
-                  }}
-                >
-                  <CircularProgress />
-                </Box>
-              )}
-            </Grid>
-            <Grid
-              size={{
-                xs: 12,
-                md: 6,
-              }}
-              sx={{
-                mt: {
-                  xs: 6,
-                  md: 0,
-                },
-              }}
-            >
-              <VotingHistoryTable
-                userId={user.id}
-                votes={userVotes}
-                polls={polls}
-              />
-            </Grid>
-          </Grid>
+          {mainContent}
 
           <PollCarrousel currentPollId={undefined} polls={polls} />
           <RepresentativesTable
@@ -195,7 +187,12 @@ export const getServerSideProps = async (
     isActiveVoter: boolean;
   };
 }> => {
-  if (!context.params) {
+  if (
+    !context.params ||
+    !context.params.userId ||
+    context.params.userId === 'null' ||
+    !Number(context.params.userId)
+  ) {
     return {
       props: {
         user: null,
