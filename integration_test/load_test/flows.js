@@ -18,9 +18,10 @@ async function visitPollFlow(page) {
   await page.waitForLoadState('networkidle');
 
   // List all cards with the data-testid attribute 'poll-card-xxx'
-  const pollCards = await page.$$('[data-testid^="poll-card-"]');  // Select all elements starting with 'poll-card-'
+  const pollCards = await page.locator('[data-testid^="poll-card-"]').all()  // Select all elements starting with 'poll-card-'
 
-  if (pollCards.length === 0) {
+
+  if (pollCards.length <= 0) {
     console.log("No poll cards found!");
     return;
   }
