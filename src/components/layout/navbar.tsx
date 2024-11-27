@@ -14,7 +14,7 @@ export function Navbar(): JSX.Element {
   return (
     <Box
       sx={{
-        position: 'absolute',
+        position: 'sticky',
         top: 0,
         left: 0,
         width: '100%',
@@ -22,6 +22,7 @@ export function Navbar(): JSX.Element {
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
+        backgroundColor: 'rgb(8, 13, 23)',
         py: 2,
         px: {
           xs: 2,
@@ -29,8 +30,8 @@ export function Navbar(): JSX.Element {
           md: 10,
           lg: 16,
         },
-        backgroundColor: 'rgba(0, 0, 0, 0.1)',
         height: '75px',
+        zIndex: 100,
       }}
     >
       <Box display="flex" flexDirection="row" gap={4} alignItems="center">
