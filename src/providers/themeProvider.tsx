@@ -17,7 +17,7 @@ export function ColorModeProvider({
 }): JSX.Element {
   const theme = createTheme({
     shape: {
-      borderRadius: 8,
+      borderRadius: 4,
     },
     palette: {
       // palette values for light mode
