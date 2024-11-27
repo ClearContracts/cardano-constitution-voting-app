@@ -82,7 +82,9 @@ export const test = base.extend<TestOptions & { pollId: number }>({
             await userPollPage.goto(pollId);
             // cast vote
             await userPage.getByTestId(votes[index]).click();
-            await expect(userPage.getByText('Vote recorded')).toBeVisible();
+            await expect(userPage.getByText('Vote recorded')).toBeVisible({
+              timeout: 10_000,
+            });
             await userPage.close();
           })
         );

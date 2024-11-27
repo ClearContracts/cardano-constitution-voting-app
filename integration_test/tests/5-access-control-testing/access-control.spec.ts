@@ -84,7 +84,7 @@ test.describe('Access Control Test', () => {
       await homePage.deleteOpenPollCards();
     });
 
-    test('Creating New Poll', async ({ browser }) => {
+    test('5-1A. Only CO can create a new poll', async ({ browser }) => {
       const userPages = await getUserPages(browser);
 
       // Fetch Organizer page only
@@ -103,7 +103,7 @@ test.describe('Access Control Test', () => {
       );
     });
 
-    test('Delete Open Poll', async ({ browser }) => {
+    test('5-1B. Only CO can Open Poll', async ({ browser }) => {
       const userPages = await getUserPages(browser);
 
       // Get organizer and create a new poll
@@ -128,7 +128,7 @@ test.describe('Access Control Test', () => {
   });
 
   test.describe('User Management', () => {
-    test('Update User Profile', async ({ browser }) => {
+    test('5-2A. Only CO can update User Profile', async ({ browser }) => {
       const userPages = await getUserPages(browser);
 
       // Fetch Organizer page only
@@ -147,7 +147,7 @@ test.describe('Access Control Test', () => {
       );
     });
 
-    test('Update Active Voter', async ({ browser }) => {
+    test('5-2B. Only CO can update Active Voter', async ({ browser }) => {
       const userPages = await getUserPages(browser);
 
       // Fetch Organizer page only

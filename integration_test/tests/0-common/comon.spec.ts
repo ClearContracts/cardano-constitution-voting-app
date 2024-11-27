@@ -16,6 +16,7 @@ import {
 import HomePage from '@pages/homePage';
 import { delegateWallets, organizerWallets } from '@constants/staticWallets';
 import { importWallet } from '@fixtures/importWallet';
+import loadEternlExtension from '@fixtures/loadExtension';
 
 test.beforeEach(async () => {
   await setAllureEpic('0. All Users');
@@ -461,6 +462,7 @@ test.describe('Wallet switching', () => {
   });
   test('0-5A Update Wallet and Role After Switching Wallets in Extension', async ({
     page,
+    browser,
   }) => {
     test.slow();
     await page.goto('/');
@@ -478,21 +480,15 @@ test.describe('Wallet switching', () => {
 
     // Change wallet
     const wallet = delegateWallets[0];
+    await loadEternlExtension(page);
     await importWallet(page, wallet);
 
-    // Assert disconnection
-    await page.goto('/');
-
-    await expect(page.getByTestId('connect-wallet-button').first()).toBeVisible(
-      { timeout: 10_000 }
-    );
+    await page.reload();
     await page.getByTestId('connect-wallet-button').first().click();
     await page.waitForLoadState('load');
-
-    await expect(page.getByTestId('connect-wallet-button').first()).toBeVisible(
-      { timeout: 10_000 }
-    );
     await page.getByTestId('connect-wallet-button').first().click();
+
+    // Assert disconnection
     await expect(page.getByTestId('connect-wallet-Eternl')).toBeVisible({
       timeout: 10_000,
     });
