@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { Box, Button } from '@mui/material';
 import Typography from '@mui/material/Typography';
 
@@ -14,7 +15,9 @@ export default function Custom500(): JSX.Element {
       <Typography sx={{ color: 'white' }} variant="h4">
         500 - Server-side error occurred
       </Typography>
-      <Button variant="contained">Return to home page</Button>
+      <Link href="/">
+        <Button variant="contained">Return to home page</Button>
+      </Link>
     </Box>
   );
 }
