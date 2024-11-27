@@ -65,7 +65,13 @@ export function PollList(props: Props): JSX.Element {
             wallet:
           </Typography>
         )}
-        <Grid container spacing={2}>
+        <Grid
+          container
+          spacing={4}
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+        >
           {pollCards}
         </Grid>
       </Box>

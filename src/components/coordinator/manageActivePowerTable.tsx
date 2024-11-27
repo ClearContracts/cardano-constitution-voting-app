@@ -296,7 +296,7 @@ export function ManageActivePowerTable(props: Props): JSX.Element {
       </Typography>
       <Box
         sx={{
-          fontFamily: 'Inter',
+          fontFamily: 'Chivo',
         }}
       >
         <DataGrid
@@ -307,6 +307,7 @@ export function ManageActivePowerTable(props: Props): JSX.Element {
           onRowModesModelChange={handleRowModesModelChange}
           onRowEditStop={handleRowEditStop}
           processRowUpdate={processRowUpdate}
+          hideFooter
           slots={{ toolbar: GridToolbar }}
           slotProps={{
             toolbar: {
@@ -320,7 +321,7 @@ export function ManageActivePowerTable(props: Props): JSX.Element {
             },
             '.MuiDataGrid-columnHeader': {
               backgroundColor: 'rgba(0, 0, 0, 0.1)',
-              fontFamily: 'Montserrat',
+              fontFamily: 'Chivo',
               fontSize: '1.2rem',
             },
           }}

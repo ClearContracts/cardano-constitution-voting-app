@@ -10,6 +10,7 @@ import { PollCard } from '@/components/polls/pollCard';
 interface Props {
   currentPollId: string | string[] | undefined;
   polls: Poll[];
+  isPollPage?: boolean;
 }
 
 /**
@@ -19,7 +20,7 @@ interface Props {
  * @returns Poll List
  */
 export function PollCarrousel(props: Props): JSX.Element {
-  const { currentPollId, polls } = props;
+  const { currentPollId, polls, isPollPage } = props;
 
   let pollsToDisplay = useMemo(() => [...polls], [polls]);
 
@@ -63,8 +64,15 @@ export function PollCarrousel(props: Props): JSX.Element {
           }}
           flexDirection="column"
           width="100%"
+          justifyContent="center"
         >
-          <Grid container spacing={3}>
+          <Grid
+            container
+            spacing={4}
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+          >
             {pollsToDisplay.map((poll) => {
               return (
                 <Grid
@@ -94,7 +102,7 @@ export function PollCarrousel(props: Props): JSX.Element {
         alignItems="center"
       >
         <Typography textAlign="center" variant="h6" fontWeight="600">
-          Browse other polls
+          Browse {isPollPage ? 'other ' : ''}polls
         </Typography>
         {pollCards}
       </Box>

@@ -89,26 +89,27 @@ export function VotingHistoryTable(props: Props): JSX.Element {
     return (
       <Box display="flex" flexDirection="column" gap={1}>
         <Box display="flex" alignItems="center" justifyContent="space-between">
-          <Typography variant="h5" fontWeight="600">
-            Voting History
+          <Typography variant="h3" fontWeight="600">
+            History
           </Typography>
           <DownloadUserVotesButton userId={userId} />
         </Box>
         <Box
           sx={{
-            fontFamily: 'Inter',
+            fontFamily: 'Chivo',
           }}
         >
           <DataGrid
             rows={polls}
             columns={columns}
+            hideFooter
             sx={{
               '.MuiDataGrid-columnSeparator': {
                 display: 'none',
               },
               '.MuiDataGrid-columnHeader': {
                 backgroundColor: 'rgba(0, 0, 0, 0.1)',
-                fontFamily: 'Montserrat',
+                fontFamily: 'Chivo',
                 fontSize: '1.2rem',
               },
             }}

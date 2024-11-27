@@ -10,10 +10,7 @@ export default function Custom404(): JSX.Element {
         <title>Constitutional Convention Voting App</title>
         <meta name="404" content="404 error page for Clarity" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link
-          rel="icon"
-          href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🗳️</text></svg>"
-        />
+        <link rel="icon" type="img/png" href="/cardano.png" />
       </Head>
       <Box
         display="flex"

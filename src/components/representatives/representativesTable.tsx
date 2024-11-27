@@ -1,11 +1,11 @@
 import Link from 'next/link';
-import LaunchRounded from '@mui/icons-material/LaunchRounded';
 import { Box, useTheme } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 
 import type { User, Workshop } from '@/types';
 import { paths } from '@/paths';
+import { abbreviateName } from '@/lib/helpers/abbreviateName';
 
 interface Props {
   representatives: User[];
@@ -45,6 +45,7 @@ export function RepresentativesTable(props: Props): JSX.Element {
         const delegateId = params.row.delegate_id;
         const delegate = representatives.find((rep) => rep.id === delegateId);
         const activeVoterId = params.row.active_voter_id;
+        const name = abbreviateName(delegate?.name || '');
         return (
           <Link
             href={paths.representatives.representative + delegateId}
@@ -75,9 +76,8 @@ export function RepresentativesTable(props: Props): JSX.Element {
               }}
             >
               <Typography color={delegateId === activeVoterId ? 'success' : ''}>
-                {delegate?.name}
+                {name}
               </Typography>
-              <LaunchRounded fontSize="small" />
             </Box>
           </Link>
         );
@@ -94,6 +94,7 @@ export function RepresentativesTable(props: Props): JSX.Element {
         const alternateId = params.row.alternate_id;
         const alternate = representatives.find((rep) => rep.id === alternateId);
         const activeVoterId = params.row.active_voter_id;
+        const name = abbreviateName(alternate?.name || '');
         return (
           <Link
             href={paths.representatives.representative + alternateId}
@@ -126,9 +127,8 @@ export function RepresentativesTable(props: Props): JSX.Element {
               <Typography
                 color={alternateId === activeVoterId ? 'success' : ''}
               >
-                {alternate?.name}
+                {name}
               </Typography>
-              <LaunchRounded fontSize="small" />
             </Box>
           </Link>
         );
@@ -146,6 +146,7 @@ export function RepresentativesTable(props: Props): JSX.Element {
         const activeVoter = representatives.find(
           (rep) => rep.id === activeVoterId,
         );
+        const name = abbreviateName(activeVoter?.name || '');
         return (
           <Link
             href={paths.representatives.representative + activeVoterId}
@@ -175,8 +176,7 @@ export function RepresentativesTable(props: Props): JSX.Element {
                 },
               }}
             >
-              <Typography noWrap>{activeVoter?.name}</Typography>
-              <LaunchRounded fontSize="small" />
+              <Typography noWrap>{name}</Typography>
             </Box>
           </Link>
         );
@@ -192,7 +192,7 @@ export function RepresentativesTable(props: Props): JSX.Element {
         </Typography>
         <Box
           sx={{
-            fontFamily: 'Inter',
+            fontFamily: 'Chivo',
           }}
         >
           <DataGrid
@@ -200,14 +200,7 @@ export function RepresentativesTable(props: Props): JSX.Element {
               (workshop) => workshop.name !== 'Convention Organizer',
             )}
             columns={columns}
-            initialState={{
-              pagination: {
-                paginationModel: {
-                  pageSize: 100,
-                },
-              },
-            }}
-            pageSizeOptions={[25, 50, 100]}
+            hideFooter
             columnVisibilityModel={{
               id: false,
             }}
@@ -223,7 +216,7 @@ export function RepresentativesTable(props: Props): JSX.Element {
               },
               '.MuiDataGrid-columnHeader': {
                 backgroundColor: 'rgba(0, 0, 0, 0.1)',
-                fontFamily: 'Montserrat',
+                fontFamily: 'Chivo',
                 fontSize: '1.2rem',
               },
               '.MuiDataGrid-cell': {
