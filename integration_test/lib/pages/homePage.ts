@@ -2,6 +2,7 @@ import { expect, Locator, Page } from '@playwright/test';
 import { faker } from '@faker-js/faker';
 import { extractPollIdFromUrl } from '@helpers/string';
 import { blake } from 'libcardano';
+import PollPage from './pollPage';
 
 export default class HomePage {
   readonly heading = this.page.getByText(
@@ -75,7 +76,8 @@ export default class HomePage {
     const openPollCard = await this.getOpenPollCard();
     if (openPollCard) {
       await openPollCard.click();
-      await this.page.getByTestId('delete-poll-button').click();
+      const pollPage=new PollPage(this.page)
+      await pollPage.deletePoll()
       return true;
     }
     return false;
