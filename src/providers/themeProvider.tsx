@@ -28,7 +28,7 @@ export function ColorModeProvider({
         main: 'rgba(192,221,255)',
       },
       success: {
-        main: 'rgb(77,166,77)',
+        main: 'rgb(34,225,34)',
       },
       error: {
         main: '#FF4F6E',
@@ -85,8 +85,8 @@ export function ColorModeProvider({
             color: 'rgb(0,33,112,1) !important',
           },
           outlinedSuccess: {
-            border: '1px solid rgba(77,166,77, 1)',
-            backgroundColor: 'rgba(77,166,77, 0.1)',
+            border: '1px solid rgb(34,225,34)',
+            backgroundColor: 'rgba(34,225,34, 0.1)',
           },
           outlinedWarning: {
             border: '1px solid rgba(255,255,255, .10)',
@@ -107,8 +107,8 @@ export function ColorModeProvider({
             color: '#FFFFFF',
           },
           colorSuccess: {
-            border: '1px solid rgba(77,166,77, 1)',
-            backgroundColor: 'rgba(77,166,77, 0.25)',
+            border: '1px solid rgb(34,225,34)',
+            backgroundColor: 'rgba(34,225,34, 0.25)',
             color: '#FFFFFF',
           },
           colorPrimary: {
