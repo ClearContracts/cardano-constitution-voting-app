@@ -1,8 +1,21 @@
-export default function Custom500() {
+import { Box, Button } from '@mui/material';
+import Typography from '@mui/material/Typography';
+
+export function Custom500(): JSX.Element {
   return (
-    <div style={{ textAlign: 'center', padding: '50px' }}>
-      <h1>500 - Server-side error occurred</h1>
-      <p>We’re sorry, but something went wrong. Please try again later.</p>
-    </div>
+    <Box
+      display="flex"
+      flexDirection="column"
+      gap={2}
+      alignItems="center"
+      justifyContent="center"
+      minHeight="100vh"
+      textAlign="center"
+    >
+      <Typography sx={{ color: 'white' }} variant="h4">
+        500 - Server-side error occurred
+      </Typography>
+      <Button variant="contained">Return to home page</Button>
+    </Box>
   );
 }
