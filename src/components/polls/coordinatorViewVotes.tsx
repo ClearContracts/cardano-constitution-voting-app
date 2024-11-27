@@ -123,6 +123,7 @@ export function CoordinatorViewVotes(props: Props): JSX.Element {
         <DataGrid
           autoHeight={true} // deprecated but prevents size jumping
           rows={rows}
+          hideFooter
           columns={columns}
           getRowId={(row) => row.id}
           sx={{
@@ -131,7 +132,7 @@ export function CoordinatorViewVotes(props: Props): JSX.Element {
             },
             '.MuiDataGrid-columnHeader': {
               backgroundColor: 'rgba(0, 0, 0, 0.1)',
-              fontFamily: 'Montserrat',
+              fontFamily: 'Chivo',
               fontSize: '1.2rem',
             },
           }}

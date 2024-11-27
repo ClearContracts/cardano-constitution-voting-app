@@ -4,19 +4,16 @@ import type { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { pollPhases } from '@/constants/pollPhases';
-import { authOptions } from '@/pages/api/auth/[...nextauth]';
 import LaunchRounded from '@mui/icons-material/LaunchRounded';
 import { Button, CircularProgress, Modal, useTheme } from '@mui/material';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid2';
 import Typography from '@mui/material/Typography';
 import { useQuery } from '@tanstack/react-query';
-import { getServerSession } from 'next-auth';
 import { useSession } from 'next-auth/react';
 import toast from 'react-hot-toast';
 
 import type { Poll, User, Workshop } from '@/types';
-import { activeVoterDto } from '@/data/activeVoterDto';
 import { pollDto } from '@/data/pollDto';
 import { pollResultsDto } from '@/data/pollResultsDto';
 import { pollsDto } from '@/data/pollsDto';
@@ -58,17 +55,10 @@ interface Props {
     }[];
   };
   polls: Poll[];
-  workshopActiveVoterId: string;
 }
 
 export default function ViewPoll(props: Props): JSX.Element {
-  const {
-    representatives,
-    workshops,
-    pollResultsSSR,
-    polls,
-    workshopActiveVoterId,
-  } = props;
+  const { representatives, workshops, pollResultsSSR, polls } = props;
   let { poll } = props;
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [pollResults, setPollResults] = useState(pollResultsSSR);
@@ -152,10 +142,7 @@ export default function ViewPoll(props: Props): JSX.Element {
           content="Voting app to be used by delegates at the Cardano Constitutional Convention in Buenos Aires to ratify the initial constitution. This voting app was commissioned by Intersect."
         />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link
-          rel="icon"
-          href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🗳️</text></svg>"
-        />
+        <link rel="icon" type="img/png" href="/cardano.png" />
       </Head>
       <main>
         <Box display="flex" flexDirection="column" gap={3}>
@@ -185,15 +172,33 @@ export default function ViewPoll(props: Props): JSX.Element {
           <PollVoteCount pollId={poll?.id || ''} />
           <Grid container data-testid="poll-transactions">
             {poll ? (
-              <Grid size={{ xs: 12, lg: 6 }}>
-                <Button
-                  variant="outlined"
-                  href={poll.link}
-                  target="_blank"
-                  startIcon={<LaunchRounded />}
+              <Grid
+                size={{ xs: 12, lg: 6 }}
+                display="flex"
+                flexDirection="column"
+                gap={3}
+              >
+                <Box>
+                  <Button
+                    variant="outlined"
+                    href={poll.link}
+                    target="_blank"
+                    startIcon={<LaunchRounded />}
+                  >
+                    <Typography>View Constitution Text</Typography>
+                  </Button>
+                </Box>
+
+                <Typography
+                  sx={{
+                    wordWrap: 'break-word', // Break long words
+                    overflowWrap: 'break-word', // Ensures wrapping works on all browsers
+                    whiteSpace: 'normal', // Allows text to wrap
+                  }}
                 >
-                  <Typography>View Constitution Text</Typography>
-                </Button>
+                  The linked text document has the Blake2b-256 hash of:{' '}
+                  {poll.hashedText}
+                </Typography>
                 {poll.summary_tx_id && !isTxUploading && (
                   <Box marginTop={3} marginBottom={3}>
                     <ViewTxButton txId={poll.summary_tx_id} />
@@ -289,9 +294,6 @@ export default function ViewPoll(props: Props): JSX.Element {
                       <VoteOnPollButtons
                         pollName={poll.name}
                         pollId={poll.id}
-                        isActiveVoter={
-                          workshopActiveVoterId === session.data?.user.id
-                        }
                         hashedText={poll.hashedText}
                         link={poll.link}
                       />
@@ -308,7 +310,11 @@ export default function ViewPoll(props: Props): JSX.Element {
           </Grid>
           <Box display="flex" flexDirection="column" gap={3} mt={10}>
             {/* Browse Other Polls Carrousel */}
-            <PollCarrousel currentPollId={pollId} polls={polls} />
+            <PollCarrousel
+              currentPollId={pollId}
+              polls={polls}
+              isPollPage={true}
+            />
             <RepresentativesTable
               representatives={representatives}
               workshops={workshops}
@@ -384,7 +390,6 @@ export const getServerSideProps = async (
       }[];
     };
     polls: Poll[];
-    workshopActiveVoterId: string;
   };
 }> => {
   if (!context.params) {
@@ -395,22 +400,11 @@ export const getServerSideProps = async (
         workshops: [],
         pollResultsSSR: {},
         polls: [],
-        workshopActiveVoterId: '',
       },
     };
   }
 
   const { pollId } = context.params;
-
-  const session = await getServerSession(context.req, context.res, authOptions);
-
-  let workshopActiveVoterId = '';
-  if (session) {
-    const activeVoterId = await activeVoterDto(session.user.id);
-    if (activeVoterId) {
-      workshopActiveVoterId = activeVoterId;
-    }
-  }
 
   const poll = await pollDto(pollId);
   const representatives = await representativesDto();
@@ -425,7 +419,6 @@ export const getServerSideProps = async (
       workshops: workshops,
       pollResultsSSR: pollResultsSSR,
       polls: polls,
-      workshopActiveVoterId: workshopActiveVoterId,
     },
   };
 };

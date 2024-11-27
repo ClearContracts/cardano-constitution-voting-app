@@ -51,6 +51,7 @@ export const authOptions: NextAuthOptions = {
             isCoordinator: user.is_convention_organizer,
             isDelegate: user.is_delegate,
             isAlternate: user.is_alternate,
+            name: user.name,
           };
         } else {
           return null;
@@ -65,6 +66,7 @@ export const authOptions: NextAuthOptions = {
     async jwt({ token, user }) {
       if (user) {
         token.stakeAddress = user.stakeAddress;
+        token.name = user.name;
         token.walletName = user.walletName;
         token.isCoordinator = user.isCoordinator;
         token.isDelegate = user.isDelegate;
@@ -75,6 +77,9 @@ export const authOptions: NextAuthOptions = {
     async session({ session, token }) {
       if (typeof token.walletName === 'string')
         session.user.walletName = token.walletName;
+      if (typeof token.name === 'string') {
+        session.user.name = token.name;
+      }
       if (typeof token.isCoordinator === 'boolean')
         session.user.isCoordinator = token.isCoordinator;
       if (typeof token.isDelegate === 'boolean')

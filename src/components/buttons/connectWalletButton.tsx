@@ -17,11 +17,16 @@ import { paths } from '@/paths';
 import { connectWallet } from '@/lib/connectWallet';
 import { getUser } from '@/lib/helpers/getUser';
 
+interface Props {
+  isHomepage?: boolean;
+}
+
 /**
  * A button to connect a wallet to a variety of cip-30 compatible wallets
  * @returns Connect Wallet Button
  */
-export function ConnectWalletButton(): JSX.Element {
+export function ConnectWalletButton(props: Props): JSX.Element {
+  const { isHomepage } = props;
   const [open, setOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [connecting, setConnecting] = useState(false);
@@ -189,8 +194,24 @@ export function ConnectWalletButton(): JSX.Element {
         </Typography>
       )}
       <Button
-        variant={session.status === 'authenticated' ? 'outlined' : 'contained'}
-        color={session.status === 'authenticated' ? 'success' : 'secondary'}
+        variant={isHomepage ? 'contained' : 'outlined'}
+        color={
+          isHomepage
+            ? 'secondary'
+            : session.status === 'authenticated'
+              ? 'success'
+              : 'warning'
+        }
+        sx={{
+          px: isHomepage
+            ? {
+                xs: 12,
+                sm: 16,
+              }
+            : 2,
+          py: isHomepage ? 2 : 1,
+          borderRadius: '40px',
+        }}
         disabled={connecting}
         id="connect-wallet"
         aria-controls={open ? 'basic-menu' : undefined}
@@ -198,7 +219,9 @@ export function ConnectWalletButton(): JSX.Element {
         aria-expanded={open ? 'true' : undefined}
         onClick={handleClick}
         endIcon={
-          session.status === 'authenticated' ? (
+          isHomepage ? (
+            <></>
+          ) : session.status === 'authenticated' ? (
             <Box
               sx={{
                 fontSize: '0.85rem !important',
@@ -209,39 +232,64 @@ export function ConnectWalletButton(): JSX.Element {
               <CircleRounded fontSize="inherit" />
             </Box>
           ) : (
-            <></>
+            <Box
+              sx={{
+                fontSize: '0.85rem !important',
+              }}
+              justifyContent="center"
+              display="flex"
+            >
+              <CircleRounded fontSize="inherit" />
+            </Box>
           )
         }
         data-testid="connect-wallet-button"
       >
         <Typography
+          noWrap
           sx={{
             maxWidth: '150px',
-            textWrap: 'nowrap',
-            textOverflow: 'ellipsis',
+            minWidth: '70px',
             overflow: 'hidden',
-            color:
-              session.status === 'authenticated'
-                ? theme.palette.success.main
-                : theme.palette.text.secondary,
+            fontWeight: 500,
+            color: isHomepage
+              ? theme.palette.secondary.contrastText
+              : theme.palette.success.contrastText,
           }}
         >
           {session.status === 'authenticated'
-            ? session.data.user.stakeAddress
-            : 'Connect Wallet'}
+            ? session.data.user.name
+            : isHomepage
+              ? 'Connect a wallet'
+              : '-'}
         </Typography>
       </Button>
-      {session.status === 'authenticated' && (
+      {isHomepage ? (
+        <></>
+      ) : session.status === 'authenticated' ? (
         <Typography
           color="success"
           fontWeight="500"
           display={{
             xs: 'none',
+            md: 'flex',
           }}
         >
           Wallet connected
         </Typography>
+      ) : (
+        <Typography
+          color="warning"
+          fontWeight="500"
+          display={{
+            xs: 'none',
+            md: 'flex',
+          }}
+        >
+          Wallet not connected
+        </Typography>
       )}
+
       {wallets}
     </Box>
   );

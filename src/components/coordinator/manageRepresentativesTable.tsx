@@ -22,11 +22,17 @@ import { User } from '@/types';
 import { getRepresentatives } from '@/lib/helpers/getRepresentatives';
 import { updateUser } from '@/lib/helpers/updateUser';
 
+interface Props {
+  toggleRefresh: () => void;
+}
+
 /**
  * Table for admin to manage representative information
+ * @param toggleRefresh - function to toggle the refresh boolean
  * @returns Admin Manage Representatives Table
  */
-export function ManageRepresentativesTable(): JSX.Element {
+export function ManageRepresentativesTable(props: Props): JSX.Element {
+  const { toggleRefresh } = props;
   const [representatives, setRepresentatives] = useState<User[]>([]);
   const [rowModesModel, setRowModesModel] = useState<GridRowModesModel>({});
   const [reload, setReload] = useState(false);
@@ -64,6 +70,7 @@ export function ManageRepresentativesTable(): JSX.Element {
       toast.error(data.message);
     }
     setReload(!reload);
+    toggleRefresh();
     return newRow;
   }
 
@@ -186,13 +193,14 @@ export function ManageRepresentativesTable(): JSX.Element {
       </Typography>
       <Box
         sx={{
-          fontFamily: 'Inter',
+          fontFamily: 'Chivo',
         }}
       >
         <DataGrid
           rows={representatives}
           columns={columns}
           editMode="row"
+          hideFooter
           rowModesModel={rowModesModel}
           onRowModesModelChange={handleRowModesModelChange}
           onRowEditStop={handleRowEditStop}
@@ -210,7 +218,7 @@ export function ManageRepresentativesTable(): JSX.Element {
             },
             '.MuiDataGrid-columnHeader': {
               backgroundColor: 'rgba(0, 0, 0, 0.1)',
-              fontFamily: 'Montserrat',
+              fontFamily: 'Chivo',
               fontSize: '1.2rem',
             },
           }}

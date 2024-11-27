@@ -55,10 +55,7 @@ export default function Representative(props: Props): JSX.Element {
           content="Voting app to be used by delegates at the Cardano Constitutional Convention in Buenos Aires to ratify the initial constitution. This voting app was commissioned by Intersect."
         />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link
-          rel="icon"
-          href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🗳️</text></svg>"
-        />
+        <link rel="icon" type="img/png" href="/cardano.png" />
       </Head>
       <main>
         <Box display="flex" flexDirection="column" gap={9}>
@@ -128,20 +125,12 @@ export default function Representative(props: Props): JSX.Element {
                     color={theme.palette.text.primary}
                   >
                     <HowToVoteRounded />
-                    <Typography
-                      variant="h5"
-                      fontWeight="500"
-                      data-testid="user-vote-count"
-                    >
+                    <Typography data-testid="user-vote-count">
                       {userVotes.length} vote
-                      {userVotes.length === 1 ? '' : 's'}
+                      {userVotes.length === 1 ? '' : 's'} cast
                     </Typography>
                   </Box>
-                  <Typography
-                    variant="h5"
-                    fontWeight="500"
-                    data-testid="workshop-name"
-                  >
+                  <Typography variant="h6" data-testid="workshop-name">
                     {workshopName || 'Failed to retrieve workshop'}
                   </Typography>
                 </Box>
@@ -162,6 +151,12 @@ export default function Representative(props: Props): JSX.Element {
               size={{
                 xs: 12,
                 md: 6,
+              }}
+              sx={{
+                mt: {
+                  xs: 6,
+                  md: 0,
+                },
               }}
             >
               <VotingHistoryTable

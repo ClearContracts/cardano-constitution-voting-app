@@ -7,6 +7,7 @@ import { getServerSession } from 'next-auth';
 
 import { checkIfCO } from '@/lib/checkIfCO';
 import { checkIfVoting } from '@/lib/checkIfVoting';
+import { getStringBytes } from '@/lib/getStringBytes';
 
 type Data = {
   userId: string;
@@ -66,10 +67,10 @@ export default async function updateUser(
         message: 'Name must be provided.',
       });
     }
-    if (name.length > 100) {
+    if (getStringBytes(name) > 64) {
       return res.status(400).json({
         userId: BigInt(-1).toString(),
-        message: 'Name must be less than 100 characters.',
+        message: 'Name must be less than 64 characters.',
       });
     }
     // validate email
@@ -106,7 +107,7 @@ export default async function updateUser(
       data: {
         name: name,
         email: email,
-        wallet_address: wallet_address,
+        wallet_address: wallet_address.trim(),
       },
     });
     return res.status(200).json({
