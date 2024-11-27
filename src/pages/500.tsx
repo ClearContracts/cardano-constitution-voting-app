@@ -9,7 +9,6 @@ export default function Custom500(): JSX.Element {
       gap={2}
       alignItems="center"
       justifyContent="center"
-      minHeight="100vh"
       textAlign="center"
     >
       <Typography sx={{ color: 'white' }} variant="h4">
