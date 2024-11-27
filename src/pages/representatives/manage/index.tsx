@@ -1,3 +1,4 @@
+import { useCallback, useState } from 'react';
 import type { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
 import { authOptions } from '@/pages/api/auth/[...nextauth]';
@@ -12,6 +13,11 @@ import { ManageRepresentativesTable } from '@/components/coordinator/manageRepre
 
 export default function ManageRepresentatives(): JSX.Element {
   useCheckAddressChange();
+  const [refresh, setRefresh] = useState(false);
+
+  const toggleRefresh = useCallback((): void => {
+    setRefresh((prev) => !prev);
+  }, []);
 
   return (
     <>
@@ -22,17 +28,18 @@ export default function ManageRepresentatives(): JSX.Element {
           content="Voting app to be used by delegates at the Cardano Constitutional Convention in Buenos Aires to ratify the initial constitution. This voting app was commissioned by Intersect."
         />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" type="img/png" href="/cardano.png" />
       </Head>
       <main>
         <Box display="flex" flexDirection="column" gap={6}>
           <Typography variant="h3" fontWeight="bold">
             Coordinator Dashboard
           </Typography>
-
-          <ManageRepresentativesTable />
-
-          <ManageActivePowerTable />
+          <ManageRepresentativesTable toggleRefresh={toggleRefresh} />
+          <ManageActivePowerTable
+            refresh={refresh}
+            toggleRefresh={toggleRefresh}
+          />
         </Box>
       </main>
     </>

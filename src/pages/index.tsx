@@ -34,13 +34,10 @@ export default function Home(props: Props): JSX.Element {
           content="Voting app to be used by delegates at the Cardano Constitutional Convention in Buenos Aires to ratify the initial constitution. This voting app was commissioned by Intersect."
         />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link
-          rel="icon"
-          href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🗳️</text></svg>"
-        />
+        <link rel="icon" type="img/png" href="/cardano.png" />
       </Head>
       <main>
-        <Box display="flex" flexDirection="column" gap={4} alignItems="center">
+        <Box display="flex" flexDirection="column" gap={12} alignItems="center">
           <Box
             display="flex"
             flexDirection="column"
@@ -62,23 +59,25 @@ export default function Home(props: Props): JSX.Element {
                 </Link>
               </Box>
             )}
-            <Typography variant="h3" fontWeight="bold" textAlign="center">
+            <Typography variant="h2" fontWeight="bold" textAlign="center">
               Welcome to the Constitutional Convention Voting Tool
             </Typography>
             <Box
               display={session.status == 'authenticated' ? 'none' : 'flex'}
               flexDirection="column"
-              gap={1}
+              gap={0}
               alignItems="center"
             >
               <Typography variant="h5" fontWeight="500" textAlign="center">
                 Are you a delegate?
               </Typography>
-              <Typography variant="h6" textAlign="center">
+              <Typography textAlign="center">
                 Connect a wallet to cast your vote:
               </Typography>
-              <ConnectWalletButton />
             </Box>
+            {session.status === 'unauthenticated' && (
+              <ConnectWalletButton isHomepage={true} />
+            )}
           </Box>
           <PollList polls={polls} />
           <RepresentativesTable
