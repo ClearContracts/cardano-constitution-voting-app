@@ -66,8 +66,6 @@ export const verifyWallet = async (
     const payloadChallenge = signatureWords[signatureWords.length - 1];
     const challengeAsExpected = payloadChallenge == challenge;
 
-    console.log('challengeAsExpected', challengeAsExpected);
-
     // Some wallets may hash the payload before signing it (e.g. eternl). Some wallets may not hash the payload before signing it (e.g. Lace).
     // The above check is for the case where the payload is not hashed before signing.
     // If the payload does not match, then we hash the payload and compare the hash.
