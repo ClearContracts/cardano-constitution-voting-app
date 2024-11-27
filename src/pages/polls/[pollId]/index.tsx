@@ -184,10 +184,21 @@ export default function ViewPoll(props: Props): JSX.Element {
             {poll ? (
               <Grid
                 size={{ xs: 12, lg: 6 }}
+                sx={{
+                  pr: {
+                    xs: 0,
+                    lg: 12,
+                  },
+                }}
                 display="flex"
                 flexDirection="column"
                 gap={3}
               >
+                <Typography>
+                  Shall the Cardano Constitution text, located at the link and
+                  with the hash as stated below, be approved for on-chain
+                  submission as a New Constitution governance action?
+                </Typography>
                 <Box>
                   <Button
                     variant="outlined"
