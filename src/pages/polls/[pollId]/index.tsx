@@ -4,6 +4,7 @@ import type { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { pollPhases } from '@/constants/pollPhases';
+import { DeleteRounded } from '@mui/icons-material';
 import LaunchRounded from '@mui/icons-material/LaunchRounded';
 import { Button, CircularProgress, Modal, useTheme } from '@mui/material';
 import Box from '@mui/material/Box';
@@ -64,6 +65,7 @@ export default function ViewPoll(props: Props): JSX.Element {
   const [pollResults, setPollResults] = useState(pollResultsSSR);
   const [isTxUploading, setIsTxUploading] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
 
   useCheckAddressChange();
   const session = useSession();
@@ -131,6 +133,14 @@ export default function ViewPoll(props: Props): JSX.Element {
 
   function openAreYouSure(): void {
     setModalOpen(true);
+  }
+
+  function handleOpenDeleteModal(): void {
+    setDeleteModalOpen(true);
+  }
+
+  function handleCloseDeleteModal(): void {
+    setDeleteModalOpen(false);
   }
 
   return (
@@ -268,7 +278,9 @@ export default function ViewPoll(props: Props): JSX.Element {
                                 setIsTxUploading={updateIsTxUploading}
                               />
                             )}
-                          <DeletePollButton pollId={pollId} />
+                          <Button color="error" onClick={handleOpenDeleteModal}>
+                            <DeleteRounded />
+                          </Button>
                         </Box>
                       </>
                     )}
@@ -337,7 +349,7 @@ export default function ViewPoll(props: Props): JSX.Element {
                 lg: 'translate(-50%, 0%)',
               },
               width: { xs: '80%', lg: '30%' },
-              maxHeight: { xs: '20%', sm: '20vh' },
+              maxHeight: { xs: '40%', sm: '20vh' },
               overflowY: 'auto',
               border: 'none',
               boxShadow: 24,
@@ -364,6 +376,48 @@ export default function ViewPoll(props: Props): JSX.Element {
                 updatePollResults={updatePollResults}
                 onClick={handleModalClose}
               />
+            </Box>
+          </Box>
+        </Modal>
+        <Modal open={deleteModalOpen} onClose={handleCloseDeleteModal}>
+          <Box
+            display="flex"
+            flexDirection="column"
+            gap={3}
+            alignItems="center"
+            sx={{
+              position: 'absolute',
+              top: '20vh',
+              left: { xs: '10%', lg: '50%' },
+              transform: {
+                xs: 'translate(0%, -25%)',
+                sm: 'translate(0%, 0%)',
+                lg: 'translate(-50%, 0%)',
+              },
+              width: { xs: '80%', lg: '30%' },
+              maxHeight: { xs: '40%', sm: '20vh' },
+              overflowY: 'auto',
+              border: 'none',
+              boxShadow: 24,
+              bgcolor: theme.palette.background.paper,
+              borderRadius: `${theme.shape.borderRadius}px`,
+              color: theme.palette.text.primary,
+              p: { xs: 2, md: 4 },
+              zIndex: 500,
+            }}
+          >
+            <Typography variant="h4" fontWeight="bold">
+              Are you sure you want to delete this Poll?
+            </Typography>
+            <Box
+              display="flex"
+              flexDirection={{ xs: 'column', sm: 'row' }}
+              gap={{ xs: 1, sm: 4 }}
+            >
+              <Button variant="outlined" onClick={handleCloseDeleteModal}>
+                Cancel
+              </Button>
+              <DeletePollButton pollId={pollId} />
             </Box>
           </Box>
         </Modal>
