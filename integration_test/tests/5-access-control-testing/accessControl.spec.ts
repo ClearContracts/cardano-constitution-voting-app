@@ -1,79 +1,18 @@
-import { organizerWallets } from '@constants/staticWallets';
-import { importWallet } from '@fixtures/importWallet';
-import loadEternlExtension from '@fixtures/loadExtension';
-import {
-  newDelegatePage,
-  newOrganizer1Page,
-  newOrganizerPage,
-} from '@helpers/page';
+import { newOrganizer1Page } from '@helpers/page';
 import { getUserPages } from '@helpers/userRoles';
-import test, { BrowserContext, expect, Page } from '@playwright/test';
-import { faker } from '@faker-js/faker';
+import test, { expect, Page } from '@playwright/test';
 import HomePage from '@pages/homePage';
+import { setAllureEpic } from '@helpers/allure';
+import {
+  createPoll,
+  deletePoll,
+  updateActiveVoter,
+  updateUser,
+} from '@helpers/accessControl';
 
-const UserAuthFiles = [
-  '.auth/organizer1.json',
-  '.auth/delegate1.json',
-  '.auth/alternate1.json',
-];
-
-const customHeader = { 'X-Custom-Header': 'intersect' };
-
-async function deletePoll(page: Page, pollId: number) {
-  const res = await page.request.post('/api/archivePoll', {
-    headers: customHeader,
-    data: {
-      pollId: pollId,
-    },
-  });
-  return res;
-}
-
-async function createPoll(page: Page) {
-  const body = {
-    name: faker.person.firstName(),
-    hashedText: faker.person.lastName(),
-    link: faker.internet.url(),
-  };
-  const res = await page.request.post('/api/newPoll', {
-    headers: {
-      'X-Custom-Header': 'intersect',
-    },
-    data: body,
-  });
-  return res;
-}
-
-async function updateUser(page: Page, userId: string = '138') {
-  const body = {
-    userId: userId,
-    name: faker.person.firstName(),
-    email: faker.person.firstName() + '@gmail.com',
-    wallet_address: faker.person.lastName(),
-  };
-  const res = await page.request.post('/api/updateUser', {
-    headers: {
-      'X-Custom-Header': 'intersect',
-    },
-    data: body,
-  });
-  return res;
-}
-
-async function updateActiveVoter(
-  page: Page,
-  workshopId: string = '63',
-  activeVoterId: string = '138'
-) {
-  const body = { workshopId: workshopId, activeVoterId: activeVoterId };
-  const res = await page.request.post('/api/updateActiveVoter', {
-    headers: {
-      'X-Custom-Header': 'intersect',
-    },
-    data: body,
-  });
-  return res;
-}
+test.beforeEach(async () => {
+  await setAllureEpic('5. Access Control');
+});
 
 test.describe('Access Control Test', () => {
   test.describe('Poll', () => {

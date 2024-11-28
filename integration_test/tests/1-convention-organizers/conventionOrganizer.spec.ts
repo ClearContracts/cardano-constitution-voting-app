@@ -7,13 +7,11 @@ import HomePage from '@pages/homePage';
 import { faker } from '@faker-js/faker';
 import PollPage from '@pages/pollPage';
 import {
-  createNewPageWithWallet,
   newAlternatePage,
   newDelegate1Page,
   newDelegate2Page,
   newDelegatePage,
 } from '@helpers/page';
-import { importWallet } from '@fixtures/importWallet';
 
 test.beforeEach(async () => {
   await setAllureEpic('1. Convention Organizers');

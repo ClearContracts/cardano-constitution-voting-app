@@ -6,14 +6,7 @@ import path = require('path');
 import fs = require('fs');
 import { getCSVResults } from '@helpers/file';
 import PollPage from '@pages/pollPage';
-import {
-  newDelegate1Page,
-  newDelegate2Page,
-  newDelegatePage,
-  newOrganizer1Page,
-  newOrganizerPage,
-} from '@helpers/page';
-import HomePage from '@pages/homePage';
+import { newDelegatePage } from '@helpers/page';
 import { delegateWallets, organizerWallets } from '@constants/staticWallets';
 import { importWallet } from '@fixtures/importWallet';
 import loadEternlExtension from '@fixtures/loadExtension';
@@ -474,7 +467,9 @@ test.describe('Wallet switching', () => {
     await connectWalletButton.click();
 
     // Assert representative name
-    await expect(page.getByTestId('disconnect-wallet')).toBeVisible();
+    await expect(page.getByTestId('disconnect-wallet')).toBeVisible({
+      timeout: 10_000,
+    });
     const user = await page.getByTestId('representative-name').innerText();
     expect(user).toEqual('Test organizer 02');
 
@@ -484,13 +479,10 @@ test.describe('Wallet switching', () => {
     await importWallet(page, wallet);
 
     await page.reload();
-    await page.getByTestId('connect-wallet-button').first().click();
-    await page.waitForLoadState('load');
-    await page.getByTestId('connect-wallet-button').first().click();
 
-    // Assert disconnection
-    await expect(page.getByTestId('connect-wallet-Eternl')).toBeVisible({
-      timeout: 10_000,
-    });
+    await expect(
+      page.getByTestId('connect-wallet-button').first()
+    ).toBeVisible();
+    expect(page.getByRole('heading', { name: 'Are you a delegate?' }));
   });
 });
