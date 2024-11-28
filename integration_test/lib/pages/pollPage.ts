@@ -18,6 +18,7 @@ export default class PollPage {
   readonly uploadVoteOnchainBtn = this.page.getByTestId(
     'put-votes-onchain-button'
   );
+  readonly viewTxOnchainBtn= this.page.getByTestId('view-tx-button')
 
   //chip or icon
   readonly pollPageStatusChip = this.page.getByTestId('poll-page-status-chip');

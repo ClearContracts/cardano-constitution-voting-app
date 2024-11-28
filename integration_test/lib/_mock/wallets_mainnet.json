@@ -1009,20 +1009,6 @@
       },
       "address": "addr1q9x0xequt6e9gqwedwkgngxmpc5gw262w2hvz0gkqta2hdxh2we680jkrc4lp6axlk0zr7qt0eu2eyszlm32ksvyjplqy5gpjs",
       "stakeAddress": "stake1u8t48varhetpu2lsawn0m83plq9hu79vjgp0ac4tgxzfqls64dhs7"
-    },
-    {
-      "payment": {
-        "private": "a8ed10dca2e04e23265b94afdd361b24c776e790867a0622d30ce5d965d91d4b",
-        "public": "135a05471e5511d31334502ea679c590c2990265561d4365c7f9abfdbeef4adc",
-        "pkh": "b9dc551faf1bd931ce7a5618682a017145088706a9699cc7fdd0cef2"
-      },
-      "stake": {
-        "private": "6834a1acb41fe47b4ec84b1883ee5686ce3f8985de42cf9d5446f84d65d91d4b",
-        "public": "b35d2da2ae32378dee806701b1f84d1aa4f6d199e9eee46d12ba95055783bcb1",
-        "pkh": "ce32f8a85bf27c767c7579d0b4200568eb4a89aa34288fc5bbca8720"
-      },
-      "address": "addr1qxuac4gl4udajvww0ftps6p2q9c52zy8q65kn8x8lhgvaukwxtu2sklj03m8cate6z6zqptgad9gn2359z8utw72susq67lt7e",
-      "stakeAddress": "stake1u88r979gt0e8canuw4uapdpqq45wkj5f4g6z3r79h09gwgqkqycjs"
     }
   ],
   "alternates": [
@@ -1893,20 +1879,6 @@
       },
       "address": "addr1qxn4q96553hkyj45qz3ph0ey9dws8qsp0xakr70nfvtmk8ns7v98yve66p3cekung49p27lcp4yc5kl5tkvx4rm3rmmqfwhc5v",
       "stakeAddress": "stake1u9c0xznjxvadqcuvmwf52js400uq6jv2t069mxr23ac3aasccqcd3"
-    },
-    {
-      "payment": {
-        "private": "782497b5c149eaa9e0d698d8e78a2d5dd6d3db3b1329032503196e366ad91d4b",
-        "public": "a0d5cfb51317464ca412ac81bf4661ae769806a878ab7547e322aa52ea985b01",
-        "pkh": "132314ac28a59e05b016981adcb3892e0238270e0e6b8f2ecfb3d4a2"
-      },
-      "stake": {
-        "private": "c0703e026a857bb3fa6abd265e64cad58f008dfd1d16cb514efa404667d91d4b",
-        "public": "bd0246cd5fe0462454de3b1dbdab870659ade17b34781bca9cc03a0364749b42",
-        "pkh": "d917405d5268db9cda28177f0196ecd5343506599982b753a4795f5f"
-      },
-      "address": "addr1qyfjx99v9zjeupdsz6vp4h9n3yhqywp8pc8xhrewe7eafgkezaq965ngmwwd52qh0uqedmx4xs6svkves2m48freta0sc0tggv",
-      "stakeAddress": "stake1u8v3wsza2f5dh8x69qth7qvkan2ngdgxtxvc9d6n53u47hcdee22j"
     }
   ]
 }

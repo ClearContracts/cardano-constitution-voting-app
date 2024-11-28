@@ -12,6 +12,7 @@ import {
   newDelegate2Page,
   newDelegatePage,
 } from '@helpers/page';
+import { pollTransaction, sleep, waitForTxSubmit } from '@helpers/txUtil';
 
 test.beforeEach(async () => {
   await setAllureEpic('1. Convention Organizers');
@@ -321,10 +322,35 @@ test.describe('Onchain Poll', () => {
     page,
     pollId,
   }) => {
+    test.slow()
     const pollPage = new PollPage(page);
     pollPage.goto(pollId);
+    const waiter= waitForTxSubmit(page)
+    await pollPage.uploadVoteOnchainBtn.waitFor({ state: 'visible' });
+    await sleep(1000)
+
+    // Click the button and start transaction submission
     await pollPage.uploadVoteOnchainBtn.click();
-    await expect(page.getByAltText('submitted')).toBeVisible();
+    console.log("Upload votes button clicked!!")
+    const votesTxId=await waiter
+    const summaryTxWaiter=waitForTxSubmit(page)
+    await pollTransaction(votesTxId)
+
+
+    const summaryTxId=await summaryTxWaiter
+    await pollTransaction(summaryTxId);
+
+    // click on viewVote Onchain Button and check the url in new tab
+
+    const newPagePopup=page.waitForEvent('popup')
+    await pollPage.viewTxOnchainBtn.waitFor({state: 'visible'});
+    await pollPage.viewTxOnchainBtn.click()
+    const newPage=await newPagePopup
+
+    await newPage.waitForLoadState('domcontentloaded');
+    const expectedUrl = `/transaction/${summaryTxId}`;
+    expect(newPage.url()).toContain(expectedUrl);
+
   });
 });
 
