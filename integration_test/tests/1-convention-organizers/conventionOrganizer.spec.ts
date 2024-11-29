@@ -365,9 +365,10 @@ test.describe('User Control', () => {
    * Acceptance Criteria: Given that I am a CO on the page containing the list of user records, I can select the
    * record that I want to edit and modify the fields in that record as I see fit.
    */
-  test('1-2A. Given connected as CO can update all fields of user', async ({
+  test('1-2A-1. Given connected as CO can update all fields of user', async ({
     page,
   }) => {
+    test.slow();
     // delete exisiting opened polls
     const homePage = new HomePage(page);
     await homePage.goto();
@@ -385,6 +386,52 @@ test.describe('User Control', () => {
       email,
       stake_address,
     ]);
+  });
+
+  test('1-2A-2. CO cannot update representative email with existing email', async ({
+    page,
+  }) => {
+    test.slow();
+    // delete exisiting opened polls
+    const homePage = new HomePage(page);
+    await homePage.goto();
+    await homePage.deleteOpenPollCards();
+
+    // Update representative email with existing email
+    const name = faker.person.lastName();
+    const email = 'alternate12@email.com';
+    const stake_address = faker.person.jobArea();
+    const represntativePage = new RepresentativesPage(page);
+
+    // Update representative profile
+    await represntativePage.updateUserProfile(name, email, stake_address);
+
+    // Assert error toast msg
+    await expect(page.getByRole('status')).toBeVisible();
+    await expect(page.getByRole('status')).toHaveText('Error updating user.');
+  });
+
+  test('1-2A-3. CO cannot update representative stake with existing stake', async ({
+    page,
+  }) => {
+    test.slow();
+    // delete exisiting opened polls
+    const homePage = new HomePage(page);
+    await homePage.goto();
+    await homePage.deleteOpenPollCards();
+
+    // Update representative stake address with existing stake address
+    const name = faker.person.lastName();
+    const email = name + '@email.com';
+    const stake_address = organizerWallets[0].stakeAddress;
+    const represntativePage = new RepresentativesPage(page);
+
+    // Update representative profile
+    await represntativePage.updateUserProfile(name, email, stake_address);
+
+    // Assert error toast msg
+    await expect(page.getByRole('status')).toBeVisible();
+    await expect(page.getByRole('status')).toHaveText('Error updating user.');
   });
 
   /**
@@ -632,7 +679,7 @@ test.describe('Voting Power', () => {
     const voterPollPage = new PollPage(activeVoterPage);
     await voterPollPage.goto(pollId);
     await voterPollPage.voteYesBtn.click();
-    await activeVoterPage.getByText('Vote recorded').isVisible();
+    await expect(activeVoterPage.getByText('Vote recorded')).toBeVisible();
 
     // Assert vote
     await expect(activeVoterPage.getByText('Vote recorded')).toBeVisible({

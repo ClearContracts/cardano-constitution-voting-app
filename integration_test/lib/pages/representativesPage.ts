@@ -27,7 +27,7 @@ export default class RepresentativesPage {
     stake_address: string
   ): Promise<void> {
     await this.goto();
-    await this.editUserProfileBtn.isVisible();
+    await expect(this.editUserProfileBtn).toBeVisible({ timeout: 30_000 });
     await this.editUserProfileBtn.click();
     await this.page
       .getByRole('textbox')
@@ -40,7 +40,7 @@ export default class RepresentativesPage {
 
   async isRepresentativeUpdated(infos: Array<string>): Promise<void> {
     await expect(this.page.getByText(representativeUpdatedToast)).toBeVisible();
-    await this.editUserProfileBtn.isVisible();
+    await expect(this.editUserProfileBtn).toBeVisible({ timeout: 30_000 });
     await Promise.all(
       infos.map(
         async (info) =>

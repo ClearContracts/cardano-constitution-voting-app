@@ -153,8 +153,8 @@ test.describe('Polls', () => {
         await expect(pollPageStatusChip).toBeVisible();
 
         await expect(page.getByTestId('results-yes')).toBeVisible();
-        await page.getByTestId('results-no').isVisible();
-        await page.getByTestId('results-abstain').isVisible();
+        await expect(page.getByTestId('results-no')).toBeVisible();
+        await expect(page.getByTestId('results-abstain')).toBeVisible();
         await page.goto(`/polls/${pollId}`);
 
         const yesCount = page.getByTestId('yes-count');

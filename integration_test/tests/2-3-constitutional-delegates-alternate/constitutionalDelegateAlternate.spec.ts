@@ -123,6 +123,7 @@ test.describe('Vote', () => {
          * Acceptance Criteria: Given that I am a voter on the page of an open poll and I have already voted, when I vote again, then my vote is counted.
          */
         test(`${index + 2}-1C. Given active ${user}, and poll is open, can update casted vote`, async () => {
+          test.slow();
           //  yes vote
           await pollPage.voteYesBtn.click();
           await expect(userPage.getByTestId('poll-page-vote-count')).toHaveText(
@@ -145,6 +146,7 @@ test.describe('Vote', () => {
          */
 
         test(`${index + 2}-1F. Given active ${user}, can see what they have voted`, async () => {
+          test.slow();
           //  yes vote
           await pollPage.voteYesBtn.click();
           await expect(userPage.getByTestId('vote-status')).toHaveText('YES', {
@@ -161,6 +163,7 @@ test.describe('Vote', () => {
          */
 
         test(`${index + 2}-1D. Given active ${user}, can choose not to vote`, async () => {
+          test.slow();
           await pollPage.voteAbstainBtn.click();
 
           await expect(userPage.getByTestId('vote-status')).toHaveText(
@@ -181,6 +184,7 @@ test.describe('Vote', () => {
          */
 
         test(`${index + 2}-1E: Active ${user} should be able to vote Yes, No, or Abstain on a poll`, async () => {
+          test.slow();
           // yes vote
           await pollPage.voteYesBtn.click();
           await expect(userPage.getByTestId('vote-status')).toHaveText('YES');
@@ -275,7 +279,6 @@ test.describe('Representative Status', () => {
       test(`${index + 2}-1G. Once login ${user} should be able to know their voting right status`, async ({
         browser,
       }) => {
-        test.slow();
         const delegatePage = await newDelegatePage(browser, 3);
         const alternatePage = await newAlternatePage(browser, 3);
 
@@ -284,28 +287,22 @@ test.describe('Representative Status', () => {
         await Promise.all(
           pages.map(async (page) => {
             await page.goto('/');
-            await expect(
-              page.locator('[data-testid^="active-voter-name-"]').first()
-            ).toBeVisible();
-            const activeVoter = (
-              await page
-                .locator('[data-testid^="active-voter-name-"]')
-                .allInnerTexts()
-            )[4];
-            console.log('active voter: ', activeVoter);
-            const delegateName = (
-              await page
-                .locator('[data-testid^="delegate-name-"]')
-                .allInnerTexts()
-            )[4];
-            const alternateName = (
-              await page
-                .locator('[data-testid^="alternate-name-"]')
-                .allInnerTexts()
-            )[4];
+            await expect(page.locator('[data-id="5"]').first()).toBeVisible({
+              timeout: 10_000,
+            });
 
-            // Assert active voter is among the delegate and alternate
-            expect([delegateName, alternateName]).toContain(activeVoter);
+            // Fetch representative list of workshop 5
+            const representativeList = await page
+              .locator('[data-id="5"]')
+              .allInnerTexts();
+            const [workshop, delegate, alternate, active_voter] =
+              representativeList[0].split('\n\n');
+
+            // Assert workshop name
+            expect(workshop).toBe('Workshop 05');
+
+            // Assert active voter value to be in between delegate and alternate
+            expect([delegate, alternate]).toContain(active_voter);
           })
         );
       });
