@@ -306,7 +306,11 @@ export default function ViewPoll(props: Props): JSX.Element {
                   {/* Vote Results */}
                   {poll.status === pollPhases.concluded &&
                     typeof pollId === 'string' && (
-                      <PollResults votes={pollResults} pollId={pollId} />
+                      <PollResults
+                        votes={pollResults}
+                        pollId={pollId}
+                        summaryTxId={poll.summary_tx_id || ''}
+                      />
                     )}
                 </Box>
               </Grid>
