@@ -3,8 +3,7 @@ import Link from 'next/link';
 import ccLogo from '@/img/cc-logo.png';
 import clarity from '@/img/Clarity.png';
 import gradient from '@/img/constitution-gradient.png';
-import { GitHub } from '@mui/icons-material';
-import { Box, Button, Divider, Typography, useTheme } from '@mui/material';
+import { Box, Typography, useTheme } from '@mui/material';
 import Grid from '@mui/material/Grid2';
 
 import { paths } from '@/paths';
@@ -35,6 +34,7 @@ export function Footer(): JSX.Element {
         backgroundImage: `url(${gradient.src})`,
         backgroundRepeat: 'no-repeat',
         backgroundSize: 'cover',
+        backgroundPosition: 'center',
       }}
     >
       <Grid
