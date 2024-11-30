@@ -65,6 +65,12 @@ export default function Representative(props: Props): JSX.Element {
                 xs: 12,
                 md: 6,
               }}
+              sx={{
+                pr: {
+                  xs: 0,
+                  md: 4,
+                },
+              }}
             >
               {user ? (
                 <Box display="flex" flexDirection="column" gap={3}>
