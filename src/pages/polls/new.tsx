@@ -14,7 +14,9 @@ interface Props {
 export default function NewPoll(props: Props): JSX.Element {
   const { polls } = props;
   useCheckAddressChange();
-  const [name, setName] = useState(`Poll #${polls.length + 1}`);
+  const [name, setName] = useState(
+    'Shall the Cardano Constitution text, located at the link and with the hash as stated below, be approved for on-chain submission as a New Constitution governance action?',
+  );
   const [constitutionText, setConstitutionText] = useState('');
   const [link, setLink] = useState('');
 
@@ -54,6 +56,8 @@ export default function NewPoll(props: Props): JSX.Element {
             label="Name"
             value={name}
             data-testid="poll-name-input"
+            multiline
+            rows={2} // Number of visible rows
           />
           <TextField
             variant="outlined"

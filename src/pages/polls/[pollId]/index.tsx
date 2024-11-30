@@ -161,24 +161,10 @@ export default function ViewPoll(props: Props): JSX.Element {
               Archived
             </Typography>
           )}
-          <Box
-            display="flex"
-            flexDirection="row"
-            gap={3}
-            justifyContent={{ xs: 'space-between', lg: 'flex-start' }}
-            alignItems="center"
-          >
-            <Typography variant="h1" fontWeight="bold">
-              {poll ? (
-                poll.name
-              ) : isPending ? (
-                <CircularProgress />
-              ) : (
-                'View Poll'
-              )}
-            </Typography>
-            {poll && <PollStatusChip status={poll.status} />}
-          </Box>
+          <Typography variant="h4" fontWeight="bold">
+            {poll ? poll.name : isPending ? <CircularProgress /> : 'View Poll'}
+          </Typography>
+          {poll && <PollStatusChip status={poll.status} />}
           <PollVoteCount pollId={poll?.id || ''} />
           <Grid container data-testid="poll-transactions">
             {poll ? (
@@ -194,11 +180,6 @@ export default function ViewPoll(props: Props): JSX.Element {
                 flexDirection="column"
                 gap={3}
               >
-                <Typography>
-                  Shall the Cardano Constitution text, located at the link and
-                  with the hash as stated below, be approved for on-chain
-                  submission as a New Constitution governance action?
-                </Typography>
                 <Box>
                   <Button
                     variant="outlined"
