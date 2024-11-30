@@ -27,7 +27,6 @@ import { BeginVoteButton } from '@/components/buttons/beginVoteButton';
 import { DeletePollButton } from '@/components/buttons/deletePollButton';
 import { EndVoteButton } from '@/components/buttons/endVoteButton';
 import { PutVotesOnChainButton } from '@/components/buttons/putVotesOnChainButton';
-import { ViewTxButton } from '@/components/buttons/viewTxButton';
 import { VoteOnPollButtons } from '@/components/buttons/voteOnPollButtons';
 import { CoordinatorViewVotes } from '@/components/polls/coordinatorViewVotes';
 import { PollCarrousel } from '@/components/polls/pollCarrousel';
@@ -201,11 +200,6 @@ export default function ViewPoll(props: Props): JSX.Element {
                   The linked text document has the Blake2b-256 hash of:{' '}
                   {poll.hashedText}
                 </Typography>
-                {poll.summary_tx_id && !isTxUploading && (
-                  <Box marginTop={3} marginBottom={3}>
-                    <ViewTxButton txId={poll.summary_tx_id} />
-                  </Box>
-                )}
                 {isSubmitting && !isTxUploading && (
                   <Box marginTop={3} marginBottom={3}>
                     <TxPopup
