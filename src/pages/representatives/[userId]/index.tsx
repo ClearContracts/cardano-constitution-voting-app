@@ -15,6 +15,7 @@ import { workshopNameDto } from '@/data/workshopNameDto';
 import { workshopsDto } from '@/data/workshopsDto';
 import { useCheckAddressChange } from '@/hooks/useCheckAddressChange';
 import { PollCarrousel } from '@/components/polls/pollCarrousel';
+import { MobileRepresentativesTable } from '@/components/representatives/mobileRepresentativesTable';
 import { RepresentativesTable } from '@/components/representatives/representativesTable';
 import { VotingHistoryTable } from '@/components/representatives/votingHistoryTable';
 
@@ -160,10 +161,34 @@ export default function Representative(props: Props): JSX.Element {
           {mainContent}
 
           <PollCarrousel currentPollId={undefined} polls={polls} />
-          <RepresentativesTable
-            representatives={representatives}
-            workshops={workshops}
-          />
+          <Box
+            sx={{
+              display: {
+                xs: 'none',
+                md: 'flex',
+              },
+              width: '100%',
+            }}
+          >
+            <RepresentativesTable
+              representatives={representatives}
+              workshops={workshops}
+            />
+          </Box>
+          <Box
+            sx={{
+              display: {
+                xs: 'flex',
+                md: 'none',
+              },
+              width: '100%',
+            }}
+          >
+            <MobileRepresentativesTable
+              representatives={representatives}
+              workshops={workshops}
+            />
+          </Box>
         </Box>
       </main>
     </>
