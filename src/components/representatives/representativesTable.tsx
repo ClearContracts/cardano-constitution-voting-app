@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { CheckRounded } from '@mui/icons-material';
 import { Box, useTheme } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
@@ -61,6 +62,7 @@ export function RepresentativesTable(props: Props): JSX.Element {
         const delegateId = params.row.delegate_id;
         const delegate = representatives.find((rep) => rep.id === delegateId);
         const name = abbreviateName(delegate?.name || '');
+        const activeVoterId = params.row.active_voter_id;
         return (
           <Link
             href={paths.representatives.representative + delegateId}
@@ -91,6 +93,9 @@ export function RepresentativesTable(props: Props): JSX.Element {
               }}
             >
               <Typography>{name}</Typography>
+              {activeVoterId === delegate?.id && (
+                <CheckRounded color="success" />
+              )}
             </Box>
           </Link>
         );
@@ -115,6 +120,8 @@ export function RepresentativesTable(props: Props): JSX.Element {
         const alternateId = params.row.alternate_id;
         const alternate = representatives.find((rep) => rep.id === alternateId);
         const name = abbreviateName(alternate?.name || '');
+        const activeVoterId = params.row.active_voter_id;
+
         return (
           <Link
             href={paths.representatives.representative + alternateId}
@@ -145,6 +152,9 @@ export function RepresentativesTable(props: Props): JSX.Element {
               }}
             >
               <Typography>{name}</Typography>
+              {activeVoterId === alternate?.id && (
+                <CheckRounded color="success" />
+              )}
             </Box>
           </Link>
         );

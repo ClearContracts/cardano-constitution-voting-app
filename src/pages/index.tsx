@@ -1,6 +1,6 @@
 import Head from 'next/head';
 import Link from 'next/link';
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, useTheme } from '@mui/material';
 import Button from '@mui/material/Button';
 import { useSession } from 'next-auth/react';
 
@@ -24,6 +24,7 @@ export default function Home(props: Props): JSX.Element {
   const { polls, representatives, workshops } = props;
   const session = useSession();
   useCheckAddressChange();
+  const theme = useTheme();
 
   return (
     <>
