@@ -2,7 +2,13 @@ import type { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
 import Link from 'next/link';
 import { HowToVoteRounded } from '@mui/icons-material';
-import { Box, Chip, Typography, useTheme } from '@mui/material';
+import {
+  Box,
+  Chip,
+  CircularProgress,
+  Typography,
+  useTheme,
+} from '@mui/material';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid2';
 
@@ -264,11 +270,13 @@ export default function Representative(props: Props): JSX.Element {
                 },
               }}
             >
-              <VotingHistoryTable
-                userId={user.id}
-                votes={userVotes}
-                polls={polls}
-              />
+              {user && (
+                <VotingHistoryTable
+                  userId={user.id}
+                  votes={userVotes}
+                  polls={polls}
+                />
+              )}
             </Grid>
           </Grid>
           <PollCarrousel currentPollId={undefined} polls={polls} />
