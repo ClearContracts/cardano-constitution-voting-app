@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import ccLogo from '@/img/cc-logo.png';
+import ccLogo from '@/img/cc-logo.svg';
 import clarity from '@/img/Clarity.png';
 import gradient from '@/img/constitution-gradient.png';
 import { Box, Typography, useTheme } from '@mui/material';
