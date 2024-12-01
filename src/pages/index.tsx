@@ -24,7 +24,6 @@ export default function Home(props: Props): JSX.Element {
   const { polls, representatives, workshops } = props;
   const session = useSession();
   useCheckAddressChange();
-  const theme = useTheme();
 
   return (
     <>
