@@ -33,6 +33,7 @@ import { PollCarrousel } from '@/components/polls/pollCarrousel';
 import { PollResults } from '@/components/polls/pollResults';
 import { PollStatusChip } from '@/components/polls/pollStatusChip';
 import { PollVoteCount } from '@/components/polls/pollVoteCount';
+import { MobileRepresentativesTable } from '@/components/representatives/mobileRepresentativesTable';
 import { RepresentativesTable } from '@/components/representatives/representativesTable';
 import { TxPopup } from '@/components/txPopups/txPopup';
 
@@ -317,10 +318,34 @@ export default function ViewPoll(props: Props): JSX.Element {
               polls={polls}
               isPollPage={true}
             />
-            <RepresentativesTable
-              representatives={representatives}
-              workshops={workshops}
-            />
+            <Box
+              sx={{
+                display: {
+                  xs: 'none',
+                  md: 'flex',
+                },
+                width: '100%',
+              }}
+            >
+              <RepresentativesTable
+                representatives={representatives}
+                workshops={workshops}
+              />
+            </Box>
+            <Box
+              sx={{
+                display: {
+                  xs: 'flex',
+                  md: 'none',
+                },
+                width: '100%',
+              }}
+            >
+              <MobileRepresentativesTable
+                representatives={representatives}
+                workshops={workshops}
+              />
+            </Box>
           </Box>
         </Box>
         <Modal open={modalOpen} onClose={handleModalClose}>

@@ -12,6 +12,7 @@ import { workshopsDto } from '@/data/workshopsDto';
 import { useCheckAddressChange } from '@/hooks/useCheckAddressChange';
 import { ConnectWalletButton } from '@/components/buttons/connectWalletButton';
 import { PollList } from '@/components/polls/pollList';
+import { MobileRepresentativesTable } from '@/components/representatives/mobileRepresentativesTable';
 import { RepresentativesTable } from '@/components/representatives/representativesTable';
 
 interface Props {
@@ -80,10 +81,34 @@ export default function Home(props: Props): JSX.Element {
             )}
           </Box>
           <PollList polls={polls} />
-          <RepresentativesTable
-            representatives={representatives}
-            workshops={workshops}
-          />
+          <Box
+            sx={{
+              display: {
+                xs: 'none',
+                md: 'flex',
+              },
+              width: '100%',
+            }}
+          >
+            <RepresentativesTable
+              representatives={representatives}
+              workshops={workshops}
+            />
+          </Box>
+          <Box
+            sx={{
+              display: {
+                xs: 'flex',
+                md: 'none',
+              },
+              width: '100%',
+            }}
+          >
+            <MobileRepresentativesTable
+              representatives={representatives}
+              workshops={workshops}
+            />
+          </Box>
         </Box>
       </main>
     </>
