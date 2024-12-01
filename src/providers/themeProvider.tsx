@@ -123,14 +123,13 @@ export function ColorModeProvider({
           root: {
             background: 'transparent',
             borderRadius: '4px',
-            border: 'none',
+            border: '1px solid rgba(255, 255, 255, 0.25)',
             padding: 0,
             margin: 0,
             boxShadow: 'none',
             '&::before': {
               display: 'none',
             },
-            overflow: 'scroll',
           },
         },
       },
@@ -141,13 +140,7 @@ export function ColorModeProvider({
           },
         },
       },
-      MuiAccordionDetails: {
-        styleOverrides: {
-          root: {
-            overflow: 'scroll',
-          },
-        },
-      },
+
       MuiListItemButton: {
         styleOverrides: {
           root: {
