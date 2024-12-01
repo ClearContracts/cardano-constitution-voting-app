@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import ccLogo from '@/img/cc-logo.png';
+import ccLogo from '@/img/cc-logo.svg';
 import { Box, Typography } from '@mui/material';
 
 import { paths } from '@/paths';
@@ -36,38 +36,19 @@ export function Navbar(): JSX.Element {
     >
       <Box display="flex" flexDirection="row" gap={4} alignItems="center">
         <Link
-          href={paths.home}
+          href={'https://cardanoconvention.com/'}
           style={{ textDecoration: 'none' }}
           data-testid="home-logo"
+          target="_blank"
         >
-          <Box
-            display={{
-              xs: 'none',
-              sm: 'flex',
-            }}
-          >
-            <Image
-              src={ccLogo}
-              alt="Constitutional Convention Logo"
-              width={168}
-              height={25}
-            />
-          </Box>
-          <Box
-            display={{
-              xs: 'flex',
-              sm: 'none',
-            }}
-          >
-            <Image
-              src={ccLogo}
-              alt="Constitutional Convention Logo"
-              width={100.8}
-              height={15}
-            />
-          </Box>
+          <Image
+            src={ccLogo}
+            alt="Constitutional Convention Logo"
+            width={168}
+            height={25}
+          />
         </Link>
-        <Box display={{ xs: 'none', md: 'flex' }}>
+        <Box display={{ xs: 'none', sm: 'flex' }}>
           <Link
             href={paths.home}
             style={{
