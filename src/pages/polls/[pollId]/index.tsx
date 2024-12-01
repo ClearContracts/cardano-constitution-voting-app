@@ -161,37 +161,21 @@ export default function ViewPoll(props: Props): JSX.Element {
               Archived
             </Typography>
           )}
-          <Box
-            display="flex"
-            flexDirection="row"
-            gap={3}
-            justifyContent={{ xs: 'space-between', lg: 'flex-start' }}
-            alignItems="center"
-          >
-            <Typography variant="h1" fontWeight="bold">
-              {poll ? (
-                poll.name
-              ) : isPending ? (
-                <CircularProgress />
-              ) : (
-                'View Poll'
-              )}
-            </Typography>
-            {poll && (
-              <PollStatusChip
-                status={poll.status}
-                testId="poll-page-status-chip"
-              />
-            )}
-          </Box>
-          <PollVoteCount
-            pollId={poll?.id || ''}
-            testId="poll-page-vote-count"
-          />
+          <Typography variant="h4" fontWeight="bold">
+            {poll ? poll.name : isPending ? <CircularProgress /> : 'View Poll'}
+          </Typography>
+          {poll && <PollStatusChip  testId="poll-page-status-chip" status={poll.status} />}
+          <PollVoteCount  testId="poll-page-vote-count"  pollId={poll?.id || ''} />
           <Grid container data-testid="poll-transactions">
             {poll ? (
               <Grid
                 size={{ xs: 12, lg: 6 }}
+                sx={{
+                  pr: {
+                    xs: 0,
+                    lg: 12,
+                  },
+                }}
                 display="flex"
                 flexDirection="column"
                 gap={3}
