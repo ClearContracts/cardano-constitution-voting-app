@@ -1,4 +1,3 @@
-import type { Wallet } from '@claritydao/clarity-backend';
 import { connectWallet } from '@claritydao/clarity-backend';
 import * as Sentry from '@sentry/nextjs';
 
