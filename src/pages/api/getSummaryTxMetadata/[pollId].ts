@@ -9,6 +9,7 @@ import { pollDto } from '@/data/pollDto';
 import { pollTransactionsDto } from '@/data/pollTransactionsDto';
 import { pollVotesDto } from '@/data/pollVotesDto';
 import { checkIfCO } from '@/lib/checkIfCO';
+import { getActiveVoterCount } from '@/lib/helpers/getActiveVoterCount';
 
 type Data = { metadata: string[] | null; message: string };
 
@@ -95,9 +96,34 @@ export default async function getSummaryTxMetadata(
     // Iterate through poll_transaction IDs and get associated TX ID
     const txIds = await pollTransactionsDto(pollTransactionIds);
 
+    const yesVotes = pollVotes.filter((vote) => vote.vote === 'yes').length;
+    const noVotes = pollVotes.filter((vote) => vote.vote === 'no').length;
+    const abstainVotes = pollVotes.filter(
+      (vote) => vote.vote === 'abstain',
+    ).length;
+
+    const data = await getActiveVoterCount();
+    const activeVoterCount = data.voters;
+
+    const percentage =
+      Math.round((yesVotes / (activeVoterCount - abstainVotes)) * 100) || 0;
+
+    const constitutionHash = `Text Hash: ${poll.hashedText}, Text URL: ${poll.link}`;
+    const approvalString = `Approval Result: ${percentage}%`;
+    const participationString = `Yes Votes: ${yesVotes}, No Votes: ${noVotes}`;
+    const totalString = `Abstain Votes: ${abstainVotes}, Total Eligible Voters: ${activeVoterCount}`;
+
+    const metadata = [
+      constitutionHash,
+      approvalString,
+      participationString,
+      totalString,
+      ...txIds,
+    ];
+
     return res
       .status(200)
-      .json({ metadata: txIds, message: 'Metadata constructed' });
+      .json({ metadata: metadata, message: 'Metadata constructed' });
   } catch (error) {
     Sentry.captureException(error);
     return res.status(500).json({
