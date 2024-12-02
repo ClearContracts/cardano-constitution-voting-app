@@ -10,6 +10,7 @@ import { pollTransactionsDto } from '@/data/pollTransactionsDto';
 import { pollVotesDto } from '@/data/pollVotesDto';
 import { workshopsDto } from '@/data/workshopsDto';
 import { checkIfCO } from '@/lib/checkIfCO';
+import { getBytesOfArray } from '@/lib/getBytesOfArray';
 
 type Data = { metadata: string[] | null; message: string };
 
@@ -129,6 +130,15 @@ export default async function getSummaryTxMetadata(
       'Delegate Signature Transaction Hashes:',
       ...txIds,
     ];
+
+    // make sure metadata is under 16kb
+    const bytes = getBytesOfArray(metadata);
+    if (bytes > 16000) {
+      return res.status(400).json({
+        metadata: null,
+        message: 'Metadata is too large',
+      });
+    }
 
     return res
       .status(200)
