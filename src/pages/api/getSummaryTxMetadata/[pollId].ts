@@ -127,7 +127,7 @@ export default async function getSummaryTxMetadata(
       noString,
       abstainString,
       totalString,
-      'Transaction Hashes:',
+      'Delegate Signature Transaction Hashes:',
       ...txIds,
     ];
 
