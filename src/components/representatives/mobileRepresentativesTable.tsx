@@ -1,12 +1,8 @@
 import { useMemo } from 'react';
-import Link from 'next/link';
 import { Box, useTheme } from '@mui/material';
 import Typography from '@mui/material/Typography';
-import { DataGrid, GridColDef } from '@mui/x-data-grid';
 
 import type { User, Workshop } from '@/types';
-import { paths } from '@/paths';
-import { abbreviateName } from '@/lib/helpers/abbreviateName';
 import { MobileRepresentativeCard } from '@/components/representatives/mobileRepresentativeCard';
 
 interface Props {
@@ -22,8 +18,6 @@ interface Props {
  */
 export function MobileRepresentativesTable(props: Props): JSX.Element {
   const { representatives, workshops } = props;
-
-  const theme = useTheme();
 
   const representativesList = useMemo(() => {
     const repsOnly = representatives.filter((rep) => {
