@@ -1,4 +1,4 @@
-import { delegateWallets, organizerWallets } from '@constants/staticWallets';
+import {  organizerWallets } from '@constants/staticWallets';
 import { setAllureEpic } from '@helpers/allure';
 import { expect } from '@playwright/test';
 import { test } from '@fixtures/poll';
@@ -325,27 +325,27 @@ test.describe('Onchain Poll', () => {
     test.slow()
     const pollPage = new PollPage(page);
     pollPage.goto(pollId);
-    const waiter= waitForTxSubmit(page)
+    const waiter = waitForTxSubmit(page)
     await pollPage.uploadVoteOnchainBtn.waitFor({ state: 'visible' });
     await sleep(1000)
 
     // Click the button and start transaction submission
     await pollPage.uploadVoteOnchainBtn.click();
     console.log("Upload votes button clicked!!")
-    const votesTxId=await waiter
-    const summaryTxWaiter=waitForTxSubmit(page)
+    const votesTxId = await waiter
+    const summaryTxWaiter = waitForTxSubmit(page)
     await pollTransaction(votesTxId)
 
 
-    const summaryTxId=await summaryTxWaiter
+    const summaryTxId = await summaryTxWaiter
     await pollTransaction(summaryTxId);
 
     // click on viewVote Onchain Button and check the url in new tab
 
-    const newPagePopup=page.waitForEvent('popup')
-    await pollPage.viewTxOnchainBtn.waitFor({state: 'visible'});
+    const newPagePopup = page.waitForEvent('popup')
+    await pollPage.viewTxOnchainBtn.waitFor({ state: 'visible' });
     await pollPage.viewTxOnchainBtn.click()
-    const newPage=await newPagePopup
+    const newPage = await newPagePopup
 
     await newPage.waitForLoadState('domcontentloaded');
     const expectedUrl = `/transaction/${summaryTxId}`;
@@ -505,6 +505,9 @@ test.describe('User Control', () => {
     await pollPage.goto(pollId);
     await pollPage.beginVoteBtn.click();
 
+    // Assert begining of poll
+    await expect(pollPage.endVotingBtn).toBeVisible({ timeout: 10_000 })
+
     // before switching power while poll is opened for voting
     const representativePage = new RepresentativesPage(page);
     await representativePage.goto();
@@ -541,6 +544,9 @@ test.describe('User Control', () => {
     const pollPage = new PollPage(page);
     await pollPage.goto(pollId);
     await pollPage.beginVoteBtn.click();
+
+    // Assert begining of poll
+    await expect(pollPage.endVotingBtn).toBeVisible({ timeout: 10_000 })
 
     // before switching power while poll is opened for voting
     const representativePage = new RepresentativesPage(page);
@@ -660,6 +666,9 @@ test.describe('Voting Power', () => {
     await pollPage.goto(pollId);
     await pollPage.beginVoteBtn.click();
 
+    // Assert begining of poll
+    await expect(pollPage.endVotingBtn).toBeVisible({ timeout: 10_000 })
+
     // Get Active Voter Status
     const representativePage = new RepresentativesPage(page);
     await representativePage.goto();
@@ -678,6 +687,7 @@ test.describe('Voting Power', () => {
     // Vote from activeVoterPage
     const voterPollPage = new PollPage(activeVoterPage);
     await voterPollPage.goto(pollId);
+    await expect(voterPollPage.voteYesBtn).toBeVisible({ timeout: 10_000 })
     await voterPollPage.voteYesBtn.click();
     await expect(activeVoterPage.getByText('Vote recorded')).toBeVisible();
 
@@ -722,9 +732,12 @@ test.describe('Create Poll', () => {
     await homePage.createPollBtn.click();
 
     await expect(page.getByLabel('Constitution Text Hash')).toBeVisible();
+    const textareaField = page.locator('textarea:not([readonly])');
     const inputFields = page.locator('input');
     const inputFieldCounts = await inputFields.count();
+    const textareaFieldCount = await textareaField.count();
 
-    expect(inputFieldCounts).toEqual(3);
+    expect(inputFieldCounts).toEqual(2);
+    expect(textareaFieldCount).toEqual(1);
   });
 });

@@ -31,6 +31,7 @@ test.describe('Polls', () => {
     browser,
     pollId,
   }) => {
+    test.slow();
     const pages = await getUserPages(browser);
 
     await Promise.all(
@@ -63,6 +64,8 @@ test.describe('Polls', () => {
       pollId,
       browser,
     }) => {
+      console.log("ok: ",pollId)
+
       const page = await user.loader(browser);
       await page.goto(`/polls/${pollId}`);
 
@@ -104,7 +107,10 @@ test.describe('Polls', () => {
     const delegatePollPage = new PollPage(delegatePage);
     await delegatePollPage.goto(pollId);
 
+    // vote and assert voting
     await delegatePollPage.voteYesBtn.click();
+    await expect( delegatePage.getByTestId('vote-status')).toBeVisible({timeout:10_000});
+
     await Promise.all(
       pages.map(async (userPage) => {
         const pollPage = new PollPage(userPage);
@@ -150,7 +156,7 @@ test.describe('Polls', () => {
       pages.map(async (page) => {
         await page.goto(`/polls/${pollId}`);
         const pollPageStatusChip = page.getByTestId('poll-page-status-chip');
-        await expect(pollPageStatusChip).toBeVisible();
+        await expect(pollPageStatusChip).toHaveText('Concluded',{timeout:15_000});
 
         await expect(page.getByTestId('results-yes')).toBeVisible();
         await expect(page.getByTestId('results-no')).toBeVisible();
@@ -220,9 +226,11 @@ test.describe('User profile', () => {
     test.slow();
     await page.goto('/polls/' + pollId);
 
-    const buttons = await page
-      .locator('[data-testid^="representative-vote-"]')
-      .all();
+    // Locate the buttons
+    const representativeBtns = page
+    .locator('[data-testid^="representative-vote-"]')
+    await expect(representativeBtns.first()).toBeVisible({timeout:10_000});
+    const buttons = await representativeBtns.all();
 
     if (buttons.length === 0) {
       throw new Error('No representative vote buttons found');
@@ -293,12 +301,16 @@ test.describe('User profile', () => {
     page,
     pollId,
   }) => {
+    test.slow();
     await page.goto('polls/' + pollId);
 
     // Locate the buttons
-    const buttons = await page
-      .locator('[data-testid^="representative-vote-"]')
-      .all();
+    const representativeBtns = page
+    .locator('[data-testid^="representative-vote-"]')
+
+    await expect(representativeBtns.first()).toBeVisible({timeout:10_000});
+
+    const buttons = await representativeBtns.all();
 
     if (buttons.length === 0) {
       throw new Error('No representative vote buttons found');

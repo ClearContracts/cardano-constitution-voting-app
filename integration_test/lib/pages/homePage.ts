@@ -40,6 +40,7 @@ export default class HomePage {
     pollHash: string = ''
   ): Promise<number> {
     await this.createPollBtn.click();
+    await this.page.waitForSelector('[data-testid="poll-name-input"] textarea');
     await this.pollNameInput.fill(pollName);
     await this.constitutionLinkInput.fill(faker.internet.url());
     const randomHash = blake.hash32(Buffer.from(faker.animal.bear()));
@@ -49,8 +50,8 @@ export default class HomePage {
 
     await this.submitPollBtn.click();
 
-    await this.page.waitForURL(/\/polls\/(?!new)/, {
-      timeout: 10_000, 
+    await expect(this.beginVoteBtn).toBeVisible({
+      timeout: 30_000,
     });
   
     const currentPageUrl = this.page.url();

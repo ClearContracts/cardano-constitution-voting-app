@@ -1,6 +1,6 @@
 import { newOrganizer1Page } from '@helpers/page';
 import { getUserPages } from '@helpers/userRoles';
-import test, { expect, Page } from '@playwright/test';
+import test, { expect } from '@playwright/test';
 import HomePage from '@pages/homePage';
 import { setAllureEpic } from '@helpers/allure';
 import {
@@ -21,6 +21,7 @@ test.describe('Access Control Test', () => {
       const homePage = new HomePage(organizerPage);
       await homePage.goto();
       await homePage.deleteOpenPollCards();
+      await organizerPage.waitForURL('/')
     });
 
     test('5-1A. Only CO can create a new poll', async ({ browser }) => {

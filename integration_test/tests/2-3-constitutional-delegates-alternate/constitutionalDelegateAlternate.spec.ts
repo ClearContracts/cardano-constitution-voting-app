@@ -107,6 +107,7 @@ test.describe('Vote', () => {
          */
 
         test(`${index + 2}-1A. Given active ${user}, and poll is open, then vote option should be visible`, async () => {
+          test.slow();
           await expect(pollPage.voteYesBtn).toBeVisible({ timeout: 10_000 }),
             await Promise.all([
               await expect(pollPage.voteYesBtn).toBeVisible(),
@@ -257,6 +258,7 @@ test.describe('Vote', () => {
     });
   });
 });
+
 test.describe('Representative Status', () => {
   const users = ['delegate', 'alternate'];
   users.forEach((user, index) => {
@@ -302,7 +304,7 @@ test.describe('Representative Status', () => {
             expect(workshop).toBe('Workshop 05');
 
             // Assert active voter value to be in between delegate and alternate
-            expect([delegate, alternate]).toContain(active_voter);
+            expect(['Delegate', 'Alternate']).toContain(active_voter);
           })
         );
       });
