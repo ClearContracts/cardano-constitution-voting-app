@@ -124,7 +124,7 @@ jobs:
           .github/scripts/generate_latest_report_redirect.sh ${{steps.report-details.outputs.report_number}}
 
       - name: Deploy report to Github Pages
-        uses: JamesIves/github-pages-deploy-action@v4
+        uses: JamesIves/github-pages-deploy-action@v4.6.9
         with:
           token: ${{ secrets.GH_PAGE_DEPLOY_KEY }}
           # ssh-key: 
