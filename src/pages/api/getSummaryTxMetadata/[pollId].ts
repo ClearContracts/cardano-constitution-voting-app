@@ -108,7 +108,7 @@ export default async function getSummaryTxMetadata(
     const percentage =
       Math.round((yesVotes / (activeVoterCount - abstainVotes)) * 100) || 0;
 
-    const constitutionHash = `Text Hash: ${poll.hashedText}, Text URL: ${poll.link}`;
+    const constitutionHash = `Text Hash: ${poll.hashedText}`;
     const approvalString = `Approval Result: ${percentage}%`;
     const participationString = `Yes Votes: ${yesVotes}, No Votes: ${noVotes}`;
     const totalString = `Abstain Votes: ${abstainVotes}, Total Eligible Voters: ${activeVoterCount}`;
