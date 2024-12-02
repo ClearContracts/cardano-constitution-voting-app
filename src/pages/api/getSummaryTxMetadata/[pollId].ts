@@ -131,8 +131,6 @@ export default async function getSummaryTxMetadata(
       ...txIds,
     ];
 
-    console.log(metadata);
-
     return res
       .status(200)
       .json({ metadata: metadata, message: 'Metadata constructed' });
