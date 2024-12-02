@@ -19,8 +19,6 @@ interface Props {
 export function MobileRepresentativesTable(props: Props): JSX.Element {
   const { representatives, workshops } = props;
 
-  const theme = useTheme();
-
   const representativesList = useMemo(() => {
     const repsOnly = representatives.filter((rep) => {
       // Filter out representatives that are not in workshop 1 (Convention Organizers)

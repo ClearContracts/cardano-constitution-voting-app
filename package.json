@@ -66,7 +66,7 @@
     "react-material-ui-carousel": "^3.4.2"
   },
   "devDependencies": {
-    "@eslint/js": "^9.14.0",
+    "@eslint/js": "^9.16.0",
     "@ianvs/prettier-plugin-sort-imports": "^4.3.1",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/react": "^16.0.1",
@@ -75,10 +75,10 @@
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "@vitejs/plugin-react": "^4.3.3",
-    "eslint": "^9.14.0",
+    "eslint": "^9.16.0",
     "eslint-config-next": "15.0.3",
     "eslint-config-prettier": "^9.1.0",
-    "globals": "^15.11.0",
+    "globals": "^15.13.0",
     "jsdom": "^25.0.1",
     "msw": "^2.5.0",
     "next-router-mock": "^0.9.13",
@@ -86,7 +86,7 @@
     "prisma": "^5.22.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.6.3",
-    "typescript-eslint": "^8.12.2",
+    "typescript-eslint": "^8.16.0",
     "vitest": "^2.1.4"
   }
 }
