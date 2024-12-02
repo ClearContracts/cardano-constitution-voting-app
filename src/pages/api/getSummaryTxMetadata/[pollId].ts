@@ -8,6 +8,7 @@ import { getServerSession } from 'next-auth';
 import { pollDto } from '@/data/pollDto';
 import { pollTransactionsDto } from '@/data/pollTransactionsDto';
 import { pollVotesDto } from '@/data/pollVotesDto';
+import { workshopsDto } from '@/data/workshopsDto';
 import { checkIfCO } from '@/lib/checkIfCO';
 import { getActiveVoterCount } from '@/lib/helpers/getActiveVoterCount';
 
@@ -102,8 +103,12 @@ export default async function getSummaryTxMetadata(
       (vote) => vote.vote === 'abstain',
     ).length;
 
-    const data = await getActiveVoterCount();
-    const activeVoterCount = data.voters;
+    const workshops = await workshopsDto();
+
+    const activeWorkshops = workshops.filter(
+      (workshop) => workshop.active_voter_id,
+    );
+    const activeVoterCount = activeWorkshops.length;
 
     const percentage =
       Math.round((yesVotes / (activeVoterCount - abstainVotes)) * 100) || 0;
@@ -121,6 +126,8 @@ export default async function getSummaryTxMetadata(
       'Transaction Hashes:',
       ...txIds,
     ];
+
+    console.log(metadata);
 
     return res
       .status(200)
