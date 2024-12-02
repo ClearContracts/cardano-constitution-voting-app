@@ -11,7 +11,6 @@ import { pollVotesDto } from '@/data/pollVotesDto';
 import { workshopsDto } from '@/data/workshopsDto';
 import { checkIfCO } from '@/lib/checkIfCO';
 import { getActiveVoterCount } from '@/lib/helpers/getActiveVoterCount';
-import { splitStringByBytes } from '@/lib/splitStringByBytes';
 
 type Data = { metadata: string[] | null; message: string };
 
@@ -114,10 +113,23 @@ export default async function getSummaryTxMetadata(
     const percentage =
       Math.round((yesVotes / (activeVoterCount - abstainVotes)) * 100) || 0;
 
-    const summaryText = `Text Hash: ${poll.hashedText}, Approval Result: ${percentage}%, Yes Votes: ${yesVotes}, No Votes: ${noVotes}, Abstain Votes: ${abstainVotes}, Total Eligible Voters: ${activeVoterCount}, Transaction Hashes:`;
-    const summaryByBytes = splitStringByBytes(summaryText, 64);
+    const approvalString = `Approval Result: ${percentage}%`;
+    const yesString = `Yes Votes: ${yesVotes}`;
+    const noString = `No Votes: ${noVotes}`;
+    const abstainString = `Abstain Votes: ${abstainVotes}`;
+    const totalString = `Total Eligible Voters: ${activeVoterCount}`;
 
-    const metadata = [...summaryByBytes, ...txIds];
+    const metadata = [
+      'Text Hash:',
+      poll.hashedText,
+      approvalString,
+      yesString,
+      noString,
+      abstainString,
+      totalString,
+      'Transaction Hashes:',
+      ...txIds,
+    ];
 
     console.log(metadata);
 
