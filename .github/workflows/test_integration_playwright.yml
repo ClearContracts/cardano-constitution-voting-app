@@ -28,6 +28,7 @@ jobs:
       KUBER_API_URL: ${{vars.KUBER_API_URL}}
       KUBER_API_KEY: ${{secrets.KUBER_API_KEY}}
       TEST_WORKERS: ${{vars.TEST_WORKERS}}
+      BLOCKFROST_API_KEY: ${{secrets.BLOCKFROST_API_KEY}}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
