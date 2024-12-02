@@ -26,7 +26,11 @@ export function MobileRepresentativesTable(props: Props): JSX.Element {
   const theme = useTheme();
 
   const representativesList = useMemo(() => {
-    return representatives.map((rep) => {
+    const repsOnly = representatives.filter((rep) => {
+      // Filter out representatives that are not in workshop 1 (Convention Organizers)
+      return BigInt(rep.workshop_id) !== BigInt(1);
+    });
+    return repsOnly.map((rep) => {
       return (
         <MobileRepresentativeCard representative={rep} workshops={workshops} />
       );
