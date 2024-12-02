@@ -3,10 +3,11 @@ import {
   delegateWallets,
   organizerWallets,
 } from '@constants/staticWallets';
-import { importWallet, injectWalletExtension } from '@fixtures/importWallet';
+import { importWallet, injectWalletExtension, pageWithInjectedWallet } from '@fixtures/importWallet';
 import loadEternlExtension from '@fixtures/loadExtension';
 import { setAllureEpic, setAllureStory } from '@helpers/allure';
 import Logger from '@helpers/logger';
+import { nAtaTime } from '@helpers/txUtil';
 import HomePage from '@pages/homePage';
 import LoginPage from '@pages/loginPage';
 import PollPage from '@pages/pollPage';
@@ -24,16 +25,7 @@ function sleep(ms: number): Promise<void> {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-async function pageWithInjectedWallet(browser:Browser, wallet:StaticWallet): Promise<Page> {
-  const page = await browser.newPage();
-  await loadEternlExtension(page);
 
-  await injectWalletExtension(page, wallet);
-
-  const loginPage = new LoginPage(page);
-  await loginPage.login();
-  return page;
-}
 test(`Create Voted Poll`, async ({browser }) => {
     test.setTimeout(300000) // let's set it to 5 minute
     const getPage=async (w:StaticWallet)=>await pageWithInjectedWallet(browser,w)
@@ -75,26 +67,7 @@ test(`Create Voted Poll`, async ({browser }) => {
       await page.getByTestId(votes[randomVote]).click();
       await expect(page.getByText('Vote recorded!'),"Expected Vote to be recorded for user: "+wallet.stakeAddress).toBeVisible({timeout:10000})
       await page.close()
-    });
+    },10);
     const organizerPollPage=new PollPage(organizerPages[0])
     await organizerPollPage.endVoting()
 });
-
-async function nAtaTime<T,U>(array: T[], f: (item: T,index?:number) => Promise<U>,n:number =10): Promise<U[]> {
-    const chunkSize = n;
-    let results: U[] = [];
-  
-    // Process the array in chunks of `n`
-    for (let i = 0; i < array.length; i += chunkSize) {
-      const chunk = array.slice(i, i + chunkSize);
-  
-      // Wait for all async operations on this chunk to finish and collect the results
-      const chunkResults = await Promise.all(chunk.map((item,index) => f(item,index)));
-      
-      // Push the results of the current chunk to the results array
-      results.push(...chunkResults);
-    }
-  
-    return results;
-  }
-  

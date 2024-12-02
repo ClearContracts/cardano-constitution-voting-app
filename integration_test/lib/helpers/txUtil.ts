@@ -79,3 +79,21 @@ export async function waitForTxSubmit(
 export function sleep(ms: number): Promise<void> {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
+
+export async function nAtaTime<T,U>(array: T[], f: (item: T,index?:number) => Promise<U>,n:number =10): Promise<U[]> {
+  const chunkSize = n;
+  let results: U[] = [];
+
+  // Process the array in chunks of `n`
+  for (let i = 0; i < array.length; i += chunkSize) {
+    const chunk = array.slice(i, i + chunkSize);
+
+    // Wait for all async operations on this chunk to finish and collect the results
+    const chunkResults = await Promise.all(chunk.map((item,index) => f(item,index)));
+    
+    // Push the results of the current chunk to the results array
+    results.push(...chunkResults);
+  }
+
+  return results;
+}

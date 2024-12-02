@@ -16,7 +16,8 @@ export default class LoginPage {
 
     await this.connectWalletBtn.first().click();
     await this.eternlWalletBtn.click({ force: true });
-    await expect(this.page.getByTestId('connected-user-name')).toBeVisible({timeout: 30000})
+    // this is taking absurdly long time when testing with 10 parallel users
+    await expect(this.page.getByTestId('connected-user-name')).toBeVisible({timeout: 40000})
   }
 
   async logout(): Promise<void> {
@@ -25,7 +26,6 @@ export default class LoginPage {
   }
 
   async isLoggedIn(): Promise<void> {
-    await this.connectWalletBtn.first().click();
-    await expect(this.disconnectWalletBtn).toBeVisible();
+    await expect(this.page.getByTestId('connected-user-name')).toBeVisible({timeout: 40000})
   }
 }
