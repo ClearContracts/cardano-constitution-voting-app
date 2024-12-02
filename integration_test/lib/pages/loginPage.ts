@@ -15,9 +15,8 @@ export default class LoginPage {
     await this.goto();
 
     await this.connectWalletBtn.first().click();
-    await this.eternlWalletBtn.click({ force: false });
-    await expect(this.page.getByText("Welcome")).toBeVisible()
-
+    await this.eternlWalletBtn.click({ force: true });
+    await expect(this.page.getByTestId('connected-user-name')).toBeVisible({timeout: 30000})
   }
 
   async logout(): Promise<void> {

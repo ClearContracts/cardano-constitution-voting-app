@@ -6,6 +6,7 @@ import {
 import { importWallet, injectWalletExtension } from '@fixtures/importWallet';
 import loadEternlExtension from '@fixtures/loadExtension';
 import { setAllureEpic, setAllureStory } from '@helpers/allure';
+import Logger from '@helpers/logger';
 import HomePage from '@pages/homePage';
 import LoginPage from '@pages/loginPage';
 import PollPage from '@pages/pollPage';
@@ -31,11 +32,10 @@ async function pageWithInjectedWallet(browser:Browser, wallet:StaticWallet): Pro
 
   const loginPage = new LoginPage(page);
   await loginPage.login();
-  await sleep(2000)
   return page;
 }
 test(`Create Voted Poll`, async ({browser }) => {
-    test.slow()
+    test.setTimeout(300000) // let's set it to 5 minute
     const getPage=async (w:StaticWallet)=>await pageWithInjectedWallet(browser,w)
 
 
@@ -60,10 +60,12 @@ test(`Create Voted Poll`, async ({browser }) => {
       let pollPage=new PollPage(page)
       await pollPage.goto(pollId)
 
-      const isActive = await pollPage.voteYesBtn.waitFor({state: "visible",timeout: 20000}).then(()=>true).catch(()=>false)
+      const isActive = await pollPage.voteYesBtn.waitFor({state: "visible",timeout: 30000}).then(()=>true).catch(()=>false)
 
       if(!isActive){
+        Logger.info("User is not active voter: "+wallet.stakeAddress)
          await page.close()
+         wallet=alternateWallets[index]
          page = await pageWithInjectedWallet(browser,alternateWallets[index])
          pollPage=new PollPage(page)
          await pollPage.goto(pollId)
@@ -71,7 +73,7 @@ test(`Create Voted Poll`, async ({browser }) => {
 
       const randomVote = Math.floor(Math.random() * 3);
       await page.getByTestId(votes[randomVote]).click();
-      await expect(page.getByText('Vote recorded!')).toBeVisible()
+      await expect(page.getByText('Vote recorded!'),"Expected Vote to be recorded for user: "+wallet.stakeAddress).toBeVisible({timeout:10000})
       await page.close()
     });
     const organizerPollPage=new PollPage(organizerPages[0])

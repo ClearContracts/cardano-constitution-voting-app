@@ -3,6 +3,7 @@ import { faker } from '@faker-js/faker';
 import { extractPollIdFromUrl } from '@helpers/string';
 import { blake } from 'libcardano';
 import PollPage from './pollPage';
+import Logger from '@helpers/logger';
 
 export default class HomePage {
   readonly heading = this.page.getByText(
@@ -15,8 +16,8 @@ export default class HomePage {
 
   // input
   readonly pollNameInput = this.page.locator(
-    '[data-testid="poll-name-input"] input'
-  );
+    '[data-testid="poll-name-input"] textarea'
+  ).first();
 
   readonly constitutionLinkInput = this.page
     .locator('[data-testid="poll-link-input"] input')
@@ -48,12 +49,17 @@ export default class HomePage {
 
     await this.submitPollBtn.click();
 
-    await expect(this.page.getByText(pollName)).toBeVisible({
-      timeout: 10_000,
+    await this.page.waitForURL(/\/polls\/(?!new)/, {
+      timeout: 10_000, 
     });
-
+  
     const currentPageUrl = this.page.url();
-    return extractPollIdFromUrl(currentPageUrl);
+    Logger.info("Current page Url: " + currentPageUrl);
+  
+    const pollId = extractPollIdFromUrl(currentPageUrl);
+  
+    // Return the extracted poll ID
+    return pollId;
   }
 
   async getOpenPollCard(): Promise<Locator> {

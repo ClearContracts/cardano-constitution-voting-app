@@ -33,6 +33,9 @@ export default class PollPage {
   async deletePoll(): Promise<void> {
     await this.deletePollBtn.click();
     await this.deletePollConfirm.click();
+    await this.page.waitForURL('/', {
+      timeout: 10_000, 
+    });
 
   }
   async endVoting() {

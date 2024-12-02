@@ -185,6 +185,7 @@ export function PollResults(props: Props): JSX.Element {
         >
           <Typography variant="h6">Summary Transaction</Typography>
           <Link
+            data-testid="summary-tx-link"
             href={
               process.env.NEXT_PUBLIC_NETWORK === 'mainnet'
                 ? `https://cardanoscan.io/transaction/${summaryTxId}?tab=metadata`
@@ -209,6 +210,7 @@ export function PollResults(props: Props): JSX.Element {
             >
               <Typography variant="h6">{`Vote record Tx #${index + 1}`}</Typography>
               <Link
+                data-testid={'vote-record-tx-link-'+(index+1)}
                 href={
                   process.env.NEXT_PUBLIC_NETWORK === 'mainnet'
                     ? `https://cardanoscan.io/transaction/${txId}?tab=metadata`

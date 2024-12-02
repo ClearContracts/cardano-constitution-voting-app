@@ -259,6 +259,7 @@ export function ConnectWalletButton(props: Props): JSX.Element {
               ? theme.palette.secondary.contrastText
               : '#FFFFFF',
           }}
+          data-testid={session?.data?.user?.name?'connected-user-name':''}
         >
           {session.status === 'authenticated'
             ? session.data.user.name
