@@ -138,7 +138,7 @@ export default async function getSummaryTxMetadata(
 
     // make sure metadata is under 16kb
     const bytes = getBytesOfArray(metadata);
-    if (bytes > 16000) {
+    if (bytes > 15000) {
       return res.status(400).json({
         metadata: null,
         message: 'Metadata is too large',
