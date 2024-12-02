@@ -2,7 +2,13 @@ import type { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
 import Link from 'next/link';
 import { HowToVoteRounded } from '@mui/icons-material';
-import { Box, Chip, Typography, useTheme } from '@mui/material';
+import {
+  Box,
+  Chip,
+  CircularProgress,
+  Typography,
+  useTheme,
+} from '@mui/material';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid2';
 
@@ -15,6 +21,7 @@ import { workshopNameDto } from '@/data/workshopNameDto';
 import { workshopsDto } from '@/data/workshopsDto';
 import { useCheckAddressChange } from '@/hooks/useCheckAddressChange';
 import { PollCarrousel } from '@/components/polls/pollCarrousel';
+import { MobileRepresentativesTable } from '@/components/representatives/mobileRepresentativesTable';
 import { RepresentativesTable } from '@/components/representatives/representativesTable';
 import { VotingHistoryTable } from '@/components/representatives/votingHistoryTable';
 
@@ -157,13 +164,150 @@ export default function Representative(props: Props): JSX.Element {
       </Head>
       <main>
         <Box display="flex" flexDirection="column" gap={9}>
-          {mainContent}
-
+          <Grid container>
+            <Grid
+              size={{
+                xs: 12,
+                md: 6,
+              }}
+              sx={{
+                pr: {
+                  xs: 0,
+                  md: 4,
+                },
+              }}
+            >
+              {user ? (
+                <Box display="flex" flexDirection="column" gap={3}>
+                  <Typography
+                    variant="h3"
+                    fontWeight="bold"
+                    data-testid="user-name"
+                  >
+                    {user.name}
+                  </Typography>
+                  <Typography
+                    variant="h6"
+                    fontWeight="bold"
+                    data-testid="user-wallet-address"
+                    sx={{
+                      wordWrap: 'break-word', // Break long words
+                      overflowWrap: 'break-word', // Ensures wrapping works on all browsers
+                      whiteSpace: 'normal', // Allows text to wrap
+                    }}
+                  >
+                    {user.wallet_address}
+                  </Typography>
+                  <Box display="flex" flexDirection="row" gap={1}>
+                    <Box sx={{ color: theme.palette.text.disabled }}>
+                      {isActiveVoter === true ? (
+                        <Chip
+                          variant="outlined"
+                          color="success"
+                          label="Active Voter"
+                        ></Chip>
+                      ) : (
+                        <Chip
+                          variant="outlined"
+                          label="Not an active voter"
+                        ></Chip>
+                      )}
+                    </Box>
+                    {user.is_delegate && (
+                      <Box>
+                        <Chip
+                          variant="outlined"
+                          color="primary"
+                          label="Delegate"
+                        ></Chip>
+                      </Box>
+                    )}
+                    {user.is_alternate && (
+                      <Box sx={{ color: theme.palette.text.disabled }}>
+                        <Chip variant="outlined" label="Alternate"></Chip>
+                      </Box>
+                    )}
+                  </Box>
+                  <Box
+                    display="flex"
+                    flexDirection="row"
+                    gap={1}
+                    alignItems="center"
+                    color={theme.palette.text.primary}
+                  >
+                    <HowToVoteRounded />
+                    <Typography data-testid="user-vote-count">
+                      {userVotes.length} vote
+                      {userVotes.length === 1 ? '' : 's'} cast
+                    </Typography>
+                  </Box>
+                  <Typography variant="h6" data-testid="workshop-name">
+                    {workshopName || 'Failed to retrieve workshop'}
+                  </Typography>
+                </Box>
+              ) : (
+                <Box
+                  sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    width: '100%',
+                  }}
+                >
+                  <CircularProgress />
+                </Box>
+              )}
+            </Grid>
+            <Grid
+              size={{
+                xs: 12,
+                md: 6,
+              }}
+              sx={{
+                mt: {
+                  xs: 6,
+                  md: 0,
+                },
+              }}
+            >
+              {user && (
+                <VotingHistoryTable
+                  userId={user.id}
+                  votes={userVotes}
+                  polls={polls}
+                />
+              )}
+            </Grid>
+          </Grid>
           <PollCarrousel currentPollId={undefined} polls={polls} />
-          <RepresentativesTable
-            representatives={representatives}
-            workshops={workshops}
-          />
+          <Box
+            sx={{
+              display: {
+                xs: 'none',
+                md: 'flex',
+              },
+              width: '100%',
+            }}
+          >
+            <RepresentativesTable
+              representatives={representatives}
+              workshops={workshops}
+            />
+          </Box>
+          <Box
+            sx={{
+              display: {
+                xs: 'flex',
+                md: 'none',
+              },
+              width: '100%',
+            }}
+          >
+            <MobileRepresentativesTable
+              representatives={representatives}
+              workshops={workshops}
+            />
+          </Box>
         </Box>
       </main>
     </>

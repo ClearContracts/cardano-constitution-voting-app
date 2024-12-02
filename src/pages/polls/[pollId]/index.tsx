@@ -27,13 +27,13 @@ import { BeginVoteButton } from '@/components/buttons/beginVoteButton';
 import { DeletePollButton } from '@/components/buttons/deletePollButton';
 import { EndVoteButton } from '@/components/buttons/endVoteButton';
 import { PutVotesOnChainButton } from '@/components/buttons/putVotesOnChainButton';
-import { ViewTxButton } from '@/components/buttons/viewTxButton';
 import { VoteOnPollButtons } from '@/components/buttons/voteOnPollButtons';
 import { CoordinatorViewVotes } from '@/components/polls/coordinatorViewVotes';
 import { PollCarrousel } from '@/components/polls/pollCarrousel';
 import { PollResults } from '@/components/polls/pollResults';
 import { PollStatusChip } from '@/components/polls/pollStatusChip';
 import { PollVoteCount } from '@/components/polls/pollVoteCount';
+import { MobileRepresentativesTable } from '@/components/representatives/mobileRepresentativesTable';
 import { RepresentativesTable } from '@/components/representatives/representativesTable';
 import { TxPopup } from '@/components/txPopups/txPopup';
 
@@ -202,11 +202,6 @@ export default function ViewPoll(props: Props): JSX.Element {
                   The linked text document has the Blake2b-256 hash of:{' '}
                   {poll.hashedText}
                 </Typography>
-                {poll.summary_tx_id && !isTxUploading && (
-                  <Box marginTop={3} marginBottom={3}>
-                    <ViewTxButton txId={poll.summary_tx_id} />
-                  </Box>
-                )}
                 {isSubmitting && !isTxUploading && (
                   <Box marginTop={3} marginBottom={3}>
                     <TxPopup
@@ -308,7 +303,11 @@ export default function ViewPoll(props: Props): JSX.Element {
                   {/* Vote Results */}
                   {poll.status === pollPhases.concluded &&
                     typeof pollId === 'string' && (
-                      <PollResults votes={pollResults} pollId={pollId} />
+                      <PollResults
+                        votes={pollResults}
+                        pollId={pollId}
+                        summaryTxId={poll.summary_tx_id || ''}
+                      />
                     )}
                 </Box>
               </Grid>
@@ -321,10 +320,34 @@ export default function ViewPoll(props: Props): JSX.Element {
               polls={polls}
               isPollPage={true}
             />
-            <RepresentativesTable
-              representatives={representatives}
-              workshops={workshops}
-            />
+            <Box
+              sx={{
+                display: {
+                  xs: 'none',
+                  md: 'flex',
+                },
+                width: '100%',
+              }}
+            >
+              <RepresentativesTable
+                representatives={representatives}
+                workshops={workshops}
+              />
+            </Box>
+            <Box
+              sx={{
+                display: {
+                  xs: 'flex',
+                  md: 'none',
+                },
+                width: '100%',
+              }}
+            >
+              <MobileRepresentativesTable
+                representatives={representatives}
+                workshops={workshops}
+              />
+            </Box>
           </Box>
         </Box>
         <Modal open={modalOpen} onClose={handleModalClose}>

@@ -17,7 +17,7 @@ export function ColorModeProvider({
 }): JSX.Element {
   const theme = createTheme({
     shape: {
-      borderRadius: 8,
+      borderRadius: 4,
     },
     palette: {
       // palette values for light mode
@@ -28,7 +28,7 @@ export function ColorModeProvider({
         main: 'rgba(192,221,255)',
       },
       success: {
-        main: 'rgb(77,166,77)',
+        main: 'rgb(34,225,34)',
       },
       error: {
         main: '#FF4F6E',
@@ -85,8 +85,8 @@ export function ColorModeProvider({
             color: 'rgb(0,33,112,1) !important',
           },
           outlinedSuccess: {
-            border: '1px solid rgba(77,166,77, 1)',
-            backgroundColor: 'rgba(77,166,77, 0.1)',
+            border: '1px solid rgb(34,225,34)',
+            backgroundColor: 'rgba(34,225,34, 0.1)',
           },
           outlinedWarning: {
             border: '1px solid rgba(255,255,255, .10)',
@@ -107,8 +107,8 @@ export function ColorModeProvider({
             color: '#FFFFFF',
           },
           colorSuccess: {
-            border: '1px solid rgba(77,166,77, 1)',
-            backgroundColor: 'rgba(77,166,77, 0.25)',
+            border: '1px solid rgb(34,225,34)',
+            backgroundColor: 'rgba(34,225,34, 0.25)',
             color: '#FFFFFF',
           },
           colorPrimary: {
@@ -123,14 +123,13 @@ export function ColorModeProvider({
           root: {
             background: 'transparent',
             borderRadius: '4px',
-            border: 'none',
+            border: '1px solid rgba(255, 255, 255, 0.25)',
             padding: 0,
             margin: 0,
             boxShadow: 'none',
             '&::before': {
               display: 'none',
             },
-            overflow: 'scroll',
           },
         },
       },
@@ -141,13 +140,7 @@ export function ColorModeProvider({
           },
         },
       },
-      MuiAccordionDetails: {
-        styleOverrides: {
-          root: {
-            overflow: 'scroll',
-          },
-        },
-      },
+
       MuiListItemButton: {
         styleOverrides: {
           root: {

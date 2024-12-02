@@ -257,7 +257,7 @@ export function ConnectWalletButton(props: Props): JSX.Element {
             fontWeight: 500,
             color: isHomepage
               ? theme.palette.secondary.contrastText
-              : theme.palette.success.contrastText,
+              : '#FFFFFF',
           }}
         >
           {session.status === 'authenticated'

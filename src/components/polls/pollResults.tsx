@@ -1,7 +1,9 @@
 import { useEffect, useMemo, useState } from 'react';
+import Link from 'next/link';
 import {
   DoNotDisturbOutlined,
   HowToVoteOutlined,
+  LaunchOutlined,
   ThumbDownOutlined,
   ThumbUpOutlined,
 } from '@mui/icons-material';
@@ -15,6 +17,7 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 
 import { calculateWinner } from '@/lib/calculateWinner';
+import { getPollTransactions } from '@/lib/helpers/getPollTransactions';
 import { DownloadPollVotesButton } from '@/components/buttons/downloadPollVotesButton';
 import { PollResultsVoter } from '@/components/polls/pollResultsVoter';
 
@@ -34,6 +37,7 @@ interface Props {
       id: string;
     }[];
   };
+  summaryTxId: string;
 }
 
 const YesLinearProgress = styled(LinearProgress)(({ theme }) => ({
@@ -81,10 +85,11 @@ const AbstainLinearProgress = styled(LinearProgress)(({ theme }) => ({
  * @returns Poll Results
  */
 export function PollResults(props: Props): JSX.Element {
-  const { votes, pollId } = props;
+  const { votes, pollId, summaryTxId } = props;
 
   const [percentage, setPercentage] = useState(-1);
   const [activeVoterCount, setActiveVoterCount] = useState(-1);
+  const [pollTxs, setPollTxs] = useState<string[]>([]);
 
   const theme = useTheme();
 
@@ -166,6 +171,74 @@ export function PollResults(props: Props): JSX.Element {
     }
   }, [votes]);
 
+  const pollTransactions = useMemo(() => {
+    return (
+      <Box display="flex" flexDirection="column" gap={2} width="100%">
+        <Typography variant="h5" fontWeight="600">
+          On chain records
+        </Typography>
+        <Box
+          display="flex"
+          flexDirection="row"
+          width="100%"
+          justifyContent={'space-between'}
+        >
+          <Typography variant="h6">Summary Transaction</Typography>
+          <Link
+            href={
+              process.env.NEXT_PUBLIC_NETWORK === 'mainnet'
+                ? `https://cardanoscan.io/transaction/${summaryTxId}?tab=metadata`
+                : `https://preview.cardanoscan.io/transaction/${summaryTxId}?tab=metadata`
+            }
+            target="_blank"
+            style={{
+              color: '#FFFFFF',
+            }}
+          >
+            <LaunchOutlined />
+          </Link>
+        </Box>
+        {/* Loop through all poll transactions */}
+        {pollTxs.map((txId, index) => {
+          return (
+            <Box
+              display="flex"
+              flexDirection="row"
+              width="100%"
+              justifyContent={'space-between'}
+            >
+              <Typography variant="h6">{`Vote record Tx #${index + 1}`}</Typography>
+              <Link
+                href={
+                  process.env.NEXT_PUBLIC_NETWORK === 'mainnet'
+                    ? `https://cardanoscan.io/transaction/${txId}?tab=metadata`
+                    : `https://preview.cardanoscan.io/transaction/${txId}?tab=metadata`
+                }
+                target="_blank"
+                style={{
+                  color: '#FFFFFF',
+                }}
+              >
+                <LaunchOutlined />
+              </Link>
+            </Box>
+          );
+        })}
+      </Box>
+    );
+  }, [pollTxs, summaryTxId]);
+
+  // get all poll transactions
+  useEffect(() => {
+    async function getPollTxs(): Promise<void> {
+      if (typeof pollId === 'string') {
+        const txs = await getPollTransactions(pollId);
+        setPollTxs(txs);
+      }
+    }
+    getPollTxs();
+  }, [pollId]);
+
   return (
     <Box display="flex" flexDirection="column" gap={6} width="100%">
       <Box
@@ -185,7 +258,7 @@ export function PollResults(props: Props): JSX.Element {
           display="flex"
           flexDirection={{ xs: 'column', sm: 'row' }}
           gap={{ xs: 1, sm: 3 }}
-          alignItems={{ xs: 'flex-start', sm: 'flex-end' }}
+          alignItems={{ xs: 'flex-start', sm: 'center' }}
         >
           <Typography
             variant="h2"
@@ -194,12 +267,7 @@ export function PollResults(props: Props): JSX.Element {
           >
             {percentage}%
           </Typography>
-
-          <Typography
-            sx={{
-              mb: 0.5,
-            }}
-          >
+          <Typography>
             {yesCount} of {activeVoterCount - abstainCount} Non-Abstaining
             Active Voters voted Yes
           </Typography>
@@ -325,6 +393,7 @@ export function PollResults(props: Props): JSX.Element {
           {abstainVoters}
         </Box>
       </Box>
+      {pollTransactions}
     </Box>
   );
 }

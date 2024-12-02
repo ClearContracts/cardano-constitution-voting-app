@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { CheckRounded } from '@mui/icons-material';
 import { Box, useTheme } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
@@ -60,8 +61,8 @@ export function RepresentativesTable(props: Props): JSX.Element {
       renderCell: (params): JSX.Element => {
         const delegateId = params.row.delegate_id;
         const delegate = representatives.find((rep) => rep.id === delegateId);
-        const activeVoterId = params.row.active_voter_id;
         const name = abbreviateName(delegate?.name || '');
+        const activeVoterId = params.row.active_voter_id;
         return (
           <Link
             href={paths.representatives.representative + delegateId}
@@ -91,9 +92,10 @@ export function RepresentativesTable(props: Props): JSX.Element {
                 },
               }}
             >
-              <Typography color={delegateId === activeVoterId ? 'success' : ''}>
-                {name}
-              </Typography>
+              <Typography>{name}</Typography>
+              {activeVoterId === delegate?.id && (
+                <CheckRounded color="success" />
+              )}
             </Box>
           </Link>
         );
@@ -117,8 +119,9 @@ export function RepresentativesTable(props: Props): JSX.Element {
       renderCell: (params): JSX.Element => {
         const alternateId = params.row.alternate_id;
         const alternate = representatives.find((rep) => rep.id === alternateId);
-        const activeVoterId = params.row.active_voter_id;
         const name = abbreviateName(alternate?.name || '');
+        const activeVoterId = params.row.active_voter_id;
+
         return (
           <Link
             href={paths.representatives.representative + alternateId}
@@ -148,11 +151,10 @@ export function RepresentativesTable(props: Props): JSX.Element {
                 },
               }}
             >
-              <Typography
-                color={alternateId === activeVoterId ? 'success' : ''}
-              >
-                {name}
-              </Typography>
+              <Typography>{name}</Typography>
+              {activeVoterId === alternate?.id && (
+                <CheckRounded color="success" />
+              )}
             </Box>
           </Link>
         );
@@ -174,11 +176,15 @@ export function RepresentativesTable(props: Props): JSX.Element {
         );
       },
       renderCell: (params): JSX.Element => {
+        const delegateId = params.row.delegate_id;
+        const alternateId = params.row.alternate_id;
         const activeVoterId = params.row.active_voter_id;
-        const activeVoter = representatives.find(
-          (rep) => rep.id === activeVoterId,
-        );
-        const name = abbreviateName(activeVoter?.name || '');
+        let activeRole;
+        if (delegateId === activeVoterId) {
+          activeRole = 'Delegate';
+        } else if (alternateId === activeVoterId) {
+          activeRole = 'Alternate';
+        }
         return (
           <Link
             href={paths.representatives.representative + activeVoterId}
@@ -187,7 +193,7 @@ export function RepresentativesTable(props: Props): JSX.Element {
               color: theme.palette.text.primary,
               height: '100%',
             }}
-            data-testid={`active-voter-name-${activeVoter?.id}`}
+            data-testid={`active-voter-role-${activeVoterId}`}
           >
             <Box
               display="flex"
@@ -208,7 +214,7 @@ export function RepresentativesTable(props: Props): JSX.Element {
                 },
               }}
             >
-              <Typography noWrap>{name}</Typography>
+              <Typography noWrap>{activeRole}</Typography>
             </Box>
           </Link>
         );
