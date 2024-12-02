@@ -118,6 +118,7 @@ export default async function getSummaryTxMetadata(
       approvalString,
       participationString,
       totalString,
+      'Transaction Hashes:',
       ...txIds,
     ];
 
