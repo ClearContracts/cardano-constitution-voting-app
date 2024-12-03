@@ -57,7 +57,7 @@ export default defineConfig({
     {
       name: 'loggedin (mobile)',
       use: { ...devices['Pixel 5'] },
-      testIgnore: ['**/*.independent.spec.ts'],
+      testIgnore: ['**/*.independent.spec.ts','**/*.once.spec.ts'],
       dependencies: environments.ci ? ['auth setup'] : [],
     },
     {
@@ -68,7 +68,7 @@ export default defineConfig({
     {
       name: 'loggedin (tablet)',
       use: { ...devices['Galaxy Tab S4'] },
-      testIgnore: ['**/*.independent.spec.ts'],
+      testIgnore: ['**/*.independent.spec.ts','**/*.once.spec.ts'],
       dependencies: environments.ci ? ['auth setup'] : [],
     },
     {
@@ -79,7 +79,7 @@ export default defineConfig({
     
     {
       name: 'on-chain',
-      testMatch: 'y-on-chain-tests.spec.ts',
+      testMatch: '6-on-chain-tests.once.spec.ts',
       use: { ...devices['Desktop Chrome'] },
       dependencies: environments.ci ? ['auth setup'] : [],
     },
