@@ -108,7 +108,13 @@ export function PollResults(props: Props): JSX.Element {
 
   const yesVoters = useMemo((): JSX.Element => {
     return (
-      <Box display="flex" flexDirection="row" gap={1} flexWrap="wrap">
+      <Box
+        data-testid="yes-vote-results"
+        display="flex"
+        flexDirection="row"
+        gap={1}
+        flexWrap="wrap"
+      >
         {votes?.yes?.map(({ name, id }) => {
           return (
             <Box key={id}>
@@ -122,7 +128,13 @@ export function PollResults(props: Props): JSX.Element {
 
   const noVoters = useMemo((): JSX.Element => {
     return (
-      <Box display="flex" flexDirection="row" gap={1} flexWrap="wrap">
+      <Box
+        data-testid="no-vote-results"
+        display="flex"
+        flexDirection="row"
+        gap={1}
+        flexWrap="wrap"
+      >
         {votes?.no?.map(({ name, id }) => {
           return (
             <Box key={id}>
@@ -173,6 +185,7 @@ export function PollResults(props: Props): JSX.Element {
         >
           <Typography variant="h6">Summary Transaction</Typography>
           <Link
+            data-testid="summary-tx-link"
             href={
               process.env.NEXT_PUBLIC_NETWORK === 'mainnet'
                 ? `https://cardanoscan.io/transaction/${summaryTxId}?tab=metadata`
@@ -197,6 +210,7 @@ export function PollResults(props: Props): JSX.Element {
             >
               <Typography variant="h6">{`Vote record Tx #${index + 1}`}</Typography>
               <Link
+                data-testid={'vote-record-tx-link-'+(index+1)}
                 href={
                   process.env.NEXT_PUBLIC_NETWORK === 'mainnet'
                     ? `https://cardanoscan.io/transaction/${txId}?tab=metadata`
@@ -248,7 +262,11 @@ export function PollResults(props: Props): JSX.Element {
           gap={{ xs: 1, sm: 3 }}
           alignItems={{ xs: 'flex-start', sm: 'center' }}
         >
-          <Typography variant="h2" fontWeight="bold">
+          <Typography
+            variant="h2"
+            fontWeight="bold"
+            data-testid="acceptance-percentage"
+          >
             {percentage}%
           </Typography>
           <Typography>

@@ -1,0 +1,86 @@
+name: Build and deploy CCVA
+
+on:
+  push:
+    branches:
+      - test
+jobs:
+  deploy:
+    name: Deploy app
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Set up SSH and deploy
+        uses: appleboy/ssh-action@v1.0.3
+        env: 
+          COMMIT_SHA: ${{github.sha}}
+        with:
+          host: ${{ secrets.BASTION_SERVER_HOST }}
+          username: githubci
+          key: ${{ secrets.BASTION_SERVER_SSH_KEY }}
+          port: ${{ secrets.BASTION_SERVER_SSH_PORT }}
+          envs: COMMIT_SHA
+          command_timeout: 40m
+
+          script: |
+            set -euo pipefail
+            REPO_URL="git@github.com:${{ github.repository }}"
+            DEST_DIR="$HOME/Documents/${{ github.repository }}"
+
+            # Create parent directory if it does not exist
+            mkdir -p "$(dirname "$DEST_DIR")"
+
+            # Check if $DEST_DIR exists
+            if [ -d "$DEST_DIR" ]; then
+              cd $DEST_DIR || exit
+              if [ -d ".git" ]; then
+                echo "Updating repository..."
+                git remote set-url origin "$REPO_URL"
+                git fetch --all
+                git checkout --force "$COMMIT_SHA"
+              else
+                echo "Not a git repository. Re-cloning..."
+                rm -rf "$DEST_DIR"
+                git clone "$REPO_URL" "$DEST_DIR"
+                cd "$DEST_DIR" || exit
+                git checkout --force "$COMMIT_SHA"
+              fi
+            else
+              echo "Directory does not exist. Cloning repository..."
+              git clone "$REPO_URL" "$DEST_DIR"
+              cd "$DEST_DIR" || exit
+              git checkout --force "$COMMIT_SHA"
+            fi
+
+            cd $DEST_DIR/deployment
+            # REGISTRY_BASE=docker.io/ccva
+            # STACK_NAME=ccva
+            # DEPLOY_BASE_DOMAIN=ccv.cardanoapi.io
+            # IMAGE_VERSION_TAG=v1
+            # METADATA_API_DATABASE_URL=postgres://drep_id:xxxxxxxxxxx@postgres/drep_metadata
+            # CARDANO_NETWORK=preprod
+            # OPERATOR_SIGNING_KEY=xxxxxxxxxxx
+            # GITHUB_TOKEN=XXXXX
+
+            # Write environment variables to .env file
+            {
+              echo 'IMAGE_VERSION_TAG=${{ github.sha }}'
+              echo 'GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}'
+              echo 'REGISTRY_BASE=registry.sireto.io/cardanoapi'
+              echo 'NEXT_AUTH_SECRET=${{ secrets.NEXT_AUTH_SECRET }}'
+              echo 'STACK_NAME=ccva'
+              echo 'NEXT_PUBLIC_NETWORK=${{vars.NEXT_PUBLIC_NETWORK}}'
+              echo 'DEPLOY_BASE_DOMAIN=ccv.cardanoapi.io'
+              echo 'NPM_AUTH_TOKEN=${{ secrets.NPM_AUTH_TOKEN }}'
+              echo 'DATABASE_PASSWORD=${{ secrets.TEST_DATABASE_PASSWORD }}'
+              echo 'CARDANO_NETWORK=preprod'
+            } > .env
+
+
+
+            # push images
+            export DOCKER_HOST=172.31.0.5:2376
+            ./scripts/build-images.sh push 
+
+            # make deployment. NOTE that this won't fail if the service fails. this might be mis-leading.
+            export DOCKER_HOST=172.31.0.5:2376
+            ./scripts/deploy.sh stack ccva --with-registry-auth

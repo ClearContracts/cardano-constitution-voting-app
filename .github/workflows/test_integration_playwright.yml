@@ -1,0 +1,140 @@
+name: Integration Test [Playwright]
+
+on:
+  workflow_dispatch:
+    inputs:
+      deployment:
+        required: true
+        type: choice
+        default: "ccv.cardanoapi.io"
+        options:
+          - "ccv.cardanoapi.io"
+          
+  workflow_run: 
+    workflows: 
+      - Build and deploy CCVA
+    types: 
+      - completed
+
+jobs:
+  integration-tests:
+    runs-on: ubuntu-20.04
+    defaults:
+      run:
+        working-directory: integration_test
+    env:
+      HOST_URL: https://ccv.cardanoapi.io
+      CI: ture
+      KUBER_API_URL: ${{vars.KUBER_API_URL}}
+      KUBER_API_KEY: ${{secrets.KUBER_API_KEY}}
+      TEST_WORKERS: ${{vars.TEST_WORKERS}}
+      BLOCKFROST_API_KEY: ${{secrets.BLOCKFROST_API_KEY}}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+          cache: "npm"
+          cache-dependency-path: "./integration_test/package-lock.json"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Cache Playwright browsers
+        id: cache-playwright-browsers
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cache/ms-playwright
+          key: ${{ runner.os }}-playwright-browsers
+
+      - name: Install Playwright browsers if not cached
+        if: steps.cache-playwright-browsers.outputs.cache-hit != 'true'
+        run: npx playwright install --with-deps
+
+      - name: Run tests
+        run: |
+          npm test
+
+      - name: Upload report
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: allure-results
+          path: integration_test/allure-results
+
+  publish-report:
+    runs-on: ubuntu-20.04
+    if: always()
+    needs: integration-tests
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download report
+        uses: actions/download-artifact@v3
+        with:
+          name: allure-results
+          path: allure-results
+
+      - name: Get Allure history
+        uses: actions/checkout@v4
+        continue-on-error: true
+        with:
+          ref: gh-pages
+          path: gh-pages
+          repository: cardanoapi/ccv-test-reports
+          token: ${{ secrets.GH_PAGE_DEPLOY_KEY }}
+          # ssh-key:
+
+      - name: Register report
+        id: register-project
+        if: ${{success()}}
+        run: |
+          chmod +x .github/scripts/register_report.sh
+          .github/scripts/register_report.sh
+      - if: steps.register-project.outputs.project_exists != 'true'
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          token:  ${{ secrets.GH_PAGE_DEPLOY_KEY }}
+          # ssh-key: 
+          repository-name: cardanoapi/ccv-test-reports
+          branch: gh-pages
+          folder: project
+
+      - name: Generate report details
+        id: report-details
+        run: |
+          chmod +x .github/scripts/generate_report_details.sh
+          .github/scripts/generate_report_details.sh
+
+      - name: Build report
+        uses: simple-elf/allure-report-action@master
+        if: always()
+        id: allure-report
+        with:
+          allure_results: allure-results
+          gh_pages: gh-pages/${{ env.REPORT_NAME }}
+          allure_report: allure-report
+          allure_history: allure-history
+          keep_reports: 2000
+          report_url: ${{steps.report-details.outputs.report_url}}
+          github_run_num: ${{steps.report-details.outputs.report_number}}
+
+      - name: Generate Latest Report
+        run: |
+          chmod +x .github/scripts/generate_latest_report_redirect.sh
+          .github/scripts/generate_latest_report_redirect.sh ${{steps.report-details.outputs.report_number}}
+
+      - name: Deploy report to Github Pages
+        uses: JamesIves/github-pages-deploy-action@v4.6.9
+        with:
+          token: ${{ secrets.GH_PAGE_DEPLOY_KEY }}
+          # ssh-key: 
+          repository-name: cardanoapi/ccv-test-reports
+          branch: gh-pages
+          folder: build
+          target-folder: integration-tests
+
+    env:
+      REPORT_NAME: integration-tests
+      GH_PAGES: cardanoapi/ccv-test-reports
+      CI: ture

@@ -9,6 +9,7 @@ import { getPollVoteCount } from '@/lib/helpers/getPollVoteCount';
 
 interface Props {
   pollId: string;
+  testId?: string;
 }
 
 /**
@@ -17,7 +18,7 @@ interface Props {
  * @returns Poll Vote Count
  */
 export function PollVoteCount(props: Props): JSX.Element {
-  const { pollId } = props;
+  const { pollId, testId = 'poll-vote-count' } = props;
 
   const theme = useTheme();
 
@@ -48,10 +49,9 @@ export function PollVoteCount(props: Props): JSX.Element {
           gap={1}
           alignItems="center"
           color={theme.palette.text.primary}
-          data-testid="poll-vote-count"
         >
           <HowToVoteRounded />
-          <Typography variant="body1">
+          <Typography variant="body1" data-testid={testId}>
             {data.votes} vote{data.votes === 1 ? '' : 's'}
           </Typography>
         </Box>

@@ -66,7 +66,7 @@ export function EndVoteButton(props: Props): JSX.Element {
         onClick={handleEndVote}
         variant="contained"
         disabled={isSubmitting}
-        data-testid="end-vote-button"
+        data-testid="confirm-end-vote-button"
       >
         End Voting
       </Button>
