@@ -57,6 +57,7 @@ test.describe('Polls', () => {
         }
       })
     );
+    await Promise.all(pages.map(page=>page.close()))
   });
 
   forEachUser((user) => {
@@ -74,6 +75,7 @@ test.describe('Polls', () => {
 
       const statusText = await pollPageStatusChip.textContent();
       expect(['Concluded', 'Pending', 'Voting']).toContain(statusText);
+      await page.close()
     });
   });
 
@@ -121,6 +123,7 @@ test.describe('Polls', () => {
         expect(votes).toEqual('1 vote');
       })
     );
+    await Promise.all(pages.map(page=>page.close()));
   });
 });
 
@@ -173,6 +176,8 @@ test.describe('Polls', () => {
         await expect(abstainCount).toHaveText('1');
       })
     );
+    await Promise.all(pages.map(page=>page.close()));
+
   });
 
   /**
@@ -201,6 +206,7 @@ test.describe('Polls', () => {
         expect(acceptancePercentage).toEqual('2%');
       })
     );
+    await Promise.all(pages.map(page=>page.close()));
   });
 });
 
@@ -261,6 +267,7 @@ test.describe('User profile', () => {
         await votingTable.getByTestId('user-votes-' + pollId).isVisible();
       })
     );
+      await Promise.all(pages.map(page=>page.close()));
   });
 
   /**
@@ -374,35 +381,37 @@ test.describe('CSV File', () => {
         fs.unlinkSync(filePath);
       })
     );
+    await Promise.all(pages.map(page=>page.close()));
   });
+
 });
 
 test.describe('Constitution Poll Hash', () => {
+  test.use({ pollType: 'CreatePollWithCustomHash' });
+
   test.describe('Pending Poll', () => {
-    test.use({ pollType: 'CreatePollWithCustomHash' });
-    test('0-4A-1 Observers should be able to view custom hash of pending poll', async ({
-      pollId,
-      browser,
-    }) => {
-      test.slow();
-      const pages = await getUserPages(browser);
-      await Promise.all(
-        pages.map(async (page) => {
-          const pollPage = new PollPage(page);
-          await pollPage.goto(pollId);
+    forEachUser(user=>{
+      test('0-4A-1 '+user.role+' should be able to view custom hash of pending poll', async ({
+        pollId,
+        browser,
+      }) => {
+        test.slow()
+        const page= await user.loader(browser)
+        const pollPage = new PollPage(page);
+        await pollPage.goto(pollId);
 
-          // fetch hash value
-          const pollPageHash = page.getByTestId('constitution-poll-hash');
-          await expect(pollPageHash.first()).toBeVisible({ timeout: 20_000 });
-          const pollPageHashContent = await pollPageHash.innerText();
+        // fetch hash value
+        const pollPageHash = page.getByTestId('constitution-poll-hash');
+        await expect(pollPageHash.first()).toBeVisible({ timeout: 20_000 });
+        const pollPageHashContent = await pollPageHash.innerText();
 
-          // assert hash value
-          expect(pollPageHashContent).toContain(
-            '1111111111111111111111111111111111111111111111111111111111111112'
-          );
-        })
-      );
-    });
+        // assert hash value
+        expect(pollPageHashContent).toContain(
+          '1111111111111111111111111111111111111111111111111111111111111112'
+        );
+        await page.close()
+      });
+    })
   });
 
   test.describe('On Going Poll', () => {
@@ -429,6 +438,7 @@ test.describe('Constitution Poll Hash', () => {
           );
         })
       );
+      await Promise.all(pages.map(page=>page.close()));
     });
   });
 
@@ -456,6 +466,7 @@ test.describe('Constitution Poll Hash', () => {
           );
         })
       );
+      await Promise.all(pages.map(page=>page.close()));
     });
   });
 });

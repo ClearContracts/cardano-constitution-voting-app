@@ -1,15 +1,19 @@
 import environments from "@constants/environments";
+import { setAllureEpic } from "@helpers/allure";
 import { createAuth } from "@helpers/auth";
-
 import { fetchVoteTxMetadata,fetchPollSummaryMetadata, Vote, decodeOnChainPayload } from "@helpers/blockfrost";
 import { newOrganizer1Page } from "@helpers/page";
 import { createFullyVotedPoll, VotedPoll } from "@helpers/poll";
 import { pollTransaction, sleep, waitForTxSubmit } from "@helpers/txUtil";
-import HomePage from "@pages/homePage";
-import LoginPage from "@pages/loginPage";
 import PollPage from "@pages/pollPage";
 import { expect, Page, test } from "@playwright/test";
 import { bech32, blake, cborBackend, CoseSign1, Ed25519Key, loadCrypto } from "libcardano";
+
+
+test.beforeEach(async () => {
+  await setAllureEpic('6. Onchain Poll');
+});
+
 
 test.describe('Onchain Poll', () => {
   
@@ -114,9 +118,10 @@ test.describe('Onchain Poll', () => {
     }
 
     // Validate metadata for summary transaction
-    const summaryMetadata:string[] = await fetchPollSummaryMetadata(extractedSummaryTxHash);
-    const voteTxSet=new Set(summaryMetadata)
-    expect(summaryMetadata.length == voteTxHashes.length,`OnChainVote Txs=${summaryMetadata.length} pageVoteTxs=${voteTxHashes.length}: Expected to be equal`).toBeTruthy(); // Ensure metadata exists
+    const summaryMetadata = await fetchPollSummaryMetadata(extractedSummaryTxHash);
+    const voteTxSet=new Set(summaryMetadata.voteTransactions)
+
+    expect(summaryMetadata.voteTransactions.length == voteTxHashes.length,`OnChainVote Txs=${summaryMetadata.voteTransactions.length} pageVoteTxs=${voteTxHashes.length}: Expected to be equal`).toBeTruthy(); // Ensure metadata exists
 
     // Validate metadata for each vote transaction
     for (let txHash of voteTxHashes) {
@@ -135,6 +140,15 @@ test.describe('Onchain Poll', () => {
     expect(await page.getByTestId('yes-count').innerHTML()).toBe(onChainYes.toString())
     expect(await page.getByTestId('no-count').innerHTML()).toBe(onChainNo.toString())
     expect(await page.getByTestId('abstain-count').innerHTML()).toBe(onChainAbstain.toString())
+
+    // Assert that the summary data and the actual data in transactions is same.
+    expect(summaryMetadata.votes.yes).toBe(onChainYes)
+    expect(summaryMetadata.votes.no).toBe(onChainNo)
+    expect(summaryMetadata.votes.abstain).toBe(onChainAbstain)
+
+    const vote1=onChainVotes[0]
+    expect(summaryMetadata.constutionHash).toBe(vote1.constutionHash)
+    expect(summaryMetadata.pollName).toBe(vote1.pollName)
     
   });
 

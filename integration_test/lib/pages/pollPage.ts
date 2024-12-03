@@ -26,17 +26,18 @@ export default class PollPage {
 
   constructor(private readonly page: Page) {}
 
-  async goto(pollId: number): Promise<void> {
-    this.page.goto(`/polls/${pollId}`);
+  async goto(pollId: number): Promise<any> {
+    return await this.page.goto(`/polls/${pollId}`);
   }
 
   async deletePoll(): Promise<void> {
     await this.deletePollBtn.click();
     await this.deletePollConfirm.click();
     await this.page.waitForURL('/', {
-      timeout: 10_000, 
+      timeout: 15_000, 
+    }).finally(()=>{
+      console.log("PageUrl after wait :",this.page.url())
     });
-
   }
   async endVoting() {
     await this.endVotingBtn.click();

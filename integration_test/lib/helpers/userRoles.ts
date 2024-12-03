@@ -5,7 +5,7 @@ import {
   newOrganizer1Page,
 } from '@helpers/page';
 
-import { Page } from '@playwright/test';
+import { Browser, BrowserContext, Page } from '@playwright/test';
 
 type UserRole =
   | 'Delegate'
@@ -38,12 +38,12 @@ export function getUserPages(browser, userRole?: UserRole): Promise<Page[]> {
 export function forEachUser(
   handler: (user: {
     role: string;
-    loader: (browser: unknown) => Promise<Page>;
+    loader: (browser:  Browser|BrowserContext) => Promise<Page>;
   }) => unknown
 ) {
   const users: {
     role: string;
-    handler: (browser: unknown) => Promise<Page>;
+    handler: (browser: Browser|BrowserContext) => Promise<Page>;
   }[] = [
     {
       role: 'Alternate',

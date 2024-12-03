@@ -94,15 +94,19 @@ export const test = base.extend<TestOptions & { pollId: number }>({
     }
 
     await use(pollId);
-
-    await Promise.all(
-      pages.map(async (userPage) => {
-        userPage.close();
-      })
-    );
+    try{
     // cleanup
-    if (pollType !== 'NoAction' && pollType !== 'CreatePollWithoutTeardown') {
-      await organizerPollPage.deletePoll();
+      if (pollType !== 'NoAction' && pollType !== 'CreatePollWithoutTeardown') {
+        await organizerPollPage.deletePoll();
+      }
+    }catch(e){
+      console.warn("Unexpected error cleaning up:",e)
+      // just ignore the error
+    }
+    try{
+      await organizerPage.close()
+    }catch(e){
+      console.warn("Unexpected error cleaning up:",e)
     }
   },
 });

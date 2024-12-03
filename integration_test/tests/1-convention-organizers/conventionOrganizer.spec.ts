@@ -275,27 +275,20 @@ test.describe('Create Poll', () => {
     await expect(page.getByTestId('create-poll-button')).toBeDisabled();
   });
 
+});
+
+test.describe('Create Poll', () => {
+  test.slow();
+  test.use({
+    pollType: 'VotedPoll',
+  });
   test('1-1I Poll results are shown horizantally', async ({
     pollId,
-    browser,
     page,
   }) => {
-    test.slow();
+    test.slow()
     const organizerPollPage = new PollPage(page);
     await organizerPollPage.goto(pollId);
-
-    // 2 delegator voting 'Yes'
-    const delegate1Page = await newDelegate1Page(browser);
-    const delegate2Page = await newDelegate2Page(browser);
-    await Promise.all(
-      [delegate1Page, delegate2Page].map(async (page) => {
-        const pollPage = new PollPage(page);
-        await pollPage.goto(pollId);
-        await pollPage.voteYesBtn.click();
-      })
-    );
-
-    await organizerPollPage.endVoting();
 
     // Assert flex direction
     const yesVoteResults = page.getByTestId('yes-vote-results');
@@ -562,6 +555,7 @@ test.describe('User Control', () => {
     expect(workshopName).toBe('Workshop 02');
     expect(voterName).toBe('Test Delegate 02');
     expect(voteType).toBe('YES');
+    await delegatePage.close()
   });
 });
 
@@ -657,6 +651,7 @@ test.describe('Voting Power', () => {
         name: 'You are not the active voter for your workshop. Only the active voter can vote.',
       })
     ).toBeVisible({ timeout: 10_000 });
+    await Promise.all([delegatePage.close(),alternatePage.close()])
   });
 });
 
