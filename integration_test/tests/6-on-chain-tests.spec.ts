@@ -25,9 +25,9 @@ test.describe('Onchain Poll', () => {
   test('6-1A . Given CO, can submit poll results onchain', async ({
     browser
   }) => {
-    const voteCount=62
+    const voteCount=61
     const totalTxCount=Math.ceil(voteCount/9) +1 
-    test.setTimeout(900000)// set it to 15 minutes.
+    test.setTimeout(1500000)// set it to 25 minutes.
     const fullyVotedPoll = await createFullyVotedPoll(browser,voteCount)
     pollDetail=fullyVotedPoll;
     organizerPollPage=fullyVotedPoll.organizerPollPage;

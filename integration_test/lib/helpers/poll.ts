@@ -58,7 +58,7 @@ export  async function createFullyVotedPoll (browser: Browser,voteCount?:number)
     await expect(page.getByText('Vote recorded!'),"Expected Vote to be recorded for user: "+wallet.stakeAddress).toBeVisible({timeout:20000})
     await page.close()
     await context.close()
-  },6);
+  },5);
 
   const organizerPollPage=new PollPage(organizerPages[0])
   await organizerPollPage.endVoting()
