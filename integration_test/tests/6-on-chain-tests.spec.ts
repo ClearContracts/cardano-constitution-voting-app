@@ -121,7 +121,7 @@ test.describe('Onchain Poll', () => {
     const summaryMetadata = await fetchPollSummaryMetadata(extractedSummaryTxHash);
     const voteTxSet=new Set(summaryMetadata.voteTransactions)
 
-    expect(summaryMetadata.voteTransactions.length == voteTxHashes.length,`OnChainVote Txs=${summaryMetadata.voteTransactions.length} pageVoteTxs=${voteTxHashes.length}: Expected to be equal`).toBeTruthy(); // Ensure metadata exists
+    expect(summaryMetadata.voteTransactions.length,`OnChainVote Txs=${summaryMetadata.voteTransactions.length} pageVoteTxs=${voteTxHashes.length}: Expected to be equal`).toBe(voteTxHashes.length)
 
     // Validate metadata for each vote transaction
     for (let txHash of voteTxHashes) {
