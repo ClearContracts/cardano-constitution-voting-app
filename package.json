@@ -69,7 +69,7 @@
     "react-material-ui-carousel": "^3.4.2"
   },
   "devDependencies": {
-    "@eslint/js": "^9.14.0",
+    "@eslint/js": "^9.16.0",
     "@ianvs/prettier-plugin-sort-imports": "^4.3.1",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/react": "^16.0.1",
@@ -81,10 +81,10 @@
     "@vitest/runner": "^2.1.4",
     "allure-commandline": "^2.27.0",
     "allure-vitest": "^3.0.6",
-    "eslint": "^9.14.0",
+    "eslint": "^9.16.0",
     "eslint-config-next": "15.0.3",
     "eslint-config-prettier": "^9.1.0",
-    "globals": "^15.11.0",
+    "globals": "^15.13.0",
     "jsdom": "^25.0.1",
     "libcardano": "^1.4.6",
     "msw": "^2.5.0",
@@ -93,7 +93,7 @@
     "prisma": "^5.22.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.6.3",
-    "typescript-eslint": "^8.12.2",
+    "typescript-eslint": "^8.16.0",
     "vitest": "^2.1.4"
   }
 }

@@ -8,7 +8,10 @@ import { getServerSession } from 'next-auth';
 import { pollDto } from '@/data/pollDto';
 import { pollTransactionsDto } from '@/data/pollTransactionsDto';
 import { pollVotesDto } from '@/data/pollVotesDto';
+import { workshopsDto } from '@/data/workshopsDto';
 import { checkIfCO } from '@/lib/checkIfCO';
+import { getBytesOfArray } from '@/lib/getBytesOfArray';
+import { splitStringByBytes } from '@/lib/splitStringByBytes';
 
 type Data = { metadata: string[] | null; message: string };
 
@@ -95,9 +98,56 @@ export default async function getSummaryTxMetadata(
     // Iterate through poll_transaction IDs and get associated TX ID
     const txIds = await pollTransactionsDto(pollTransactionIds);
 
+    const yesVotes = pollVotes.filter((vote) => vote.vote === 'yes').length;
+    const noVotes = pollVotes.filter((vote) => vote.vote === 'no').length;
+    const abstainVotes = pollVotes.filter(
+      (vote) => vote.vote === 'abstain',
+    ).length;
+
+    const workshops = await workshopsDto();
+
+    const activeWorkshops = workshops.filter(
+      (workshop) => workshop.active_voter_id,
+    );
+    const activeVoterCount = activeWorkshops.length;
+
+    const percentage =
+      Math.round((yesVotes / (activeVoterCount - abstainVotes)) * 100) || 0;
+
+    const titleString = `Poll: ${poll.name}`;
+    const splitTitleString = splitStringByBytes(titleString, 64);
+
+    const approvalString = `Approval Result: ${percentage}%`;
+    const yesString = `Yes Votes: ${yesVotes}`;
+    const noString = `No Votes: ${noVotes}`;
+    const abstainString = `Abstain Votes: ${abstainVotes}`;
+    const totalString = `Total Eligible Voters: ${activeVoterCount}`;
+
+    const metadata = [
+      ...splitTitleString,
+      'Text Hash:',
+      poll.hashedText,
+      approvalString,
+      yesString,
+      noString,
+      abstainString,
+      totalString,
+      'Delegate Signature Transaction Hashes:',
+      ...txIds,
+    ];
+
+    // make sure metadata is under 16kb
+    const bytes = getBytesOfArray(metadata);
+    if (bytes > 15000) {
+      return res.status(400).json({
+        metadata: null,
+        message: 'Metadata is too large',
+      });
+    }
+
     return res
       .status(200)
-      .json({ metadata: txIds, message: 'Metadata constructed' });
+      .json({ metadata: metadata, message: 'Metadata constructed' });
   } catch (error) {
     Sentry.captureException(error);
     return res.status(500).json({

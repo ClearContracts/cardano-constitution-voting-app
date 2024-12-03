@@ -27,7 +27,7 @@ export function useCheckAddressChange(): void {
       async function handler(): Promise<void> {
         if (session && wallet) {
           const hasChanged = await checkAddressChange(
-            wallet,
+            session.user.walletName,
             session.user.stakeAddress,
           );
           if (hasChanged) {

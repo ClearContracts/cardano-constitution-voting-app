@@ -395,7 +395,7 @@ export function PollResults(props: Props): JSX.Element {
           {abstainVoters}
         </Box>
       </Box>
-      {pollTransactions}
+      {summaryTxId && pollTransactions}
     </Box>
   );
 }

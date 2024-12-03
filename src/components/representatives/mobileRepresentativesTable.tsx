@@ -1,12 +1,8 @@
 import { useMemo } from 'react';
-import Link from 'next/link';
 import { Box, useTheme } from '@mui/material';
 import Typography from '@mui/material/Typography';
-import { DataGrid, GridColDef } from '@mui/x-data-grid';
 
 import type { User, Workshop } from '@/types';
-import { paths } from '@/paths';
-import { abbreviateName } from '@/lib/helpers/abbreviateName';
 import { MobileRepresentativeCard } from '@/components/representatives/mobileRepresentativeCard';
 
 interface Props {
@@ -23,12 +19,19 @@ interface Props {
 export function MobileRepresentativesTable(props: Props): JSX.Element {
   const { representatives, workshops } = props;
 
-  const theme = useTheme();
-
   const representativesList = useMemo(() => {
-    return representatives.map((rep) => {
+    const repsOnly = representatives.filter((rep) => {
+      // Filter out representatives that are not in workshop 1 (Convention Organizers)
+      return BigInt(rep.workshop_id) !== BigInt(1);
+    });
+    return repsOnly.map((rep) => {
       return (
-        <MobileRepresentativeCard representative={rep} workshops={workshops} />
+        <Box key={rep.id}>
+          <MobileRepresentativeCard
+            representative={rep}
+            workshops={workshops}
+          />
+        </Box>
       );
     });
   }, [representatives]);
