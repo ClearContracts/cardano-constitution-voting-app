@@ -153,8 +153,8 @@ test.describe('Onchain Poll', () => {
   });
 
   test('6-1C. Given votes are uploaded on-chain, vote data is correct', async () => {
-    if(onChainVotes.length && environments.ci){
-      test.skip()
+    if(!onChainVotes.length){
+      test.fail()
     }
     await loadCrypto()
 
