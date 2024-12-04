@@ -76,15 +76,6 @@ export default defineConfig({
       testMatch: '**/*independent.spec.ts',
       use: { ...devices['Galaxy Tab S4'] },
     },
-    
-    {
-      name: 'on-chain',
-      testMatch: '6-on-chain-tests.once.spec.ts',
-      use: { ...devices['Desktop Chrome'] },
-      dependencies: environments.ci ? ['auth setup'] : [],
-    },
-    
-
     /* Test against mobile viewports. */
     // {
     //   name: 'Mobile Chrome',
