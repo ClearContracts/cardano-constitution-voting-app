@@ -44,7 +44,7 @@ export default class RepresentativesPage {
     await Promise.all(
       infos.map(
         async (info) =>
-          await expect(this.page.getByText(info, { exact: true })).toBeVisible()
+          await expect(this.page.getByText(info, { exact: true }).first()).toBeVisible()
       )
     );
   }

@@ -10,6 +10,7 @@ import { newDelegatePage } from '@helpers/page';
 import { delegateWallets, organizerWallets } from '@constants/staticWallets';
 import { importWallet } from '@fixtures/importWallet';
 import loadEternlExtension from '@fixtures/loadExtension';
+import { isMobile, isTablet } from '@helpers/device';
 
 test.beforeEach(async () => {
   await setAllureEpic('0. All Users');
@@ -57,7 +58,7 @@ test.describe('Polls', () => {
         }
       })
     );
-    await Promise.all(pages.map(page=>page.close()))
+    await Promise.all(pages.map(page => page.close()))
   });
 
   forEachUser((user) => {
@@ -65,7 +66,7 @@ test.describe('Polls', () => {
       pollId,
       browser,
     }) => {
-      console.log("ok: ",pollId)
+      console.log("ok: ", pollId)
 
       const page = await user.loader(browser);
       await page.goto(`/polls/${pollId}`);
@@ -111,7 +112,7 @@ test.describe('Polls', () => {
 
     // vote and assert voting
     await delegatePollPage.voteYesBtn.click();
-    await expect( delegatePage.getByTestId('vote-status')).toBeVisible({timeout:10_000});
+    await expect(delegatePage.getByTestId('vote-status')).toBeVisible({ timeout: 10_000 });
 
     await Promise.all(
       pages.map(async (userPage) => {
@@ -123,7 +124,7 @@ test.describe('Polls', () => {
         expect(votes).toEqual('1 vote');
       })
     );
-    await Promise.all(pages.map(page=>page.close()));
+    await Promise.all(pages.map(page => page.close()));
   });
 });
 
@@ -159,7 +160,7 @@ test.describe('Polls', () => {
       pages.map(async (page) => {
         await page.goto(`/polls/${pollId}`);
         const pollPageStatusChip = page.getByTestId('poll-page-status-chip');
-        await expect(pollPageStatusChip).toHaveText('Concluded',{timeout:15_000});
+        await expect(pollPageStatusChip).toHaveText('Concluded', { timeout: 15_000 });
 
         await expect(page.getByTestId('results-yes')).toBeVisible();
         await expect(page.getByTestId('results-no')).toBeVisible();
@@ -176,7 +177,7 @@ test.describe('Polls', () => {
         await expect(abstainCount).toHaveText('1');
       })
     );
-    await Promise.all(pages.map(page=>page.close()));
+    await Promise.all(pages.map(page => page.close()));
 
   });
 
@@ -206,7 +207,7 @@ test.describe('Polls', () => {
         expect(acceptancePercentage).toEqual('2%');
       })
     );
-    await Promise.all(pages.map(page=>page.close()));
+    await Promise.all(pages.map(page => page.close()));
   });
 });
 
@@ -234,8 +235,8 @@ test.describe('User profile', () => {
 
     // Locate the buttons
     const representativeBtns = page
-    .locator('[data-testid^="representative-vote-"]')
-    await expect(representativeBtns.first()).toBeVisible({timeout:10_000});
+      .locator('[data-testid^="representative-vote-"]')
+    await expect(representativeBtns.first()).toBeVisible({ timeout: 10_000 });
     const buttons = await representativeBtns.all();
 
     if (buttons.length === 0) {
@@ -267,7 +268,7 @@ test.describe('User profile', () => {
         await votingTable.getByTestId('user-votes-' + pollId).isVisible();
       })
     );
-      await Promise.all(pages.map(page=>page.close()));
+    await Promise.all(pages.map(page => page.close()));
   });
 
   /**
@@ -284,8 +285,19 @@ test.describe('User profile', () => {
     page,
   }) => {
     await page.goto('/');
-    const table = page.getByTestId('representatives-table');
-    await expect(table.getByTestId('alternate-name-138')).toBeVisible();
+    let table: Locator;
+
+    // Assert table view
+    await expect(page.getByTestId('alternate-name-138').first()).toBeHidden();
+
+    // Fetch all table row
+    if (isMobile(page) || isTablet(page)) {
+      table = page.getByTestId('mobile-representatives-table')
+    } else {
+      table = page.getByTestId('representatives-table');
+    }
+    await page.waitForTimeout(2_000);
+
     // Locate the buttons
     const delegates = await table
       .locator('[data-testid^="delegate-name-"]')
@@ -313,9 +325,9 @@ test.describe('User profile', () => {
 
     // Locate the buttons
     const representativeBtns = page
-    .locator('[data-testid^="representative-vote-"]')
+      .locator('[data-testid^="representative-vote-"]')
 
-    await expect(representativeBtns.first()).toBeVisible({timeout:10_000});
+    await expect(representativeBtns.first()).toBeVisible({ timeout: 10_000 });
 
     const buttons = await representativeBtns.all();
 
@@ -381,7 +393,7 @@ test.describe('CSV File', () => {
         fs.unlinkSync(filePath);
       })
     );
-    await Promise.all(pages.map(page=>page.close()));
+    await Promise.all(pages.map(page => page.close()));
   });
 
 });
@@ -390,13 +402,13 @@ test.describe('Constitution Poll Hash', () => {
   test.use({ pollType: 'CreatePollWithCustomHash' });
 
   test.describe('Pending Poll', () => {
-    forEachUser(user=>{
-      test('0-4A-1 '+user.role+' should be able to view custom hash of pending poll', async ({
+    forEachUser(user => {
+      test('0-4A-1 ' + user.role + ' should be able to view custom hash of pending poll', async ({
         pollId,
         browser,
       }) => {
         test.slow()
-        const page= await user.loader(browser)
+        const page = await user.loader(browser)
         const pollPage = new PollPage(page);
         await pollPage.goto(pollId);
 
@@ -438,7 +450,7 @@ test.describe('Constitution Poll Hash', () => {
           );
         })
       );
-      await Promise.all(pages.map(page=>page.close()));
+      await Promise.all(pages.map(page => page.close()));
     });
   });
 
@@ -466,7 +478,7 @@ test.describe('Constitution Poll Hash', () => {
           );
         })
       );
-      await Promise.all(pages.map(page=>page.close()));
+      await Promise.all(pages.map(page => page.close()));
     });
   });
 });

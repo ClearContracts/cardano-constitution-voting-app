@@ -68,6 +68,7 @@ export function MobileRepresentativeCard(props: Props): JSX.Element {
             sx={{
               color: theme.palette.text.primary,
             }}
+            data-testid={`${representative.name.toLowerCase().split(' ').join('-')}-group-button`}
           >
             <KeyboardArrowDownOutlined />
           </Box>
@@ -75,7 +76,7 @@ export function MobileRepresentativeCard(props: Props): JSX.Element {
       >
         <Typography>{representative.name}</Typography>
       </AccordionSummary>
-      <AccordionDetails>
+      <AccordionDetails data-testid={`${representative.name.toLowerCase().split(' ').join('-')}-group`}>
         <Box
           display="flex"
           flexDirection="row"
@@ -90,6 +91,7 @@ export function MobileRepresentativeCard(props: Props): JSX.Element {
             {delegate ? (
               <Link
                 href={paths.representatives.representative + delegate.id}
+                data-testid={`delegate-name-${delegate?.id}`}
                 style={{
                   color: '#FFFFFF',
                 }}
@@ -123,6 +125,7 @@ export function MobileRepresentativeCard(props: Props): JSX.Element {
                 style={{
                   color: '#FFFFFF',
                 }}
+                data-testid={`alternate-name-${alternate?.id}`}
               >
                 <Typography variant="h6">
                   {alternate.name || 'Not Found'}

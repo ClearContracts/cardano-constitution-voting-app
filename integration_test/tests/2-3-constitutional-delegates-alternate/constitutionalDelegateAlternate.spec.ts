@@ -9,6 +9,7 @@ import {
   newOrganizerPage,
 } from '@helpers/page';
 import { upperCaseFirstLetter } from '@helpers/string';
+import { isMobile, isTablet } from '@helpers/device';
 
 const switchVotingPowerAndBeginPoll = async (
   user: string,
@@ -289,22 +290,44 @@ test.describe('Representative Status', () => {
         await Promise.all(
           pages.map(async (page) => {
             await page.goto('/');
-            await expect(page.locator('[data-id="5"]').first()).toBeVisible({
-              timeout: 10_000,
-            });
 
-            // Fetch representative list of workshop 5
-            const representativeList = await page
-              .locator('[data-id="5"]')
-              .allInnerTexts();
-            const [workshop, delegate, alternate, active_voter] =
-              representativeList[0].split('\n\n');
+            if (isMobile(page) || isTablet(page)) {
 
-            // Assert workshop name
-            expect(workshop).toBe('Workshop 05');
+              // Click representative group and fetch representative list
+              const testDelegator3GroupDropDownBtn = page.getByTestId('test-delegate-05-group-button')
+              const testDelegator3Group = page.getByTestId('test-delegate-05-group')
+              await expect(testDelegator3GroupDropDownBtn).toBeVisible({ timeout: 10_000 })
+              await testDelegator3GroupDropDownBtn.click();
 
-            // Assert active voter value to be in between delegate and alternate
-            expect(['Delegate', 'Alternate']).toContain(active_voter);
+              await expect(testDelegator3Group.locator('[data-testid^="alternate-name-"]').first()).toBeVisible({ timeout: 10_000 });
+              const representativeDetails = (await testDelegator3Group.allInnerTexts())[0].split('\n')
+              const [delegate, alternate, workshop, activeVoter] = representativeDetails.filter((r, index) => index % 2 != 0)
+
+              // Assert workshop name
+              expect(workshop).toBe('Workshop 05');
+
+              // Assert active voter value to be in between delegate and alternate
+              expect(['Delegate', 'Alternate']).toContain(activeVoter);
+
+            } else {
+              await expect(page.locator('[data-id="5"]').first()).toBeVisible({
+                timeout: 10_000,
+              });
+
+              // Fetch representative list of workshop 5
+              const representativeList = await page
+                .locator('[data-id="5"]')
+                .allInnerTexts();
+              const [workshop, delegate, alternate, active_voter] =
+                representativeList[0].split('\n\n');
+
+              // Assert workshop name
+              expect(workshop).toBe('Workshop 05');
+
+              // Assert active voter value to be in between delegate and alternate
+              expect(['Delegate', 'Alternate']).toContain(active_voter);
+            }
+
           })
         );
       });

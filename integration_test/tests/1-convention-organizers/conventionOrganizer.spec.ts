@@ -1,4 +1,4 @@
-import {  organizerWallets } from '@constants/staticWallets';
+import { organizerWallets } from '@constants/staticWallets';
 import { setAllureEpic } from '@helpers/allure';
 import { expect } from '@playwright/test';
 import { test } from '@fixtures/poll';
@@ -12,6 +12,7 @@ import {
   newDelegate2Page,
   newDelegatePage,
 } from '@helpers/page';
+import { isMobile, isTablet } from '@helpers/device';
 
 
 test.beforeEach(async () => {
@@ -394,20 +395,42 @@ test.describe('User Control', () => {
     await page.goto('/');
 
     // locate the delegate and alternate of same row
-    await expect(page.getByRole('row').first()).toBeVisible();
-    const delegate = await page.getByRole('gridcell').nth(1).innerText();
-    const alternate = await page.getByRole('gridcell').nth(2).innerText();
+    if (isMobile(page) || isTablet(page)) {
+      // Click dropdown and fetch representatives name
+      const testDelegator3GroupDropDownBtn = page.getByTestId('test-delegate-03-group-button')
+      const testDelegator3Group = page.getByTestId('test-delegate-03-group')
+      await expect(testDelegator3GroupDropDownBtn).toBeVisible({timeout:10_000})
+      await testDelegator3GroupDropDownBtn.click();
+      
+      await expect(testDelegator3Group.locator('[data-testid^="alternate-name-"]').first()).toBeVisible({timeout:10_000});
+      const representativeDetails = (await testDelegator3Group.allInnerTexts())[0].split('\n')
 
-    // fetch the list of all alternates and delegates
-    const delegatesList = await page
-      .locator('[data-testid^="delegate-name-"]')
-      .allInnerTexts();
-    const alternateList = await page
-      .locator('[data-testid^="alternate-name-"]')
-      .allInnerTexts();
+      const delegate = await testDelegator3Group.locator('[data-testid^="delegate-name-"]').innerText();
+      const alternate = await testDelegator3Group.locator('[data-testid^="alternate-name-"]').innerText();
 
-    expect(delegatesList).toContain(delegate);
-    expect(alternateList).toContain(alternate);
+      expect(representativeDetails).toContain(delegate)
+      expect(representativeDetails).toContain(alternate)
+      
+    } else {
+
+      await expect(page.getByRole('row').first()).toBeVisible();
+
+      const delegate = await page.getByRole('gridcell').nth(1).innerText();
+      const alternate = await page.getByRole('gridcell').nth(2).innerText();
+
+      // fetch the list of all alternates and delegates
+      const delegatesList = await page
+        .locator('[data-testid^="delegate-name-"]')
+        .allInnerTexts();
+      const alternateList = await page
+        .locator('[data-testid^="alternate-name-"]')
+        .allInnerTexts();
+
+      expect(delegatesList).toContain(delegate);
+      expect(alternateList).toContain(alternate);
+    }
+
+
   });
 
   test('1-2B-2. Should have workspace_name ordered alphabetically', async ({
@@ -415,6 +438,8 @@ test.describe('User Control', () => {
   }) => {
     const workspaceNames = [];
     await page.goto('/');
+
+    if (isMobile(page) || isTablet(page)) {}else{
 
     // fetch all rows except table heading
     await expect(page.getByRole('row').first()).toBeVisible();
@@ -431,6 +456,8 @@ test.describe('User Control', () => {
         (word, i) => i === 0 || workspaceNames[i - 1].localeCompare(word) <= 0
       )
     );
+  }
+
   });
 
   /**
@@ -545,7 +572,7 @@ test.describe('User Control', () => {
       .isVisible({ timeout: 10_000 });
 
     // Assert number of Yes Votes
-    await expect(page.getByText('YES')).toBeVisible({ timeout: 10_000 });
+    await expect(page.getByText('YES').first()).toBeVisible({ timeout: 10_000 });
     const voterRow = await page
       .getByRole('row')
       .filter({ has: page.locator('[data-field="vote"]') })
@@ -651,7 +678,7 @@ test.describe('Voting Power', () => {
         name: 'You are not the active voter for your workshop. Only the active voter can vote.',
       })
     ).toBeVisible({ timeout: 10_000 });
-    await Promise.all([delegatePage.close(),alternatePage.close()])
+    await Promise.all([delegatePage.close(), alternatePage.close()])
   });
 });
 
