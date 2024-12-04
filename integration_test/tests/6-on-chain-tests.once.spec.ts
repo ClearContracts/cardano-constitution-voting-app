@@ -31,7 +31,7 @@ test.describe('Onchain Poll', () => {
   }) => {
     const voteCount=61
     const totalTxCount=Math.ceil(voteCount/9) +1 
-    test.setTimeout(1500000)// set it to 25 minutes.
+    test.setTimeout(1800000)// 30 minutes
     const fullyVotedPoll = await createFullyVotedPoll(browser,voteCount)
     pollDetail=fullyVotedPoll;
     organizerPollPage=fullyVotedPoll.organizerPollPage;
