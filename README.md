@@ -46,7 +46,7 @@ This voting app will be hosted through the end of February, to provide ample tim
 ## Running the app locally
 
 1. Download or clone the repository
-2. Get `.npmrc` file with your Auth Token from the team
+2. Get `.npmrc` file with your Auth Token, which can be requested via [CODEOWNERS](./CODEOWNERS).
 3. `npm install`
 4. Download [PostgreSQL](https://www.postgresql.org/) in your preferred method and initiate it (I personally use the [Postgress.app](https://postgresapp.com/downloads.html) method)
 5. Create database in local PostgreSQL instance using [psql](https://www.postgresql.org/docs/current/app-psql.html), [pgAdmin](https://www.pgadmin.org/download/), or whatever your preferred method for interacting with a PostgreSQL database is
