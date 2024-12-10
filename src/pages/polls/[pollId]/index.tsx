@@ -164,8 +164,8 @@ export default function ViewPoll(props: Props): JSX.Element {
           <Typography variant="h4" fontWeight="bold">
             {poll ? poll.name : isPending ? <CircularProgress /> : 'View Poll'}
           </Typography>
-          {poll && <PollStatusChip status={poll.status} />}
-          <PollVoteCount pollId={poll?.id || ''} />
+          {poll && <PollStatusChip  testId="poll-page-status-chip" status={poll.status} />}
+          <PollVoteCount  testId="poll-page-vote-count"  pollId={poll?.id || ''} />
           <Grid container data-testid="poll-transactions">
             {poll ? (
               <Grid
@@ -197,6 +197,7 @@ export default function ViewPoll(props: Props): JSX.Element {
                     overflowWrap: 'break-word', // Ensures wrapping works on all browsers
                     whiteSpace: 'normal', // Allows text to wrap
                   }}
+                  data-testid="constitution-poll-hash"
                 >
                   The linked text document has the Blake2b-256 hash of:{' '}
                   {poll.hashedText}
@@ -252,6 +253,7 @@ export default function ViewPoll(props: Props): JSX.Element {
                             <Button
                               variant="contained"
                               onClick={openAreYouSure}
+                              data-testid="end-vote-button"
                             >
                               End Vote
                             </Button>
@@ -383,6 +385,7 @@ export default function ViewPoll(props: Props): JSX.Element {
                 variant="outlined"
                 color="error"
                 onClick={handleModalClose}
+                data-testid="cancel-end-vote-button"
               >
                 Cancel
               </Button>

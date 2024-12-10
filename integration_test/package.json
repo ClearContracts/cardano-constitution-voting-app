@@ -1,0 +1,33 @@
+{
+  "name": "cardano-constitution-voting-app",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "test": "npx playwright test",
+    "format": "prettier . --write",
+    "genwallet": "ts-node ./cli/gen-wallet.ts",
+    "verify:csv": "ts-node ./cli/validate-sig.ts",
+    "allure:generate": "npx allure generate ./allure-results --clean",
+    "allure:open": "npx allure open ./allure-report",
+    "allure:serve": "npx allure serve"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@playwright/test": "^1.44.1",
+    "@types/node": "^20.12.12",
+    "allure-commandline": "^2.27.0",
+    "allure-playwright": "^2.15.0",
+    "dotenv": "^16.4.4",
+    "prettier": "3.2.5"
+  },
+  "dependencies": {
+    "@cardanoapi/cardano-test-wallet": "^2.1.1",
+    "@faker-js/faker": "^9.2.0",
+    "csv-parse": "^5.5.6",
+    "libcardano": "^1.4.8",
+    "node-fetch": "^2.6.7",
+    "papaparse": "^5.4.1"
+  }
+}

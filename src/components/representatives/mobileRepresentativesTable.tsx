@@ -19,6 +19,8 @@ interface Props {
 export function MobileRepresentativesTable(props: Props): JSX.Element {
   const { representatives, workshops } = props;
 
+  console.log("Representativee: ",representatives)
+
   const representativesList = useMemo(() => {
     const repsOnly = representatives.filter((rep) => {
       // Filter out representatives that are not in workshop 1 (Convention Organizers)
@@ -38,7 +40,9 @@ export function MobileRepresentativesTable(props: Props): JSX.Element {
 
   if (representatives.length > 0) {
     return (
-      <Box display="flex" flexDirection="column" gap={1} width="100%">
+      <Box display="flex" flexDirection="column" gap={1} width="100%"
+      data-testid="mobile-representatives-table"
+      >
         <Typography variant="h5" fontWeight="600" textAlign="center">
           Representatives
         </Typography>
