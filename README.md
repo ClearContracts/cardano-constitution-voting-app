@@ -46,7 +46,7 @@ This voting app will be hosted through the end of February, to provide ample tim
 ## Running the app locally
 
 1. Download or clone the repository
-2. Get `.npmrc` file with your Auth Token from the team
+2. Get `.npmrc` file with your Auth Token, which can be requested via [CODEOWNERS](./CODEOWNERS).
 3. `npm install`
 4. Download [PostgreSQL](https://www.postgresql.org/) in your preferred method and initiate it (I personally use the [Postgress.app](https://postgresapp.com/downloads.html) method)
 5. Create database in local PostgreSQL instance using [psql](https://www.postgresql.org/docs/current/app-psql.html), [pgAdmin](https://www.pgadmin.org/download/), or whatever your preferred method for interacting with a PostgreSQL database is
@@ -71,13 +71,31 @@ At this point, the convention organizer will verify the transactions and sign th
 
 When a delegate or alternate votes on a poll, they will sign a message that contains the following information:
 
-- Delegate's / alternate's full name
-- Delegate's / alternate's workshop location
-- Whether they were a delegate or an alternate
+- Delegate's / alternate's stake address
+- Hashed constitution text
+- URL to constitution text
 - Name of the poll
 - How the delegate / alternate voted (yes, no, or abstain)
+- Timestamp of when the vote was cast
 
 This message and their signature will be saved to the voting app's database. At the conclusion of the final poll, the convention organizer will sign a number of transactions. Each transaction will contain the vote data for multiple delegate/alternate votes. Anybody will be able to refer to these on-chain transactions and verify the votes themselves.
+
+These transactions will contain the information from the vote signatures plus the following information:
+
+- Unique Challenge
+- Delegate's / Alternate's Public Key
+- Delegate's / Alternate's Vote Signature
+
+Once all signature transactions are posted on-chain, a final transaction will be posted that includes the following information:
+
+- Name of the Poll
+- Constitution Text hash
+- Approval Result %
+- Yes vote count
+- No vote count
+- Abstain vote count
+- Total eligible voter count
+- List of Signature Transaction IDs
 
 ## Managing Database Migration
 
@@ -90,7 +108,7 @@ This message and their signature will be saved to the voting app's database. At 
 
 ## License
 
-This project is licensed under the **GNU Affero General Public License v3.0 or later (AGPL-3.0-or-later)**.
+This project is licensed under the **Apache License 2.0**.
 
 This means:
 

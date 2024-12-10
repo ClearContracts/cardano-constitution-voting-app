@@ -20,7 +20,7 @@
     "url": "https://github.com/ClearContracts/cardano-constitution-voting-app/issues",
     "email": "contact@clearcontracts.io"
   },
-  "license": "AGPL-3.0-or-later",
+  "license": "Apache-2.0",
   "author": {
     "name": "Clear Contracts",
     "email": "contact@clearcontracts.io",
