@@ -95,6 +95,7 @@ export function VoteOnPollButtons(props: Props): JSX.Element {
               <Typography
                 variant="h5"
                 fontWeight="bold"
+                data-testid="vote-status"
                 color={
                   vote === 'yes'
                     ? 'success'

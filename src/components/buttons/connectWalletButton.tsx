@@ -125,7 +125,10 @@ export function ConnectWalletButton(props: Props): JSX.Element {
                 alignItems="center"
               >
                 <PersonRounded color="success"></PersonRounded>
-                <Typography color={theme.palette.success.main}>
+                <Typography
+                  data-testid="representative-name"
+                  color={theme.palette.success.main}
+                >
                   {user?.name}
                 </Typography>
               </Box>
@@ -256,6 +259,7 @@ export function ConnectWalletButton(props: Props): JSX.Element {
               ? theme.palette.secondary.contrastText
               : '#FFFFFF',
           }}
+          data-testid={session?.data?.user?.name?'connected-user-name':''}
         >
           {session.status === 'authenticated'
             ? session.data.user.name

@@ -84,7 +84,11 @@ export default function NewPoll(props: Props): JSX.Element {
           />
           {isPendingOrVotingPoll && (
             <Alert severity="warning" variant="outlined">
-              <Typography variant="h6" fontWeight="600">
+              <Typography
+                variant="h6"
+                fontWeight="600"
+                data-testid="create-poll-warning"
+              >
                 You cannot create a new poll while there are pending or voting
                 polls. End any open poll then return to this page to create a
                 new poll.

@@ -5,6 +5,7 @@ import Box from '@mui/material/Box';
 
 interface Props {
   status: string;
+  testId?: string;
 }
 
 /**
@@ -13,7 +14,7 @@ interface Props {
  * @returns Chip with Status
  */
 export function PollStatusChip(props: Props): JSX.Element {
-  const { status } = props;
+  const { status,testId } = props;
 
   // If the status is not a valid poll phase, show it as unknown
   let pollStatusInfo: {
@@ -29,7 +30,7 @@ export function PollStatusChip(props: Props): JSX.Element {
   }
 
   return (
-    <Box data-testid="poll-status-chip">
+    <Box data-testid={testId || 'poll-status-chip'}>
       <Chip
         label={
           <Box display="flex" flexDirection="row" gap={1} alignItems="center">

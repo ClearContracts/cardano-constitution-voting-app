@@ -237,6 +237,7 @@ export function RepresentativesTable(props: Props): JSX.Element {
             rows={workshops.filter(
               (workshop) => workshop.name !== 'Convention Organizer',
             )}
+            data-testid="representatives-table"
             columns={columns}
             hideFooter
             columnVisibilityModel={{

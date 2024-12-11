@@ -1,0 +1,12 @@
+{
+  "scripts": {
+    "start": "artillery run --output result.json ccv-flow.yml && artillery report result.json ",
+    "serve": "python3 -m http.server ",
+    "report": "artillery report result.json",
+    "prepare": "playwright install-deps"
+  },
+  "dependencies": {
+    "artillery": "^2.0.21",
+    "playwright": "^1.49.0"
+  }
+}
