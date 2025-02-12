@@ -115,7 +115,7 @@ This means:
 - You are free to view, use, modify, and distribute this software, but you must distribute your modifications under the same license.
 - If you run this application as part of a networked service, you must provide the source code to users of that service.
 
-For more details, see the [AGPL License](./AGPL_LICENSE.txt) file.
+For more details, see the [Apache License](./APACHE_LICENSE) file.
 
 ## Resources / Acknowledgements
 
