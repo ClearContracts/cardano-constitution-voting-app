@@ -41,7 +41,7 @@
     "prisma-build": "prisma migrate deploy && next build"
   },
   "dependencies": {
-    "@claritydao/clarity-backend": "^0.4.0-dev-512cc333547522c7d53ffe0ecddacd3de3958dd1",
+    "@claritydao/clarity-backend": "^0.5.0",
     "@emotion/react": "^11.13.3",
     "@emotion/styled": "^11.13.0",
     "@emurgo/cardano-message-signing-nodejs": "^1.1.0",
